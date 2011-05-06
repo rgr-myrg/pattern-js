@@ -80,7 +80,7 @@ Observerable Initialize Method
 It is also possible to specify observers during "initialize" method. 
 
 Example:
-var GPS=var Car=new DevShop.Observer({
+var GPS=new DevShop.Observer({
 	onStart:function(){
 		console.log('tracking trip!');
 	}

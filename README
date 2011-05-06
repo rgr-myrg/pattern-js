@@ -98,8 +98,3 @@ var Car=new DevShop.Observable({
 	}
 });
 
-
-
-
-
-

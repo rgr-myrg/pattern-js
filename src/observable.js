@@ -5,8 +5,8 @@
  */
 (function(){
 	DevShop.Me({
-		Observable:function(sub){
-			var construct=function(){
+		Observable:function(obj){
+			var observable=function(){
 				this.observers=[];
 				this.addObserver=function(o){
 					if(typeof o==="function"||typeof o==="object"){
@@ -26,7 +26,7 @@
 					}
 				};
 			};
-			return DevShop.SingletonFactory(construct,sub);
+			return DevShop.SingletonFactory({extend:observable,instance:obj});
 		}
 	});
 })();

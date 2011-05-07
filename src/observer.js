@@ -5,8 +5,8 @@
  */
 (function(){
 	DevShop.Me({
-		Observer:function(sub){
-			var construct=function(){
+		Observer:function(obj){
+			var observer=function(){
 				this.onRegister=function(){};
 				this.notify=function(eventName,observable){
 					this.observable=observable;
@@ -14,7 +14,7 @@
 						try{this[eventName]();}catch(e){}
 				};
 			};
-			return DevShop.SingletonFactory(construct,sub);
+			return DevShop.SingletonFactory({extend:observer,instance:obj});
 		}
 	});
 })();

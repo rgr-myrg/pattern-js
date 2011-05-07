@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml' lang='en' xml:lang='en:us'>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>DevShop.Me :: Singleton Factory</title>
+		<style>
+		</style>
+		<script type="text/javascript" src="devshop.js"></script>
+		<script type="text/javascript">
+		//Create a single instance. Nothing fancy here.
+		var TheWiz=new DevShop.SingletonFactory({
+			instance:function(){
+				var msg="I'm the Wiz";
+				this.getMsg=function(){
+					return msg;
+				};
+			}
+		});
+		//Easily extend from an instance. Example: extend 'TheWiz'
+		var WizBang=new DevShop.SingletonFactory({
+			extend: TheWiz,
+			instance:function(){
+				var msg=" and nobody beats me!";
+				this.sayIt=function(){
+					return this.getMsg() + msg;
+				};
+			}
+		});
+		console.log(WizBang.sayIt());
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

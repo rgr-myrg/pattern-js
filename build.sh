@@ -3,9 +3,10 @@
 
 VERSION="0.1-SNAPSHOT"
 ARTIFACT="devshop-$VERSION.js"
-JS_FILES="--js src/core.js --js src/singletonfactory.js --js src/observable.js --js src/observer.js"
+JS_FILES="--js src/core.js --js src/singletonfactory.js --js src/observable.js --js src/observer.js --js src/eventsignal.js"
 JS_BUILD="build/$ARTIFACT"
 JS_TEMP="build/tmp.js"
+EXAMPLE="examples/devshop.js"
 LICENSE="LICENSE"
 
 echo -n "Compiling...\n"
@@ -16,6 +17,7 @@ cat $LICENSE $JS_TEMP > $JS_BUILD
 
 echo -n "Created $JS_BUILD\n"
 
+cp -p $JS_TEMP $EXAMPLE
 rm $JS_TEMP
 
 if [ $? -ne 0 ]; then

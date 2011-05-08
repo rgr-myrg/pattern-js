@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml' lang='en' xml:lang='en:us'>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>DevShop.Me :: MVC Pattern</title>
+		<style>
+		</style>
+		<script type="text/javascript" src="devshop.js"></script>
+		<script type="text/javascript">
+		var UIMediator=DevShop.SingletonFactory({
+			extend    : DevShop.Mediator,
+			implement : DevShop.MediatorInterface,
+			instance  : {
+				NAME:"UIMediator",
+				listNotificationInterests:function(){
+					return [this.facade.ON_KEYUP];
+				},
+				handleNotification:function(){
+					switch(this.notification.name){
+						case this.facade.ON_KEYUP:
+							this.facade.retrieveProxy(DataProxy.NAME).setData(this.notification.body);
+							break;
+						default:
+							break;
+					}
+				}
+			}
+		});
+		var EchoMediator=DevShop.SingletonFactory({
+			extend    : DevShop.Mediator,
+			implement : DevShop.MediatorInterface,
+			instance  : {
+				NAME:"EchoMediator",
+				listNotificationInterests:function(){
+					return [this.facade.ON_KEYUP];
+				},
+				handleNotification:function(){
+					switch(this.notification.name){
+						case this.facade.ON_KEYUP:
+							this.onKeyUp();
+							break;
+						default:
+							break;
+					}
+				},
+				onKeyUp:function(){
+					document.getElementById('echo').innerHTML=this.facade.retrieveProxy(DataProxy.NAME).getData();
+				}
+			}
+		});
+		var MirrorMediator=DevShop.SingletonFactory({
+			extend    : DevShop.Mediator,
+			implement : DevShop.MediatorInterface,
+			instance  : {
+				NAME:"MirrorMediator",
+				listNotificationInterests:function(){
+					return [this.facade.ON_KEYUP];
+				},
+				handleNotification:function(){
+					switch(this.notification.name){
+						case this.facade.ON_KEYUP:
+							this.onKeyUp();
+							break;
+						default:
+							break;
+					}
+				},
+				onKeyUp:function(){
+					var arr=this.facade.retrieveProxy(DataProxy.NAME).getData().split('');
+					var msg='';
+					if(arr.length>0)
+						for(var x=arr.length-1;x>=0;x--)
+							msg+=arr[x];
+					document.getElementById('mirror').innerHTML=msg;
+				}
+			}
+		});
+		var DataProxy=DevShop.SingletonFactory({
+			extend    : DevShop.Proxy,
+			implement : DevShop.ProxyInterface,
+			instance  : {
+				NAME:"DataProxy"
+			}
+		});
+		var StartUpCmd=DevShop.SingletonFactory({
+			implement : DevShop.CommandInterface,
+			instance  : {
+				execute:function(notification){
+					this.facade.registerProxy(DataProxy);
+					this.facade.registerMediator(UIMediator);
+					this.facade.registerMediator(EchoMediator);
+					this.facade.registerMediator(MirrorMediator);
+				}
+			}
+		});
+		var UI=DevShop.SingletonFactory({
+			extend:DevShop.Facade,
+			instance:{
+				ON_KEYUP:"ON_KEY_UP",
+				initialize:function(){
+					console.log("init");
+					this.initializeFacade(this);
+					this.registerCommand(this.CMD_STARTUP,StartUpCmd);
+					this.sendNotification(this.CMD_STARTUP);
+				},
+				onKeyUp:function(){
+					this.sendNotification(this.ON_KEYUP,document.getElementById('box').value);
+				}
+			}
+		});
+		</script>
+	</head>
+	<body>
+	<form>
+	<table>
+		<tr>
+			<td>Type in this box:</td>
+			<td><input onkeyup="UI.onKeyUp()" type="text" id="box" name="box" value="" size="50"/></td>
+		</tr>
+		<tr>
+			<td>Echo:</td><td><div id="echo"></div></td>
+		</tr>
+		<tr>
+			<td>Mirror:</td><td><div id="mirror"></div></td>
+		</tr>
+	</table>
+	</form>
+	</body>
+</html>

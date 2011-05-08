@@ -106,15 +106,18 @@
 			});
 			var Controller=new DevShop.Observer(function(){
 				var commands={};
+				var notifications=[];
 				this.facade={};
 				this.NAME="DevShop.Controller";
 				this.registerCommand=function(key,command){
 					command.facade=this.facade;
-					if(!commands[key])
+					if(!commands[key]){
 						commands[key]=command;
+						notifications.push(key);
+					}
 				};
 				this.listNotificationInterests=function(){
-					return [this.facade.CMD_STARTUP];
+					return notifications;
 				};
 				this.handleNotification=function(){
 					var notification=this.notification;

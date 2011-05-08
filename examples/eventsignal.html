@@ -7,29 +7,37 @@
 		</style>
 		<script type="text/javascript" src="devshop.js"></script>
 		<script type="text/javascript">
-			var Echo={
-				onKeyUp:function(msg){
-					document.getElementById('echo').innerHTML=msg;
-				}
+		var Echo={
+			onKeyUp:function(msg){
+				document.getElementById('echo').innerHTML=msg;
+			}
+		};
+		var Mirror={
+			onKeyUp:function(msg){
+				var arr=msg.split('');
+				var msg='';
+				if(arr.length>0)
+					for(var x=arr.length-1;x>=0;x--)
+						msg+=arr[x];
+				document.getElementById('mirror').innerHTML=msg;
+			}
+		};
+		var Vertical={
+			onKeyUp:function(msg){
+				var arr=msg.split('');
+				var msg=arr.join('<br>');
+				document.getElementById('vertical').innerHTML=msg;
+			}
+		};
+		var UI=new function(){
+			var keyUp=new DevShop.EventSignal;
+			keyUp.addListener(Echo.onKeyUp);
+			keyUp.addListener(Mirror.onKeyUp);
+			keyUp.addListener(Vertical.onKeyUp);
+			this.onKeyUp=function(){
+				keyUp.dispatch(document.getElementById('box').value);
 			};
-			var Mirror={
-				onKeyUp:function(msg){
-					var arr=msg.split('');
-					var msg='';
-					if(arr.length>0)
-						for(var x=arr.length-1;x>=0;x--)
-							msg+=arr[x];
-					document.getElementById('mirror').innerHTML=msg;
-				}
-			};
-			var UI=new function(){
-				var typed=new DevShop.EventSignal;
-				typed.addListener(Echo.onKeyUp);
-				typed.addListener(Mirror.onKeyUp);
-				this.onKeyUp=function(){
-					typed.dispatch(document.getElementById('box').value);
-				};
-			};
+		};
 		</script>
 	</head>
 	<body>
@@ -44,6 +52,9 @@
 		</tr>
 		<tr>
 			<td>Mirror:</td><td><div id="mirror"></div></td>
+		</tr>
+		<tr>
+			<td valign="top">Vertical:</td><td valign="top"><div id="vertical"></div></td>
 		</tr>
 	</table>
 	</form>

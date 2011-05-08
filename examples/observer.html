@@ -22,16 +22,23 @@
 				document.getElementById('mirror').innerHTML=msg;
 			}
 		});
+		var Vertical=new DevShop.Observer({
+			onKeyUp:function(){
+				var arr=this.observable.getMsg().split('');
+				var msg=arr.join('<br>');
+				document.getElementById('vertical').innerHTML=msg;
+			}
+		});
 		var UI=new DevShop.Observable({
 			initialize:function(){
 				this.addObserver(Echo);
 				this.addObserver(Mirror);
+				this.addObserver(Vertical);
 			},
 			onKeyUp:function(){
 				/*
 				Event Handler Mapping
-				The event name is wired to observer's handler methods.  
-				This facilitates notifications and dynamic mapping.
+				The event name is wired to observer's handler methods.
 				*/
 				this.notifyObservers('onKeyUp');
 			},
@@ -53,6 +60,9 @@
 		</tr>
 		<tr>
 			<td>Mirror:</td><td><div id="mirror"></div></td>
+		</tr>
+		<tr>
+			<td valign="top">Vertical:</td><td valign="top"><div id="vertical"></div></td>
 		</tr>
 	</table>
 	</form>

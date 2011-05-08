@@ -10,6 +10,9 @@ Observer/Observable Plus!
 Model View Controller
 -Classic MVC Pattern
 
+Event Signal
+-Stack of listeners for easy transport of events and data.
+
 Singleton Factory
 -Supports 'extend', 'instance', and 'implement' for interface methods.
 

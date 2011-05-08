@@ -98,7 +98,6 @@
 			instance:{
 				ON_KEYUP:"ON_KEY_UP",
 				initialize:function(){
-					console.log("init");
 					this.initializeFacade(this);
 					this.registerCommand(this.CMD_STARTUP,StartUpCmd);
 					this.sendNotification(this.CMD_STARTUP);

@@ -2,98 +2,16 @@ DevShop Js
 
 DevShop Js is a pocket-sized minimalist framework of common design patterns for crazy wild spontaneous JavaScript combustion.
 
-JavaScript Observer Plus+
+Patterns:
 
-Observer Pattern plus messaging framework with dynamic mapping of events to observer methods.
+Observer/Observable Plus!
+-Observer Pattern plus messaging framework with dynamic mapping of events to observer methods.
 
-Features
+Model View Controller
+-Classic MVC Pattern
 
-+Observable keeps collection of dependents (observers).
-+Observable is always available to Observer scope.
-+'initialize' method for observable start up.
-+Observers are notified of state changes via notifyObservers().
-+onRegister method for triggering observer start up.
-+Dynamic mapping of events to observer methods.
-+Event name is tied to the method name for easy wiring of handlers.
+Singleton Factory
+-Supports 'extend', 'instance', and 'implement' for interface methods.
 
-Example
+Please see 'examples' directory for usage.
 
-var Echo=new DevShop.Observer({
-	onKeyUp:function(){
-		document.getElementById('echo').innerHTML=this.observable.getMsg();
-	}
-});
-var Mirror=new DevShop.Observer({
-	onKeyUp:function(){
-		var arr=this.observable.getMsg().split('');
-		var msg='';
-		if(arr.length>0)
-			for(var x=arr.length-1;x>=0;x--)
-				msg+=arr[x];
-		document.getElementById('mirror').innerHTML=msg;
-	}
-});
-var UI=new DevShop.Observable({
-	initialize:function(){
-		this.addObserver(Echo);
-		this.addObserver(Mirror);
-	},
-	onKeyUp:function(){
-		this.notifyObservers('onKeyUp');
-	},
-	getMsg:function(){
-		return document.getElementById('box').value;
-	}
-});
-
-<body>
-<form>
-	<input onkeyup="UI.onKeyUp()" type="text" id="box" name="box" value=""/>
-	<div id="echo"></div>
-	<div id="mirror"></div>
-</form>
-</body>
-
-Event/Handler Mapping
-
-The event name is wired to observer's handler methods. This enables
-the use of constants to facilitate notifications and dynamic mapping.
-
-Example:
-
-var CarEvents={
-	START : "onStart",
-	STOP  : "onStop"
-};
-var Car=new DevShop.Observable({
-	model:"honda",
-	onStart:function(){
-		this.notifyObservers(CarEvents.START);
-	},
-	onStop:function(){
-		this.notifyObservers(CarEvents.STOP);
-	}
-});
-
-Observerable Initialize Method
-
-It is also possible to specify observers during "initialize" method. 
-
-Example:
-var GPS=new DevShop.Observer({
-	onStart:function(){
-		console.log('tracking trip!');
-	}
-});
-var Car=new DevShop.Observable({
-	initialize:function(){
-		this.addObserver(GPS);
-	},
-	model:"honda",
-	onStart:function(){
-		this.notifyObservers(CarEvents.START);
-	},
-	onStop:function(){
-		this.notifyObservers(CarEvents.STOP);
-	}
-});

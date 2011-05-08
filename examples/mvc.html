@@ -30,7 +30,7 @@
 			}
 		});
 		var StartUpCmd=DevShop.SingletonFactory({
-			implement : DevShop.CommandInterface,onRegister:function(){alert('y');},
+			implement : DevShop.CommandInterface,
 			instance  : {
 				execute:function(notification){console.log(notification.name);
 					this.facade.registerProxy(DataProxy);

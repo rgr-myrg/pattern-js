@@ -28,6 +28,11 @@
 				this.addObserver(Mirror);
 			},
 			onKeyUp:function(){
+				/*
+				Event Handler Mapping
+				The event name is wired to observer's handler methods.  
+				This facilitates notifications and dynamic mapping.
+				*/
 				this.notifyObservers('onKeyUp');
 			},
 			getMsg:function(){

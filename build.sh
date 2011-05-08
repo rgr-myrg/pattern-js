@@ -3,7 +3,7 @@
 
 VERSION="0.1-SNAPSHOT"
 ARTIFACT="devshop-$VERSION.js"
-JS_FILES="--js src/core.js --js src/singletonfactory.js --js src/observable.js --js src/observer.js --js src/eventsignal.js"
+JS_FILES="--js src/core.js --js src/singletonfactory.js --js src/observable.js --js src/observer.js --js src/eventsignal.js --js src/mvc.js"
 JS_BUILD="build/$ARTIFACT"
 JS_TEMP="build/tmp.js"
 EXAMPLE="examples/devshop.js"

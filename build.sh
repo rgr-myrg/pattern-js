@@ -2,7 +2,6 @@
 #Build Script for http://DevShop.Me
 
 JS_TEMP="build/tmp.js"
-EXAMPLE="examples/devshop.js"
 LICENSE="LICENSE"
 PACKAGES=(eventsignal mvc observer singletonfactory full);
 
@@ -47,6 +46,5 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 	echo "OK"
-
-##java -jar lib/compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --js src/core.js --js src/observer.js --js src/observable.js --js src/singletonfactory.js --js_output_file build/devshop-observer-0.1.js 
+ 
 

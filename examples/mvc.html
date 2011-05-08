@@ -7,6 +7,47 @@
 		</style>
 		<script type="text/javascript" src="devshop.js"></script>
 		<script type="text/javascript">
+		var Echo={
+			onKeyUp:function(msg){
+				document.getElementById('echo').innerHTML=msg;
+			}
+		};
+		var Mirror={
+			onKeyUp:function(msg){
+				var arr=msg.split('');
+				var msg='';
+					if(arr.length>0)
+					for(var x=arr.length-1;x>=0;x--)
+						msg+=arr[x];
+				document.getElementById('mirror').innerHTML=msg;
+			}
+		};
+		var DataProxy=DevShop.SingletonFactory({
+			extend    : DevShop.Proxy,
+			implement : DevShop.ProxyInterface,
+			instance  : {
+				NAME:"DataProxy"
+			}
+		});
+		var StartUpCmd=DevShop.SingletonFactory({
+			implement : DevShop.CommandInterface,onRegister:function(){alert('y');},
+			instance  : {
+				execute:function(notification){console.log(notification.name);
+					this.facade.registerProxy(DataProxy);
+					this.facade.registerMediator(UIMediator);
+				}
+			}
+		});
+		var KeyUpCmd=DevShop.SingletonFactory({
+			implement : DevShop.CommandInterface,
+			instance  : {
+				execute:function(notification){console.log(notification.name);
+					var msg=this.facade.retrieveProxy(DataProxy.NAME).getData();
+					Echo.onKeyUp(msg);
+					Mirror.onKeyUp(msg);
+				}
+			}
+		});
 		var UIMediator=DevShop.SingletonFactory({
 			extend    : DevShop.Mediator,
 			implement : DevShop.MediatorInterface,
@@ -19,87 +60,23 @@
 					switch(this.notification.name){
 						case this.facade.ON_KEYUP:
 							this.facade.retrieveProxy(DataProxy.NAME).setData(this.notification.body);
+							this.facade.sendNotification(this.facade.CMD_KEYUP);
 							break;
 						default:
 							break;
 					}
-				}
-			}
-		});
-		var EchoMediator=DevShop.SingletonFactory({
-			extend    : DevShop.Mediator,
-			implement : DevShop.MediatorInterface,
-			instance  : {
-				NAME:"EchoMediator",
-				listNotificationInterests:function(){
-					return [this.facade.ON_KEYUP];
-				},
-				handleNotification:function(){
-					switch(this.notification.name){
-						case this.facade.ON_KEYUP:
-							this.onKeyUp();
-							break;
-						default:
-							break;
-					}
-				},
-				onKeyUp:function(){
-					document.getElementById('echo').innerHTML=this.facade.retrieveProxy(DataProxy.NAME).getData();
-				}
-			}
-		});
-		var MirrorMediator=DevShop.SingletonFactory({
-			extend    : DevShop.Mediator,
-			implement : DevShop.MediatorInterface,
-			instance  : {
-				NAME:"MirrorMediator",
-				listNotificationInterests:function(){
-					return [this.facade.ON_KEYUP];
-				},
-				handleNotification:function(){
-					switch(this.notification.name){
-						case this.facade.ON_KEYUP:
-							this.onKeyUp();
-							break;
-						default:
-							break;
-					}
-				},
-				onKeyUp:function(){
-					var arr=this.facade.retrieveProxy(DataProxy.NAME).getData().split('');
-					var msg='';
-					if(arr.length>0)
-						for(var x=arr.length-1;x>=0;x--)
-							msg+=arr[x];
-					document.getElementById('mirror').innerHTML=msg;
-				}
-			}
-		});
-		var DataProxy=DevShop.SingletonFactory({
-			extend    : DevShop.Proxy,
-			implement : DevShop.ProxyInterface,
-			instance  : {
-				NAME:"DataProxy"
-			}
-		});
-		var StartUpCmd=DevShop.SingletonFactory({
-			implement : DevShop.CommandInterface,
-			instance  : {
-				execute:function(notification){
-					this.facade.registerProxy(DataProxy);
-					this.facade.registerMediator(UIMediator);
-					this.facade.registerMediator(EchoMediator);
-					this.facade.registerMediator(MirrorMediator);
 				}
 			}
 		});
 		var UI=DevShop.SingletonFactory({
 			extend:DevShop.Facade,
 			instance:{
-				ON_KEYUP:"ON_KEY_UP",
+				ON_KEYUP:"ON_KEYUP",
+				CMD_KEYUP:"CMD_KEYUP",
 				initialize:function(){
 					this.initializeFacade(this);
 					this.registerCommand(this.CMD_STARTUP,StartUpCmd);
+					this.registerCommand(this.CMD_KEYUP,KeyUpCmd);
 					this.sendNotification(this.CMD_STARTUP);
 				},
 				onKeyUp:function(){

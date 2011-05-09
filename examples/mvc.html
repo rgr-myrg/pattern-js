@@ -82,7 +82,7 @@
 				ON_KEYUP:"ON_KEYUP",
 				CMD_KEYUP:"CMD_KEYUP",
 				initialize:function(){
-					this.initializeFacade(this);
+					this.initializeFacade();
 					this.registerCommand(this.CMD_STARTUP,StartUpCmd);
 					this.registerCommand(this.CMD_KEYUP,KeyUpCmd);
 					this.sendNotification(this.CMD_STARTUP);

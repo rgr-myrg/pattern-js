@@ -167,10 +167,10 @@
 					type:type
 				});
 			};
-			this.initializeFacade=function(app){
-				initializeModel(app);
-				initializeView(app);
-				initializeController(app);
+			this.initializeFacade=function(){
+				initializeModel(this);
+				initializeView(this);
+				initializeController(this);
 			};
 		}
 	});

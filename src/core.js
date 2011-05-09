@@ -9,6 +9,5 @@
 		for(var i in m)
 			if(m.hasOwnProperty(i))
 				window.DevShop[i]=m[i];
-		DevShop=devshop=window.DevShop;
 	};
 })();

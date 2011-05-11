@@ -50,7 +50,7 @@
 					if(!proxies[proxy.NAME])
 						proxies[proxy.NAME]=proxy;
 					if(typeof proxy.onRegister==="function")
-						proxy.onRegister();
+						try{proxy.onRegister();}catch(e){}
 				};
 				this.retrieveProxy=function(key){
 					return proxies[key]?proxies[key]:null;

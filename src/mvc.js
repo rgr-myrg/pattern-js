@@ -5,15 +5,15 @@
  */
 (function(){
 	DevShop.Me({
-		ProxyInterface:{
+		IProxy:{
 			NAME:""
 		},
-		MediatorInterface:{
+		IMediator:{
 			NAME:"",
 			listNotificationInterests:function(){},
 			handleNotification:function(){}
 		},
-		CommandInterface:{
+		ICommand:{
 			execute:function(notification){}
 		},
 		Proxy:function(){
@@ -32,7 +32,7 @@
 				return;
 			};
 		},
-		Mediator:new DevShop.Observer(function(){
+		Mediator:DevShop.Observer(function(){
 			this.facade=null;
 			this.onRegister=function(){
 				return;

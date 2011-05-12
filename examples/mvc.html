@@ -31,13 +31,13 @@
 		};
 		var DataProxy=DevShop.SingletonFactory({
 			extend    : DevShop.Proxy,
-			implement : DevShop.ProxyInterface,
+			implement : DevShop.IProxy,
 			instance  : {
 				NAME:"DataProxy"
 			}
 		});
 		var StartUpCmd=DevShop.SingletonFactory({
-			implement : DevShop.CommandInterface,
+			implement : DevShop.ICommand,
 			instance  : {
 				execute:function(notification){
 					this.facade.registerProxy(DataProxy);
@@ -46,7 +46,7 @@
 			}
 		});
 		var KeyUpCmd=DevShop.SingletonFactory({
-			implement : DevShop.CommandInterface,
+			implement : DevShop.ICommand,
 			instance  : {
 				execute:function(notification){
 					var msg=this.facade.retrieveProxy(DataProxy.NAME).getData();

@@ -3,4 +3,4 @@
  * Released under the MIT license:
  * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
  */
-(function(){window.DevShop=typeof window.DevShop==="object"?window.DevShop:{};window.DevShop.Me=function(a){for(var b in a)a.hasOwnProperty(b)&&(window.DevShop[b]=a[b])}})();(function(){DevShop.Me({EventSignal:function(){var a=[];this.addListener=function(b){typeof b==="function"&&a.push(b)};this.removeListener=function(b){for(var c=a.length,d=0;d<c;d++)a[d]===b&&a.splice(d)};this.dispatch=function(){for(var b=a.length,c=0;c<b;c++)try{a[c].apply(this,arguments)}catch(d){}}}})})();
+(function(a){a.DevShop=typeof a.DevShop==="object"?a.DevShop:{}})(window);(function(a){a.EventSignal=function(){var b=[];this.addListener=function(d){typeof d==="function"&&b.push(d)};this.removeListener=function(d){for(var a=b.length,c=0;c<a;c++)b[c]===d&&b.splice(c)};this.dispatch=function(){for(var a=b.length,e=0;e<a;e++)try{b[e].apply(this,arguments)}catch(c){}}}})(DevShop);

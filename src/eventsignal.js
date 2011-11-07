@@ -15,7 +15,7 @@
 			var size=listeners.length;
 			for(var x=0;x<size;x++){
 				if(listeners[x]===listener){
-					listeners.splice(x);
+					listeners.splice(x,1);
 				}
 			}
 		};

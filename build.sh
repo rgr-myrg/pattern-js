@@ -15,6 +15,11 @@ do :
 	;;
 	esac
 	case "$i" in
+		"publisher")
+		files="--js src/core.js --js src/eventsignal.js --js src/publisher.js"
+	;;
+	esac
+	case "$i" in
 		"mvc")
 		files="--js src/core.js --js src/singletonfactory.js --js src/observable.js --js src/observer.js --js src/mvc.js"
 	;;
@@ -31,7 +36,7 @@ do :
 	esac
 	case "$i" in
 		"full")
-		files="--js src/core.js --js src/singletonfactory.js --js src/observable.js --js src/observer.js --js src/eventsignal.js --js src/mvc.js"
+		files="--js src/core.js --js src/singletonfactory.js --js src/observable.js --js src/observer.js --js src/eventsignal.js --js src/mvc.js --js src/publisher.js"
 	;;
 	esac
 	artifact="build/devshop-"$i".js"

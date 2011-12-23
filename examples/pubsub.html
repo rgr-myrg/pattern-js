@@ -7,9 +7,9 @@
 		</style>
 		<script type="text/javascript" src="devshop-full.js"></script>
 		<script type="text/javascript">
+		//Subscriber must have onRegister method that returns notification interests
 		var Echo={
 			onRegister: function(){
-				console.log('onRegister');
 				return {
 					ON_KEYUP: this.onKeyUp
 				};
@@ -45,9 +45,11 @@
 				document.getElementById('vertical').innerHTML=msg;
 			}
 		};
+		//Define events for your app
 		var Events={
 			ON_KEYUP: new DevShop.EventSignal
 		};
+		//Create an instance of Publisher
 		var UI=new DevShop.Publisher();
 		UI.registerEvents(Events);
 		UI.registerSubscriber(Echo);
@@ -57,6 +59,23 @@
 			var data = document.getElementById('box').value;
 			this.notify(Events.ON_KEYUP, data);
 		};
+		
+		//Alternate way of 'extending' the publisher example:
+		var UIx=new DevShop.SingletonFactory({
+			extend: DevShop.Publisher,
+			instance:function(){
+				this.onKeyUp=function(){
+					var data = document.getElementById('box').value;
+					this.notify(Events.ON_KEYUP, data);
+				};
+				this.initialize=function(){
+					this.registerEvents(Events);
+					this.registerSubscriber(Echo);
+					this.registerSubscriber(Mirror);
+					this.registerSubscriber(Vertical);
+				};
+			}
+		});
 		</script>
 	</head>
 	<body>

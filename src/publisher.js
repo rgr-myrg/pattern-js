@@ -5,7 +5,6 @@
  */
 (function(DevShop){
 	DevShop.Publisher=function(){
-		var subscribers=[];
 		var events={};
 		return {
 			registerEvents: function(eventList){

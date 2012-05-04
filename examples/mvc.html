@@ -30,15 +30,15 @@
 			}
 		};
 		var DataProxy=DevShop.SingletonFactory({
-			extend    : DevShop.Proxy,
-			implement : DevShop.IProxy,
-			instance  : {
+			__extend    : DevShop.Proxy,
+			__implement : DevShop.IProxy,
+			__construct : {
 				NAME:"DataProxy"
 			}
 		});
 		var StartUpCmd=DevShop.SingletonFactory({
-			implement : DevShop.ICommand,
-			instance  : {
+			__implement : DevShop.ICommand,
+			__construct : {
 				execute:function(notification){
 					this.facade.registerProxy(DataProxy);
 					this.facade.registerMediator(UIMediator);
@@ -46,8 +46,8 @@
 			}
 		});
 		var KeyUpCmd=DevShop.SingletonFactory({
-			implement : DevShop.ICommand,
-			instance  : {
+			__implement : DevShop.ICommand,
+			__construct : {
 				execute:function(notification){
 					var msg=this.facade.retrieveProxy(DataProxy.NAME).getData();
 					Echo.onKeyUp(msg);
@@ -57,9 +57,9 @@
 			}
 		});
 		var UIMediator=DevShop.SingletonFactory({
-			extend    : DevShop.Mediator,
-			implement : DevShop.IMediator,
-			instance  : {
+			__extend    : DevShop.Mediator,
+			__implement : DevShop.IMediator,
+			__construct : {
 				NAME:"UIMediator",
 				listNotificationInterests:function(){
 					return [this.facade.ON_KEYUP];
@@ -77,8 +77,8 @@
 			}
 		});
 		var UI=DevShop.SingletonFactory({
-			extend:DevShop.Facade,
-			instance:{
+			__extend:DevShop.Facade,
+			__construct:{
 				ON_KEYUP:"ON_KEYUP",
 				CMD_KEYUP:"CMD_KEYUP",
 				initialize:function(){

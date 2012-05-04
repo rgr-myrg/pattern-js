@@ -62,8 +62,8 @@
 		
 		//Alternate way of 'extending' the publisher example:
 		var UIx=new DevShop.SingletonFactory({
-			extend: DevShop.Publisher,
-			instance:function(){
+			__extend: DevShop.Publisher,
+			__construct:function(){
 				this.onKeyUp=function(){
 					var data = document.getElementById('box').value;
 					this.notify(Events.ON_KEYUP, data);

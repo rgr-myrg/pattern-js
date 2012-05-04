@@ -4,5 +4,5 @@
  * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
  */
 (function(window){
-	window.DevShop=typeof window.DevShop==='object'?window.DevShop:{};
+	window.DevShop = typeof window.DevShop === 'object' ? window.DevShop : {};
 })(window);

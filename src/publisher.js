@@ -3,16 +3,16 @@
  * Released under the MIT license:
  * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
  */
-(function(DevShop){
-	DevShop.Publisher=function(){
-		var events={};
+(function($){
+	$.Publisher = function(){
+		var events = {};
 		return {
-			registerEvents: function(eventList){
+			registerEvents : function(eventList){
 				if(typeof eventList === 'object'){
 					events = eventList;
 				}
 			},
-			registerSubscriber: function(subscriber){
+			registerSubscriber : function(subscriber){
 				if(typeof subscriber.onRegister === 'function'){
 					var listeners = subscriber.onRegister();
 					for(var i in listeners){
@@ -20,10 +20,10 @@
 							events[i].addListener(listeners[i]);
 						}
 					}
-					subscriber.onRegister=function(){};
+					subscriber.onRegister = function(){};
 				}
 			},
-			notify: function(event, data){
+			notify : function(event, data){
 				if(typeof event.dispatch === 'function'){
 					event.dispatch(data);
 				}

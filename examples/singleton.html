@@ -8,20 +8,20 @@
 		<script type="text/javascript" src="devshop-full.js"></script>
 		<script type="text/javascript">
 		//Create a single instance. Nothing fancy here.
-		var TheWiz=new DevShop.SingletonFactory({
-			instance:function(){
-				var msg="I'm the Wiz";
-				this.getMsg=function(){
+		var TheWiz = new DevShop.SingletonFactory({
+			__construct : function(){
+				var msg = "I'm the Wiz";
+				this.getMsg = function(){
 					return msg;
 				};
 			}
 		});
 		//Easily extend from an instance. Example: extend 'TheWiz'
-		var WizBang=new DevShop.SingletonFactory({
-			extend: TheWiz,
-			instance:function(){
-				var msg=" and nobody beats me!";
-				this.sayIt=function(){
+		var WizBang = new DevShop.SingletonFactory({
+			__extend : TheWiz,
+			__construct :function(){
+				var msg = " and nobody beats me!";
+				this.sayIt = function(){
 					return this.getMsg() + msg;
 				};
 			}

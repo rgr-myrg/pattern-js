@@ -2,7 +2,10 @@ DevShop Js
 
 DevShop Js is a pocket-sized minimalist framework of common design patterns for JavaScript.
 
-Patterns:
+Patterns (Please view examples folder for usage):
+
+Publisher/Subscriber
+-Light weight pub/sub with custom events.
 
 Observer/Observable Plus!
 -Observer Pattern plus messaging framework with dynamic mapping of events to observer methods.

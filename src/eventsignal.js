@@ -23,12 +23,19 @@
 				}
 			},
 			dispatch : function(){
+				var temp = [];
 				var size = listeners.length;
 				for(var x = 0; x < size; x++){
 					var listener = listeners[x];
 					if(typeof listener === 'function'){
 						listeners[x].apply(this, arguments);
+					}else{
+						temp.push(x);
 					}
+				}
+				size = temp.length;
+				for(x = 0; x < size; x++){
+					listeners.splice(x, 1);
 				}
 			}
 		};

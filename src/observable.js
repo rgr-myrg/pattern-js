@@ -25,7 +25,7 @@
 				}
 			};
 		};
-		return DevShop.SingletonFactory(
+		return $.SingletonFactory(
 			{
 				__extend : observable,
 				__construct : obj

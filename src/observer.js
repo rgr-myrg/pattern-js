@@ -20,7 +20,7 @@
 				}
 			};
 		};
-		return DevShop.SingletonFactory(
+		return $.SingletonFactory(
 			{
 				__extend : observer,
 				__construct: obj

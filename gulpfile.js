@@ -33,9 +33,9 @@ var	topNameSpace = function() {
 			+ topNameSpace();
 	};
 
-var	artifactName = artifactId + "_" + version + "." + packaging,
-	artifactMini = artifactId + "_" + version + ".min." + packaging,
-	artifactCC   = artifactId + "_" + version + ".cc." + packaging;
+var	artifactDebug = version + "/" + artifactId + ".debug." + packaging,
+	artifactMini  = version + "/" + artifactId + ".min." + packaging,
+	artifactProd  = version + "/" + artifactId + "." + packaging;
 
 gulp.task( "init", function() {
 	var size = sourceFiles.length;
@@ -47,7 +47,7 @@ gulp.task( "init", function() {
 });
 
 gulp.task( "clean", function() {
-	var	path  = nodeFS.realpathSync( targetPath ),
+	var	path  = nodeFS.realpathSync( targetPath + "/" + version),
 		files = nodeFS.readdirSync( path );
 
 	for( var i in files ) {
@@ -66,7 +66,7 @@ gulp.task( "lint", function() {
 
 gulp.task( "concat", function() {
 	return gulp.src( sourceFiles )
-		.pipe( concat( artifactName ) )
+		.pipe( concat( artifactDebug ) )
 		.pipe( header( getHeaderFile() ) )
 		.pipe( gulp.dest( targetPath ) );
 });
@@ -83,14 +83,14 @@ gulp.task( "minify", function() {
 
 gulp.task( "google-cc", function() {
 	return gulp.src( sourceFiles )
-		.pipe( concat( artifactName ) )
+		.pipe( concat( artifactDebug ) )
 		.pipe(
 			google({
 				compilerPath: gccJAR,
-				fileName: artifactCC,
+				fileName: artifactProd,
 				compilerFlags: {
 					compilation_level: gccOPT,
-					js_output_file: artifactCC
+					js_output_file: artifactProd
 				}
 			})
 		)

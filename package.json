@@ -1,29 +1,31 @@
 {
-  "name": "DevShop",
-  "version": "1.0.0",
-  "description": "Pocket-sized minimalist framework of common design patterns for JavaScript.",
-  "main": "gulpfile.js",
-  "directories": {
-    "example": "examples"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rgr-myrg/DevShop.git"
-  },
-  "author": "DevShop",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rgr-myrg/DevShop/issues"
-  },
-  "homepage": "https://github.com/rgr-myrg/DevShop",
-  "devDependencies": {
-    "gulp": "^3.8.7",
-    "gulp-concat": "^2.3.4",
-    "gulp-header": "^1.0.5",
-    "gulp-jshint": "^1.8.3",
-    "gulp-uglify": "^0.3.1"
-  }
+	"name": "DevShop",
+	"version": "1.0.0",
+	"description": "Pocket-sized minimalist framework of common design patterns for JavaScript.",
+	"main": "gulpfile.js",
+	"directories": {
+		"example": "examples"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/rgr-myrg/DevShop.git"
+	},
+	"author": "DevShop",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/rgr-myrg/DevShop/issues"
+	},
+	"homepage": "https://github.com/rgr-myrg/DevShop",
+	"devDependencies": {
+		"gulp": "^3.8.7",
+		"gulp-closure-compiler": "^0.2.2",
+		"gulp-concat": "^2.3.4",
+		"gulp-header": "^1.0.5",
+		"gulp-jshint": "^1.8.3",
+		"gulp-uglify": "^0.3.1"
+	}
 }
+

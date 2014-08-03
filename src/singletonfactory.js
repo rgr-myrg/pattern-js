@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 Roger Myrg http://devshop.me/
+ * Copyright (c) 2011 DevShop http://devshop.me/
  * Released under the MIT license:
  * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
  */
@@ -8,7 +8,7 @@
 		var getInstance = function(c){
 			if(typeof c === "function"){
 				try{
-					return new c;
+					return new c();
 				}catch(e){
 				}
 			}else if(typeof c === "object"){
@@ -25,7 +25,7 @@
 				}
 			}
 		}
-		for(var i in interfase){
+		for(i in interfase){
 			if(interfase.hasOwnProperty(i)){
 				if(!singleton[i]){
 					throw(obj.instance + " must implement '" + i + "' " + typeof interfase[i]);

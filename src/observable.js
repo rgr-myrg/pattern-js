@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 Roger Myrg http://devshop.me/
+ * Copyright (c) 2011 DevShop http://devshop.me/
  * Released under the MIT license:
  * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
  */
@@ -9,8 +9,9 @@
 			return {
 				observers : [],
 				addObserver : function(o){
-					if((typeof o === "function" || typeof o === "object") 
-						&& typeof o.notify === "function"){
+					if((typeof o === "function" || typeof o === "object") && 
+							typeof o.notify === "function"){
+
 						this.observers.push(o);
 						if(typeof o.onRegister === "function"){
 							o.onRegister();

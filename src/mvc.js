@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011 Roger Myrg http://devshop.me/
+ * Copyright (c) 2011 DevShop http://devshop.me/
  * Released under the MIT license:
  * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
  */
@@ -31,7 +31,7 @@
 			onRemove : function(){
 				return;
 			}
-		}
+		};
 	};
 	$.Mediator = $.Observer(function(){
 		return {
@@ -45,7 +45,7 @@
 		};
 	});
 	$.Facade = function(){
-		var	Model = new function(){
+		var	Model = (function(){
 				var proxies = {};
 				return {
 					facade : {},
@@ -68,7 +68,7 @@
 						proxies[key] = null;
 					}
 				};
-			},
+			})(),
 			View = new $.Observable(function(){
 				var mediators = {};
 				return {
@@ -95,7 +95,7 @@
 						for(var x = 0; x < size; x++){
 							var notices = this.observers[x].listNotificationInterests();
 							var deliver = false;
-							for(var i = 0; l = notices.length, i<l; i++){
+							for(var i = 0, l = notices.length; i<l; i++){
 								if(notices[i] == this.notification.name){
 									deliver = true;
 									break;
@@ -131,8 +131,8 @@
 					},
 					handleNotification : function(){
 						var notification = this.notification;
-						if(typeof commands[notification.name] === "object"
-							&& typeof commands[notification.name].execute === "function"){
+						if(typeof commands[notification.name] === "object" && 
+								typeof commands[notification.name].execute === "function"){
 							commands[notification.name].execute(notification);
 						}
 					}

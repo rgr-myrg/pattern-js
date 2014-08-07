@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml' lang='en' xml:lang='en:us'>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Queue Example</title>
+		<style>
+		</style>
+		<script type="text/javascript" src="../build/1.0.0/devshop.js"></script>
+		<script type="text/javascript">
+		var queue = new DevShop.Queue({
+        		id: "queue",
+  
+        		timeToWait: 1000, //one second
+  
+        		callback: function( msg ) {
+        			console.log( msg );
+        			document.getElementById( "log" ).innerHTML += msg;
+        		}
+        	});
+
+		// Load up the queue for testing
+		for( var x = 0; x < 11; x++ ) {
+ 			queue.add( x + " second(s) just passed. <br/>");
+ 		}
+
+		queue.start();
+
+		queue.add( "I'm the last in line." );
+
+		// Add to the queue while it's running.
+
+		</script>
+	</head>
+	<body>
+	<form>
+	<table>
+		<tr>
+			<td valign="top">Callback Ouput:</td>
+			<td>
+				<div id="log"><br/></div>
+			</td>
+		</tr>
+	</table>
+	</form>
+	</body>
+</html>

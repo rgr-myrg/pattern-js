@@ -4,21 +4,21 @@
  * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
  */
 
-(function( $ ){
+(function( $ ) {
 	$.Observable = function( $Object ) {
 		var $Observable = function() {
 			var observers = [];
 
 			return {
-				addObserver: function( $Observer ) {
-					if( (typeof $Observer === "function" || typeof $Observer === "object" ) && 
-							typeof $Observer.update === "function" ){
+				addObserver: function( observer ) {
+					if ( (typeof observer === "function" || typeof observer === "object") && 
+							typeof observer.update === "function" ){
 
-						observers.push( $Observer );
+						observers.push( observer );
 
-						if ( typeof $Observer.onRegister === "function" ) {
+						if ( typeof observer.onRegister === "function" ) {
 							try {
-								$Observer.onRegister();
+								observer.onRegister();
 							} catch( e ) {
 							}
 						}
@@ -28,10 +28,13 @@
 				notifyObservers: function() {
 					var size = observers.length;
 
-					for( var x = 0; x < size; x++ ) {
-						var $Observer = observers[x];
-						$Observer.update.apply( $Observer, arguments );
+					for ( var x = 0; x < size; x++ ) {
+						var observer = observers[ x ];
+						observer.update.apply( observer, arguments );
 					}
+				},
+				getObservers: function() {
+					return observers;
 				}
 			};
 		};

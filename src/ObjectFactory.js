@@ -1,10 +1,10 @@
 /**
- * Copyright (c) 2011-2014 DevShop http://devshop.me/
+ * Copyright (c) 2011-2014 Activity, LLC.
  * Released under the MIT license:
  * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
  */
 
-(function( $ ){
+(function( $ ) {
 	$.ObjectFactory = function( $Object ) {
 		if ( typeof $Object !== "object" ) {
 			throw( "Object not provided" );
@@ -26,18 +26,14 @@
 		singleton = getInstance( $Object._public_ );
 
 		for ( var i in baseclass ) {
-			if ( baseclass.hasOwnProperty(i) ) {
-				if( !singleton[i] ) {
-					singleton[ i ] = baseclass[ i ];
-				}
+			if ( baseclass.hasOwnProperty( i ) && !singleton[ i ] ) {
+				singleton[ i ] = baseclass[ i ];
 			}
 		}
 
 		for ( i in interfase ) {
-			if ( interfase.hasOwnProperty(i) ){
-				if ( !singleton[i] ) {
-					throw( object.instance + " must implement '" + i + "' " + typeof interfase[i] );
-				}
+			if ( interfase.hasOwnProperty(i) && !singleton[i] ){
+				throw( object.instance + " must implement '" + i + "' " + typeof interfase[i] );
 			}
 		}
 

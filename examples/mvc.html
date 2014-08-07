@@ -2,7 +2,7 @@
 <html xmlns='http://www.w3.org/1999/xhtml' lang='en' xml:lang='en:us'>
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-		<title>DevShop.Me :: MVC Pattern</title>
+		<title>MVC Pattern</title>
 		<style>
 		</style>
 		<script type="text/javascript" src="../build/1.0.0/devshop.js"></script>
@@ -29,25 +29,25 @@
 				document.getElementById('vertical').innerHTML=msg;
 			}
 		};
-		var DataProxy=DevShop.SingletonFactory({
-			__extend    : DevShop.Proxy,
-			__implement : DevShop.IProxy,
-			__construct : {
+		var DataProxy=DevShop.ObjectFactory({
+			_extends_    : DevShop.Proxy,
+			_implements_ : DevShop.IProxy,
+			_public_ : {
 				NAME:"DataProxy"
 			}
 		});
-		var StartUpCmd=DevShop.SingletonFactory({
-			__implement : DevShop.ICommand,
-			__construct : {
+		var StartUpCmd=DevShop.ObjectFactory({
+			_implements_ : DevShop.ICommand,
+			_public_ : {
 				execute:function(notification){
 					this.facade.registerProxy(DataProxy);
 					this.facade.registerMediator(UIMediator);
 				}
 			}
 		});
-		var KeyUpCmd=DevShop.SingletonFactory({
-			__implement : DevShop.ICommand,
-			__construct : {
+		var KeyUpCmd=DevShop.ObjectFactory({
+			_implements_ : DevShop.ICommand,
+			_public_ : {
 				execute:function(notification){
 					var msg=this.facade.retrieveProxy(DataProxy.NAME).getData();
 					Echo.onKeyUp(msg);
@@ -56,10 +56,10 @@
 				}
 			}
 		});
-		var UIMediator=DevShop.SingletonFactory({
-			__extend    : DevShop.Mediator,
-			__implement : DevShop.IMediator,
-			__construct : {
+		var UIMediator=DevShop.ObjectFactory({
+			_extends_    : DevShop.Mediator,
+			_implements_ : DevShop.IMediator,
+			_public_ : {
 				NAME:"UIMediator",
 				listNotificationInterests:function(){
 					return [this.facade.ON_KEYUP];
@@ -76,12 +76,12 @@
 				}
 			}
 		});
-		var UI=DevShop.SingletonFactory({
-			__extend:DevShop.Facade,
-			__construct:{
+		var UI=DevShop.ObjectFactory({
+			_extends_:DevShop.Facade,
+			_public_:{
 				ON_KEYUP:"ON_KEYUP",
 				CMD_KEYUP:"CMD_KEYUP",
-				initialize:function(){
+				init :function(){
 					this.initializeFacade();
 					this.registerCommand(this.CMD_STARTUP,StartUpCmd);
 					this.registerCommand(this.CMD_KEYUP,KeyUpCmd);

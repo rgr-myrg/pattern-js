@@ -5,12 +5,13 @@ var	headerFile  = "LICENSE",
 	targetPath  = "build",
 	sourcePath  = "src",
 	sourceFiles = [
-		"singletonfactory.js",
-		"observable.js",
-		"observer.js",
-		"eventsignal.js",
-		"mvc.js",
-		"publisher.js"
+		"Queue.js",
+		"ObjectFactory.js",
+		"Observable.js",
+		"Observer.js",
+		"EventSignal.js",
+		"Publisher.js",
+		"MVC.js"
 	];
 
 var	gulp   = require( "gulp" ),
@@ -24,7 +25,7 @@ var	gulp   = require( "gulp" ),
 	gccOPT = "SIMPLE_OPTIMIZATIONS";
 
 var	topNameSpace = function() {
-		return "(function(w){w.DevShop=w.devshop=w.DevShop||{};})(window);";
+		return "(function(w){w.DevShop=w.DevShop||{};})(window);";
 	},
 	getHeaderFile = function() {
 		return nodeFS.readFileSync( headerFile, {encoding: "utf8"} )

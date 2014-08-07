@@ -8,67 +8,71 @@
 		<script type="text/javascript" src="../build/1.0.0/devshop.js"></script>
 		<script type="text/javascript">
 		//Subscriber must have onRegister method that returns notification interests
-		var Echo={
-			onRegister: function(){
+		var Echo = {
+			onRegister: function() {
 				return {
 					ON_KEYUP: this.onKeyUp
 				};
 			},
-			onKeyUp: function(msg){
-				document.getElementById('echo').innerHTML=msg;
+			onKeyUp: function( msg ){
+				document.getElementById( 'echo' ).innerHTML = msg;
 			}
 		};
-		var Mirror={
-			onRegister: function(){
+		var Mirror = {
+			onRegister: function() {
 				return {
 					ON_KEYUP: this.onKeyUp
 				};
 			},
-			onKeyUp:function(msg){
-				var arr=msg.split('');
-				var msg='';
+			onKeyUp:function( msg ){
+				var arr = msg.split('');
+				var msg = '';
 				if(arr.length>0)
 					for(var x=arr.length-1;x>=0;x--)
 						msg+=arr[x];
-				document.getElementById('mirror').innerHTML=msg;
+				document.getElementById( 'mirror' ).innerHTML = msg;
 			}
 		};
 		var Vertical={
-			onRegister: function(){
+			onRegister: function() {
 				return {
 					ON_KEYUP: this.onKeyUp
 				};
 			},
-			onKeyUp:function(msg){
+			onKeyUp:function( msg ) {
 				var arr=msg.split('');
 				var msg=arr.join('<br>');
-				document.getElementById('vertical').innerHTML=msg;
+				document.getElementById( 'vertical' ).innerHTML = msg;
 			}
 		};
+
 		//Define events for your app
 		var Events={
 			ON_KEYUP: new DevShop.EventSignal
 		};
+
 		//Create an instance of Publisher
 		var UI=new DevShop.Publisher();
+
 		UI.registerEvents(Events);
 		UI.registerSubscriber(Echo);
 		UI.registerSubscriber(Mirror);
 		UI.registerSubscriber(Vertical);
-		UI.onKeyUp=function(){
+
+		UI.onKeyUp=function() {
 			var data = document.getElementById('box').value;
-			this.notify(Events.ON_KEYUP, data);
+			this.notify( Events.ON_KEYUP, data );
 		};
 		
 		//Alternate way of 'extending' the publisher example:
-		var UIx=new DevShop.SingletonFactory({
-			__extend: DevShop.Publisher,
-			__construct:function(){
-				this.onKeyUp=function(){
+		var UIx = DevShop.ObjectFactory({
+			_extends_: DevShop.Publisher,
+			_public_: function(){
+				this.onKeyUp = function() {
 					var data = document.getElementById('box').value;
 					this.notify(Events.ON_KEYUP, data);
 				};
-				this.initialize=function(){
+				this.initialize = function() {
 					this.registerEvents(Events);
 					this.registerSubscriber(Echo);
 					this.registerSubscriber(Mirror);

@@ -21,11 +21,10 @@
 			};
 		};
 
-		return $.ObjectFactory(
-			{
-				_extends_ : $Observer,
-				_public_  : $Object
-			}
-		);
+		return $.ObjectFactory({
+			_extends_ : $Observer,
+			_public_  : $Object
+		});
 	};
 })( DevShop );
+

@@ -2,38 +2,45 @@
 <html xmlns='http://www.w3.org/1999/xhtml' lang='en' xml:lang='en:us'>
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-		<title>DevShop.Me :: Event Signal</title>
+		<title>Event Signal</title>
 		<style>
 		</style>
 		<script type="text/javascript" src="../build/1.0.0/devshop.js"></script>
 		<script type="text/javascript">
-		var Echo={
-			onKeyUp:function(msg){
+		var Echo = {
+			onKeyUp: function(msg){
 				document.getElementById('echo').innerHTML=msg;
 			}
 		};
-		var Mirror={
-			onKeyUp:function(msg){
-				var arr=msg.split('');
-				var msg='';
+		var Mirror = {
+			onKeyUp: function(msg){
+				var arr = msg.split('');
+				var msg = '';
 				if(arr.length>0)
 					for(var x=arr.length-1;x>=0;x--)
 						msg+=arr[x];
 				document.getElementById('mirror').innerHTML=msg;
 			}
 		};
-		var Vertical={
+		var Vertical = {
 			onKeyUp:function(msg){
 				var arr=msg.split('');
 				var msg=arr.join('<br>');
 				document.getElementById('vertical').innerHTML=msg;
 			}
 		};
-		var UI=new function(){
-			var keyUp=new DevShop.EventSignal;
-			keyUp.addListener(Echo.onKeyUp);
-			keyUp.addListener(Mirror.onKeyUp);
-			keyUp.addListener(Vertical.onKeyUp);
+		var UI = new function(){
+			var keyUp=new DevShop.EventSignal();
+
+			keyUp.addListener( Echo.onKeyUp );
+			keyUp.addListener( Mirror.onKeyUp );
+			keyUp.addListener( Vertical.onKeyUp );
+			keyUp.addListener( 
+				function( msg ){
+					console.log( "Just Watching msg: " + msg);
+				} 
+			);
+
 			this.onKeyUp=function(){
 				keyUp.dispatch(document.getElementById('box').value);
 			};

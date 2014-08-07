@@ -27,8 +27,14 @@
 						observer.update.apply( observer, arguments );
 					}
 				},
-				getObservers: function() {
-					return observers;
+
+				removeObserver: function( observer ) {
+					for ( var x = 0, size = observers.length; x < size; x++ ) {
+						if ( observers[ x ] === observer ) {
+							observers.splice( x, 1 );
+							break;
+						}
+					}
 				}
 			};
 		};

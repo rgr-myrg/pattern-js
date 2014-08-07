@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2011-2014 Activity, LLC.
  * Version: 1.0.0
- * Built: Thu Aug 07 2014 10:22:43 GMT-0400 (EDT)
+ * Built: Thu Aug 07 2014 18:10:05 GMT-0400 (EDT)
  * Released under the MIT license:
  * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
  */
@@ -141,8 +141,14 @@
 						observer.update.apply( observer, arguments );
 					}
 				},
-				getObservers: function() {
-					return observers;
+
+				removeObserver: function( observer ) {
+					for ( var x = 0, size = observers.length; x < size; x++ ) {
+						if ( observers[ x ] === observer ) {
+							observers.splice( x, 1 );
+							break;
+						}
+					}
 				}
 			};
 		};

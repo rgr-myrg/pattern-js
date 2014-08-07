@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014 DevShop http://devshop.me/
+ * Copyright (c) 2011-2014 Activity, LLC.
  * Released under the MIT license:
  * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
  */

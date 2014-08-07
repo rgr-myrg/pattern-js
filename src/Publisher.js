@@ -1,9 +1,3 @@
-/**
- * Copyright (c) 2011-2014 Activity, LLC.
- * Released under the MIT license:
- * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
- */
-
 (function( $ ) {
 	$.Publisher = function() {
 		var events = {};

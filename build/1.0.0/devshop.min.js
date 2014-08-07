@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2011-2014 Activity, LLC.
  * Version: 1.0.0
- * Built: Thu Aug 07 2014 00:26:34 GMT-0400 (EDT)
+ * Built: Thu Aug 07 2014 10:22:43 GMT-0400 (EDT)
  * Released under the MIT license:
  * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
  */

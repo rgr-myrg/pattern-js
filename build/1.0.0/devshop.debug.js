@@ -1,17 +1,11 @@
 /**
  * Copyright (c) 2011-2014 Activity, LLC.
  * Version: 1.0.0
- * Built: Thu Aug 07 2014 00:26:34 GMT-0400 (EDT)
+ * Built: Thu Aug 07 2014 10:22:43 GMT-0400 (EDT)
  * Released under the MIT license:
  * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
  */
-(function(w){w.DevShop=w.DevShop||{};})(window);/**
- * Copyright (c) 2011-2014 Activity, LLC.
- * Released under the MIT license:
- * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
- */
-
-(function( $ ) {
+(function(w){w.DevShop=w.DevShop||{};})(window);(function( $ ) {
 	$.Queue = function( options ) {
 		var	objectId   = null,
 			intervalId = null,
@@ -74,12 +68,6 @@
 	};
 })( DevShop );
 
-/**
- * Copyright (c) 2011-2014 Activity, LLC.
- * Released under the MIT license:
- * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
- */
-
 (function( $ ) {
 	$.ObjectFactory = function( $Object ) {
 		if ( typeof $Object !== "object" ) {
@@ -124,12 +112,6 @@
 	};
 })( DevShop );
 
-/**
- * Copyright (c) 2011-2014 DevShop http://devshop.me/
- * Released under the MIT license:
- * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
- */
-
 (function( $ ) {
 	$.Observable = function( $Object ) {
 		var $Observable = function() {
@@ -172,12 +154,6 @@
 	};
 })( DevShop );
 
-/**
- * Copyright (c) 2011-2014 Activity, LLC.
- * Released under the MIT license:
- * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
- */
-
 (function( $ ){
 	$.Observer = function( $Object ){
 		var $Observer = function( $Object ){
@@ -195,20 +171,12 @@
 			};
 		};
 
-		return $.ObjectFactory(
-			{
-				_extends_ : $Observer,
-				_public_  : $Object
-			}
-		);
+		return $.ObjectFactory({
+			_extends_ : $Observer,
+			_public_  : $Object
+		});
 	};
 })( DevShop );
-
-/**
- * Copyright (c) 2011-2014 Activity, LLC.
- * Released under the MIT license:
- * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
- */
 
 (function( $ ) {
 	$.EventSignal = function( $Object ) {
@@ -255,12 +223,6 @@
 	};
 })( DevShop );
 
-/**
- * Copyright (c) 2011-2014 Activity, LLC.
- * Released under the MIT license:
- * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
- */
-
 (function( $ ) {
 	$.Publisher = function() {
 		var events = {};
@@ -298,12 +260,6 @@
 		};
 	};
 })( DevShop );
-
-/**
- * Copyright (c) 2011-2014 Activity, LLC.
- * Released under the MIT license:
- * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
- */
 
 (function( $ ) {
 	$.MVCObservable = function( obj ) {

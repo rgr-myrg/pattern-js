@@ -7,45 +7,50 @@
 		</style>
 		<script type="text/javascript" src="../build/1.0.0/devshop.js"></script>
 		<script type="text/javascript">
-		var Echo=new DevShop.Observer({
-			onKeyUp:function(){
-				document.getElementById('echo').innerHTML=this.observable.getMsg();
+		var Echo = DevShop.Observer({
+			onKeyUp: function( data ) {
+				document.getElementById( "echo" ).innerHTML=data;
 			}
 		});
-		var Mirror=new DevShop.Observer({
-			onKeyUp:function(){
-				var arr=this.observable.getMsg().split('');
+
+		var Mirror = DevShop.Observer({
+			onKeyUp: function( data ){
+				var arr = data.split('');
 				var msg='';
+
 				if(arr.length>0)
 					for(var x=arr.length-1;x>=0;x--)
 						msg+=arr[x];
-				document.getElementById('mirror').innerHTML=msg;
+
+				document.getElementById("mirror").innerHTML=msg;
 			}
 		});
+
 		var Vertical=new DevShop.Observer({
-			onKeyUp:function(){
-				var arr=this.observable.getMsg().split('');
-				var msg=arr.join('<br>');
-				document.getElementById('vertical').innerHTML=msg;
+			onKeyUp:function( data ){
+				var arr = data.split('');
+				var msg = arr.join( "<br>" );
+
+				document.getElementById( "vertical" ).innerHTML=msg;
 			}
 		});
-		var UI=new DevShop.Observable({
-			initialize:function(){
-				this.addObserver(Echo);
-				this.addObserver(Mirror);
-				this.addObserver(Vertical);
+
+		var UI = DevShop.Observable({
+			init: function() {
+				this.addObserver( Echo );
+				this.addObserver( Mirror );
+				this.addObserver( Vertical );
 			},
-			onKeyUp:function(){
-				/*
-				Event Handler Mapping
-				The event name is wired to observer's handler methods.
-				*/
-				this.notifyObservers('onKeyUp');
-			},
-			getMsg:function(){
-				return document.getElementById('box').value;
+
+			onKeyUp: function() {
+				var eventPacket = {
+					name: "onKeyUp",
+					data: document.getElementById('box').value
+				};
+
+				this.notifyObservers( eventPacket );
 			}
-		});
+		}); 
 		</script>
 	</head>
 	<body>

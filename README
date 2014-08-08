@@ -1,23 +1,25 @@
-DevShop
+Activity
 
-DevShop is a pocket-sized minimalist framework of common design patterns for JavaScript.
+Activity is a light weight pocket-sized minimalist framework of common design patterns written in JavaScript.
 
 Patterns (Please view examples folder for usage):
 
 Publisher/Subscriber
 -Light weight pub/sub with custom events.
 
-Observer/Observable Plus!
+Observer/Observable
 -Observer Pattern plus messaging framework with dynamic mapping of events to observer methods.
 
 Model View Controller
--Classic MVC Pattern
+-MVC Pattern
 
 Event Signal
 -Stack of listeners for easy transport of events and data.
 
-Singleton Factory
--Supports 'extend', 'instance', and 'implement' for interface methods.
+Object Factory
+-Supports 'extends', 'public', and 'implements' for interface methods.
+
+Queue
+-FIFO Queue
 
 Please see 'examples' directory for usage.
-

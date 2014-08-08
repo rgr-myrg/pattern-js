@@ -7,7 +7,7 @@
 
 					if (typeof this[ packet.eventName ] === "function" ) {
 						try{
-							this[ packet.eventName ]( packet.data );
+							this[ packet.eventName ]( packet.eventData );
 						}catch(e){
 						}
 					}

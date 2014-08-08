@@ -5,7 +5,7 @@
 		<title>MVC Pattern</title>
 		<style>
 		</style>
-		<script type="text/javascript" src="../build/1.0.0/activity.js"></script>
+		<script type="text/javascript" src="../build/1.0.0/pattern.js"></script>
 		<script type="text/javascript">
 		var Echo={
 			onKeyUp:function(msg){
@@ -29,15 +29,15 @@
 				document.getElementById('vertical').innerHTML=msg;
 			}
 		};
-		var DataProxy=Activity.ObjectFactory({
-			_extends_    : Activity.Proxy,
-			_implements_ : Activity.IProxy,
+		var DataProxy=Pattern.ObjectFactory({
+			_extends_    : Pattern.Proxy,
+			_implements_ : Pattern.IProxy,
 			_public_ : {
 				NAME:"DataProxy"
 			}
 		});
-		var StartUpCmd=Activity.ObjectFactory({
-			_implements_ : Activity.ICommand,
+		var StartUpCmd=Pattern.ObjectFactory({
+			_implements_ : Pattern.ICommand,
 			_public_ : {
 				execute:function(notification){
 					this.facade.registerProxy(DataProxy);
@@ -45,8 +45,8 @@
 				}
 			}
 		});
-		var KeyUpCmd=Activity.ObjectFactory({
-			_implements_ : Activity.ICommand,
+		var KeyUpCmd=Pattern.ObjectFactory({
+			_implements_ : Pattern.ICommand,
 			_public_ : {
 				execute:function(notification){
 					var msg=this.facade.retrieveProxy(DataProxy.NAME).getData();
@@ -56,9 +56,9 @@
 				}
 			}
 		});
-		var UIMediator=Activity.ObjectFactory({
-			_extends_    : Activity.Mediator,
-			_implements_ : Activity.IMediator,
+		var UIMediator=Pattern.ObjectFactory({
+			_extends_    : Pattern.Mediator,
+			_implements_ : Pattern.IMediator,
 			_public_ : {
 				NAME:"UIMediator",
 				listNotificationInterests:function(){
@@ -76,11 +76,11 @@
 				}
 			}
 		});
-		var UI=Activity.ObjectFactory({
-			_extends_:Activity.Facade,
-			_public_:{
-				ON_KEYUP:"ON_KEYUP",
-				CMD_KEYUP:"CMD_KEYUP",
+		var UI = Pattern.ObjectFactory({
+			_extends_: Pattern.Facade,
+			_public_: {
+				ON_KEYUP: "ON_KEYUP",
+				CMD_KEYUP: "CMD_KEYUP",
 				init :function(){
 					this.initializeFacade();
 					this.registerCommand(this.CMD_STARTUP,StartUpCmd);

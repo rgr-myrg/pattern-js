@@ -40,4 +40,4 @@
 
 		return singleton;
 	};
-})( Activity );
+})( Pattern );

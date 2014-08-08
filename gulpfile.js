@@ -1,5 +1,5 @@
 var	headerFile  = "LICENSE",
-	artifactId  = "activity",
+	artifactId  = "pattern",
 	version     = "1.0.0",
 	packaging   = "js",
 	targetPath  = "build",
@@ -25,7 +25,7 @@ var	gulp   = require( "gulp" ),
 	gccOPT = "SIMPLE_OPTIMIZATIONS";
 
 var	topNameSpace = function() {
-		return "(function(w){w.Activity=w.Activity||{};})(window);";
+		return "(function(w){w.Pattern=w.Pattern||{};})(window);";
 	},
 	getHeaderFile = function() {
 		return nodeFS.readFileSync( headerFile, {encoding: "utf8"} )

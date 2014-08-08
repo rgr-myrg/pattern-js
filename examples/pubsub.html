@@ -5,7 +5,7 @@
 		<title>DevShop.Me :: Event Signal</title>
 		<style>
 		</style>
-		<script type="text/javascript" src="../build/1.0.0/activity.js"></script>
+		<script type="text/javascript" src="../build/1.0.0/pattern.js"></script>
 		<script type="text/javascript">
 		//Subscriber must have onRegister method that returns notification interests
 		var Echo = {
@@ -48,11 +48,11 @@
 
 		//Define events for your app
 		var Events={
-			ON_KEYUP: new Activity.EventSignal
+			ON_KEYUP: new Pattern.EventSignal
 		};
 
 		//Create an instance of Publisher
-		var UI=new Activity.Publisher();
+		var UI=new Pattern.Publisher();
 
 		UI.registerEvents(Events);
 		UI.registerSubscriber(Echo);
@@ -65,8 +65,8 @@
 		};
 		
 		//Alternate way of 'extending' the publisher example:
-		var UIx = Activity.ObjectFactory({
-			_extends_: DevShop.Publisher,
+		var UIx = Pattern.ObjectFactory({
+			_extends_: Pattern.Publisher,
 			_public_: function(){
 				this.onKeyUp = function() {
 					var data = document.getElementById('box').value;

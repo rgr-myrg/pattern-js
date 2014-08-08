@@ -5,15 +5,15 @@
 		<title>Observer</title>
 		<style>
 		</style>
-		<script type="text/javascript" src="../build/1.0.0/activity.js"></script>
+		<script type="text/javascript" src="../build/1.0.0/pattern.js"></script>
 		<script type="text/javascript">
-		var Echo = new Activity.Observer({
+		var Echo = new Pattern.Observer({
 			onKeyUp: function( data ) {
 				document.getElementById( "echo" ).innerHTML=data;
 			}
 		});
 
-		var Mirror = new Activity.Observer({
+		var Mirror = new Pattern.Observer({
 			onKeyUp: function( data ){
 				var arr = data.split('');
 				var msg='';
@@ -26,7 +26,7 @@
 			}
 		});
 
-		var Vertical=new Activity.Observer({
+		var Vertical=new Pattern.Observer({
 			onKeyUp:function( data ){
 				var arr = data.split('');
 				var msg = arr.join( "<br>" );
@@ -35,7 +35,7 @@
 			}
 		});
 
-		var UI = new Activity.Observable({
+		var UI = new Pattern.Observable({
 			init: function() {
 				this.addObserver( Echo );
 				this.addObserver( Mirror );
@@ -43,12 +43,10 @@
 			},
 
 			onKeyUp: function() {
-				var eventPacket = {
-					name: "onKeyUp",
+				this.notifyObservers({
+					eventName: "onKeyUp",
 					data: document.getElementById('box').value
-				};
-
-				this.notifyObservers( eventPacket );
+				});
 			}
 		}); 
 		</script>

@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2011-2014 Activity, LLC.
  * Version: 1.0.0
- * Built: Thu Aug 07 2014 23:23:24 GMT-0400 (EDT)
+ * Built: Fri Aug 08 2014 00:46:32 GMT-0400 (EDT)
  * Released under the MIT license:
- * https://github.com/rgr-myrg/activity-js/raw/master/MIT-LICENSE
+ * https://github.com/rgr-myrg/pattern-js/raw/master/MIT-LICENSE
  */
-(function(w){w.Activity=w.Activity||{};})(window);(function( $ ) {
+(function(w){w.Pattern=w.Pattern||{};})(window);(function( $ ) {
 	$.Queue = function( options ) {
 		var	objectId   = null,
 			intervalId = null,
@@ -94,7 +94,7 @@
 			}
 		};
 	};
-})( Activity );
+})( Pattern );
 
 (function( $ ) {
 	$.ObjectFactory = function( $Object ) {
@@ -138,87 +138,76 @@
 
 		return singleton;
 	};
-})( Activity );
+})( Pattern );
 
 (function( $ ) {
-	$.EventSignal = function( $Object ) {
-		var listeners = [];
+	$.Observable = function( $Object ) {
+		var $Observable = function() {
+			var observers = [];
 
-		return {
-			addListener: function( listener ) {
-				if ( typeof listener === "function" ) {
-					listeners.push( listener );
-				}
-			},
+			return {
+				addObserver: function( observer ) {
+					if ( (typeof observer === "function" || typeof observer === "object") && 
+							typeof observer.update === "function" ){
 
-			removeListener: function( listener ) {
-				var	size = listeners.length;
+						observers.push( observer );
 
-				for ( var x = 0; x < size; x++ ) {
-					if( listeners[ x ] === listener ) {
-						listeners[ x ] = null;
-					}
-				}
-			},
-
-			dispatch: function() {
-				var	temp = [],
-					size = listeners.length;
-
-				for ( var x = 0; x < size; x++ ) {
-					var listener = listeners[ x ];
-
-					if ( typeof listener === "function" ) {
-						listener.apply( this, arguments );
-					} else {
-						temp.push( x );
-					}
-				}
-
-				size = temp.length;
-
-				for( x = 0; x < size; x++ ) {
-					listeners.splice( x, 1 );
-				}
-			}
-		};
-	};
-})( Activity );
-
-(function( $ ) {
-	$.Publisher = function() {
-		var events = {};
-
-		return {
-			registerEvents: function( eventList ) {
-				if( typeof eventList === "object" ) {
-					events = eventList;
-				}
-			},
-
-			registerSubscriber: function( subscriber ) {
-				if ( typeof subscriber.onRegister === "function" ) {
-					var listeners = subscriber.onRegister();
-
-					for( var i in listeners ) {
-						if( listeners.hasOwnProperty( i ) && 
-							typeof listeners[ i ] === "function" &&
-								typeof events[ i ] === "object" &&
-									typeof events[ i ].addListener === "function" ) {
-
-							events[ i ].addListener( listeners[ i ] );
+						if ( typeof observer.onRegister === "function" ) {
+							try {
+								observer.onRegister();
+							} catch( e ) {
+							}
 						}
 					}
+				},
 
-					subscriber.onRegister = function(){};
-				}
-			},
+				notifyObservers: function() {
+					var size = observers.length;
 
-			notify: function( event, data ) {
-				if ( typeof event.dispatch === "function" ) {
-					event.dispatch( data );
+					for ( var x = 0; x < size; x++ ) {
+						var observer = observers[ x ];
+						observer.update.apply( observer, arguments );
+					}
+				},
+
+				removeObserver: function( observer ) {
+					for ( var x = 0, size = observers.length; x < size; x++ ) {
+						if ( observers[ x ] === observer ) {
+							observers.splice( x, 1 );
+							break;
+						}
+					}
 				}
-			}
+			};
 		};
+
+		return $.ObjectFactory({
+				_extends_ : $Observable,
+				_public_  : $Object
+		});
 	};
-})( Activity );
+})( Pattern );
+
+(function( $ ){
+	$.Observer = function( $Object ){
+		var $Observer = function( $Object ){
+			return {
+				update: function() {
+					var packet = arguments[ 0 ];
+
+					if (typeof this[ packet.eventName ] === "function" ) {
+						try{
+							this[ packet.eventName ]( packet.data );
+						}catch(e){
+						}
+					}
+				}
+			};
+		};
+
+		return $.ObjectFactory({
+			_extends_ : $Observer,
+			_public_  : $Object
+		});
+	};
+})( Pattern );

@@ -44,4 +44,4 @@
 				_public_  : $Object
 		});
 	};
-})( Activity );
+})( Pattern );

@@ -34,4 +34,4 @@
 			}
 		};
 	};
-})( Activity );
+})( Pattern );

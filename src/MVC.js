@@ -289,4 +289,4 @@
 			}
 		};
 	};
-})( Activity );
+})( Pattern );

@@ -5,14 +5,14 @@
 		<title>Queue Example</title>
 		<style>
 		</style>
-		<script type="text/javascript" src="../build/1.0.0/activity.js"></script>
+		<script type="text/javascript" src="../build/1.0.0/pattern.js"></script>
 		<script type="text/javascript">
-		var queue = new Activity.Queue({
+		var queue = new Pattern.Queue({
         		id: "queue",
   
         		timeToWait: 1000, //one second
   
-  				maxCount: 10,
+  			//	maxCount: 10,
 
         		callback: function( msg ) {
         			console.log( msg );

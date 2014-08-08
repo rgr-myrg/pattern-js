@@ -87,4 +87,4 @@
 			}
 		};
 	};
-})( Activity );
+})( Pattern );

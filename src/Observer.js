@@ -5,9 +5,9 @@
 				update: function() {
 					var packet = arguments[ 0 ];
 
-					if (typeof this[ packet.name ] === "function" ) {
+					if (typeof this[ packet.eventName ] === "function" ) {
 						try{
-							this[ packet.name ]( packet.data );
+							this[ packet.eventName ]( packet.data );
 						}catch(e){
 						}
 					}
@@ -20,4 +20,4 @@
 			_public_  : $Object
 		});
 	};
-})( Activity );
+})( Pattern );

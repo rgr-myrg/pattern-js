@@ -5,29 +5,34 @@
 		<title>Queue Example</title>
 		<style>
 		</style>
-		<script type="text/javascript" src="../build/1.0.0/devshop.js"></script>
+		<script type="text/javascript" src="../build/1.0.0/activity.js"></script>
 		<script type="text/javascript">
-		var queue = new DevShop.Queue({
+		var queue = new Activity.Queue({
         		id: "queue",
   
         		timeToWait: 1000, //one second
   
+  				maxCount: 10,
+
         		callback: function( msg ) {
         			console.log( msg );
         			document.getElementById( "log" ).innerHTML += msg;
+        		},
+
+        		onError: function( e ) {
+        			console.log( e );
         		}
         	});
 
 		// Load up the queue for testing
-		for( var x = 0; x < 11; x++ ) {
+		for( var x = 0; x < 13; x++ ) {
  			queue.add( x + " second(s) just passed. <br/>");
  		}
 
 		queue.start();
 
-		queue.add( "I'm the last in line." );
-
 		// Add to the queue while it's running.
+		queue.add( "I'm the last in line." );
 
 		</script>
 	</head>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Pattern-js by rgr-myrg</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Pattern-js</h1>
+        <p>Pocket-sized minimalist framework of common design patterns for JavaScript.</p>
+
+        <p class="view"><a href="https://github.com/rgr-myrg/pattern-js">View the Project on GitHub <small>rgr-myrg/pattern-js</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/rgr-myrg/pattern-js/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/rgr-myrg/pattern-js/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/rgr-myrg/pattern-js">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h3>
+<a name="totally-useful-and-reusable" class="anchor" href="#totally-useful-and-reusable"><span class="octicon octicon-link"></span></a>Totally Useful and Reusable.</h3>
+
+<p>Speed up your development by using tested and proven design patterns for JavaScript.</p>
+
+<p>Quick usage example:</p>
+
+<pre><code>var logger = Pattern.Observer({
+    write: function( data ) {
+        console.log( "message: " + data.msg );
+    }
+});
+var emitter = Pattern.Observable({
+    init: function() {
+        this.addObserver( logger );
+    },
+    notify: function( name, msg ) {
+        this.notifyObservers({
+            eventName: name,
+            data: {msg: msg}
+        });
+    }
+});
+
+emitter.notify( "write", "The quick brown fox jumps..." );
+</code></pre>
+
+<p>Console output:</p>
+
+<pre><code>message: The quick brown fox jumps...
+</code></pre>
+
+<h3>
+<a name="observerobservable" class="anchor" href="#observerobservable"><span class="octicon octicon-link"></span></a>Observer/Observable</h3>
+
+<p>Observer Pattern plus messaging framework with dynamic mapping of events to observer methods.</p>
+
+<h3>
+<a name="publishersubscriber" class="anchor" href="#publishersubscriber"><span class="octicon octicon-link"></span></a>Publisher/Subscriber</h3>
+
+<p>Light weight pub/sub with custom events.</p>
+
+<h3>
+<a name="event-signal" class="anchor" href="#event-signal"><span class="octicon octicon-link"></span></a>Event Signal</h3>
+
+<p>Queue of listeners for easy transport of events and data.</p>
+
+<h3>
+<a name="model-view-controller" class="anchor" href="#model-view-controller"><span class="octicon octicon-link"></span></a>Model View Controller</h3>
+
+<p>Classic MVC Pattern</p>
+
+<h3>
+<a name="object-factory" class="anchor" href="#object-factory"><span class="octicon octicon-link"></span></a>Object Factory</h3>
+
+<p>Supports 'extends', 'public', and 'implements' for interface methods.</p>
+
+<h3>
+<a name="queue" class="anchor" href="#queue"><span class="octicon octicon-link"></span></a>Queue</h3>
+
+<p>FIFO</p>
+
+<h3>
+<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+
+<p>Documentation coming soon. <a href="http://help.github.com/pages">http://help.github.com/pages</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/rgr-myrg">rgr-myrg</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>

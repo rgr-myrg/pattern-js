@@ -5,7 +5,7 @@
 		<title>Observer</title>
 		<style>
 		</style>
-		<script type="text/javascript" src="../build/1.0.0/pattern.js"></script>
+		<script type="text/javascript" src="../build/1.0.0/pattern-full.js"></script>
 		<script type="text/javascript">
 		var Echo = new Pattern.Observer({
 			onKeyUp: function( data ) {
@@ -45,7 +45,7 @@
 			onKeyUp: function() {
 				this.notifyObservers({
 					eventName: "onKeyUp",
-					data: document.getElementById('box').value
+					eventData: document.getElementById('box').value
 				});
 			}
 		}); 

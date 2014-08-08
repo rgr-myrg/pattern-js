@@ -1,18 +1,16 @@
 var	headerFile  = "LICENSE",
-	artifactId  = "pattern",
+	 artifactId  = "pattern-full",
+	// artifactId  = "pattern-observer",
+	// artifactId  = "pattern-pubsub",
+	// artifactId  = "pattern-mvc",
 	version     = "1.0.0",
 	packaging   = "js",
 	targetPath  = "build",
 	sourcePath  = "src",
-	sourceFiles = [
-		"Queue.js",
-		"ObjectFactory.js",
-		"Observable.js",
-		"Observer.js",
-		"EventSignal.js",
-		"Publisher.js",
-		"MVC.js"
-	];
+	 sourceFiles = [ "Queue.js", "ObjectFactory.js", "Observable.js", "Observer.js", "EventSignal.js", "Publisher.js", "MVC.js" ];
+	// sourceFiles = [ "Queue.js", "ObjectFactory.js", "Observable.js", "Observer.js" ];
+	// sourceFiles = [ "Queue.js", "ObjectFactory.js", "EventSignal.js", "Publisher.js" ];
+	// sourceFiles = [ "Queue.js", "ObjectFactory.js", "MVC.js" ];
 
 var	gulp   = require( "gulp" ),
 	jshint = require( "gulp-jshint" ),
@@ -35,8 +33,7 @@ var	topNameSpace = function() {
 	};
 
 var	artifactDebug = version + "/" + artifactId + ".debug." + packaging,
-	artifactMini  = version + "/" + artifactId + ".min." + packaging,
-	artifactProd  = version + "/" + artifactId + "." + packaging;
+	artifactMini  = version + "/" + artifactId + "." + packaging;
 
 gulp.task( "init", function() {
 	var size = sourceFiles.length;
@@ -72,26 +69,16 @@ gulp.task( "concat", function() {
 		.pipe( gulp.dest( targetPath ) );
 });
 
-gulp.task( "minify", function() {
-	return gulp.src( sourceFiles )
-		.pipe( concat( artifactMini ) )
-		.pipe( uglify() )
-		.pipe(
-			header( getHeaderFile() )
-		)
-		.pipe( gulp.dest( targetPath ) );
-});
-
 gulp.task( "google-cc", function() {
 	return gulp.src( sourceFiles )
 		.pipe( concat( artifactDebug ) )
 		.pipe(
 			google({
 				compilerPath: gccJAR,
-				fileName: artifactProd,
+				fileName: artifactMini,
 				compilerFlags: {
 					compilation_level: gccOPT,
-					js_output_file: artifactProd
+					js_output_file: artifactMini
 				}
 			})
 		)
@@ -99,4 +86,4 @@ gulp.task( "google-cc", function() {
 		.pipe( gulp.dest( targetPath ) );
 });
 
-gulp.task( "default", ["init", "lint", "concat", "minify", "google-cc"] );
+gulp.task( "default", ["init", "lint", "concat", "google-cc"] );

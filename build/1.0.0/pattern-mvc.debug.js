@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2011-2014 Activity, LLC.
  * Version: 1.0.0
- * Built: Fri Aug 08 2014 00:38:02 GMT-0400 (EDT)
+ * Built: Fri Aug 08 2014 07:27:00 GMT-0400 (EDT)
  * Released under the MIT license:
  * https://github.com/rgr-myrg/pattern-js/raw/master/MIT-LICENSE
  */
@@ -137,78 +137,6 @@
 		}
 
 		return singleton;
-	};
-})( Pattern );
-
-(function( $ ) {
-	$.Observable = function( $Object ) {
-		var $Observable = function() {
-			var observers = [];
-
-			return {
-				addObserver: function( observer ) {
-					if ( (typeof observer === "function" || typeof observer === "object") && 
-							typeof observer.update === "function" ){
-
-						observers.push( observer );
-
-						if ( typeof observer.onRegister === "function" ) {
-							try {
-								observer.onRegister();
-							} catch( e ) {
-							}
-						}
-					}
-				},
-
-				notifyObservers: function() {
-					var size = observers.length;
-
-					for ( var x = 0; x < size; x++ ) {
-						var observer = observers[ x ];
-						observer.update.apply( observer, arguments );
-					}
-				},
-
-				removeObserver: function( observer ) {
-					for ( var x = 0, size = observers.length; x < size; x++ ) {
-						if ( observers[ x ] === observer ) {
-							observers.splice( x, 1 );
-							break;
-						}
-					}
-				}
-			};
-		};
-
-		return $.ObjectFactory({
-				_extends_ : $Observable,
-				_public_  : $Object
-		});
-	};
-})( Pattern );
-
-(function( $ ){
-	$.Observer = function( $Object ){
-		var $Observer = function( $Object ){
-			return {
-				update: function() {
-					var packet = arguments[ 0 ];
-
-					if (typeof this[ packet.name ] === "function" ) {
-						try{
-							this[ packet.name ]( packet.data );
-						}catch(e){
-						}
-					}
-				}
-			};
-		};
-
-		return $.ObjectFactory({
-			_extends_ : $Observer,
-			_public_  : $Object
-		});
 	};
 })( Pattern );
 

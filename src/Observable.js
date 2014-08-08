@@ -44,4 +44,4 @@
 				_public_  : $Object
 		});
 	};
-})( DevShop );
+})( Activity );

@@ -1,36 +1,53 @@
 /**
  * Copyright (c) 2011-2014 Activity, LLC.
  * Version: 1.0.0
- * Built: Thu Aug 07 2014 18:10:05 GMT-0400 (EDT)
+ * Built: Thu Aug 07 2014 23:24:52 GMT-0400 (EDT)
  * Released under the MIT license:
- * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
+ * https://github.com/rgr-myrg/activity-js/raw/master/MIT-LICENSE
  */
-(function(w){w.DevShop=w.DevShop||{};})(window);(function( $ ) {
+(function(w){w.Activity=w.Activity||{};})(window);(function( $ ) {
 	$.Queue = function( options ) {
 		var	objectId   = null,
 			intervalId = null,
 			running    = false,
 			callback   = function(){},
+			onError    = function(){},
 			timeToWait = 300,
+			maxCount   = -1,
 			queue      = [];
 
 		if ( typeof options !== "object" || !options.id ) {
-			throw( "Queue options Object is Null" );
+			throw( new Error( "Queue options Object is Null" ) );
 		}
 
 		objectId = options.id;
 
-		if ( !isNaN( options.timeToWait ) ) {
+		if ( !isNaN( options.timeToWait ) && options.timeToWait > 0 ) {
 			timeToWait = options.timeToWait;
+		}
+
+		if ( !isNaN( options.maxCount ) && options.maxCount > 0 ) {
+			maxCount = options.maxCount;
 		}
 
 		if ( typeof options.callback === "function" ) {
 			callback = options.callback;
 		}
 
+		if ( typeof options.onError === "function" ) {
+			onError = options.onError;
+		}
+
 		return {
 			add: function() {
+				if ( maxCount > 0 && queue.length >= maxCount ) {
+					onError( new Error( "Max count exceeded: " + queue.length ) );
+
+					return false;
+				}
+
 				queue.push( arguments );
+				return true;
 			},
 
 			start: function() {
@@ -38,6 +55,7 @@
 					try {
 						intervalId = setInterval( objectId + ".run()", timeToWait );
 					} catch( e ) {
+						onError( e );
 					}
 				}
 			},
@@ -50,6 +68,7 @@
 						callback.apply( this, queue.shift() );
 					} catch( e ) {
 						this.stop();
+						onError( e );
 					}
 				} else {
 					this.stop();
@@ -63,10 +82,19 @@
 
 			isRunning : function() {
 				return running;
+			},
+
+			count: function() {
+				return queue.length;
+			},
+
+			clear: function() {
+				this.stop();
+				queue = [];
 			}
 		};
 	};
-})( DevShop );
+})( Activity );
 
 (function( $ ) {
 	$.ObjectFactory = function( $Object ) {
@@ -110,7 +138,7 @@
 
 		return singleton;
 	};
-})( DevShop );
+})( Activity );
 
 (function( $ ) {
 	$.Observable = function( $Object ) {
@@ -158,7 +186,7 @@
 				_public_  : $Object
 		});
 	};
-})( DevShop );
+})( Activity );
 
 (function( $ ){
 	$.Observer = function( $Object ){
@@ -182,90 +210,7 @@
 			_public_  : $Object
 		});
 	};
-})( DevShop );
-
-(function( $ ) {
-	$.EventSignal = function( $Object ) {
-		var listeners = [];
-
-		return {
-			addListener: function( listener ) {
-				if ( typeof listener === "function" ) {
-					listeners.push( listener );
-				}
-			},
-
-			removeListener: function( listener ) {
-				var	size = listeners.length;
-
-				for ( var x = 0; x < size; x++ ) {
-					if( listeners[ x ] === listener ) {
-						listeners[ x ] = null;
-					}
-				}
-			},
-
-			dispatch: function() {
-				var	temp = [],
-					size = listeners.length;
-
-				for ( var x = 0; x < size; x++ ) {
-					var listener = listeners[ x ];
-
-					if ( typeof listener === "function" ) {
-						listener.apply( this, arguments );
-					} else {
-						temp.push( x );
-					}
-				}
-
-				size = temp.length;
-
-				for( x = 0; x < size; x++ ) {
-					listeners.splice( x, 1 );
-				}
-			}
-		};
-	};
-})( DevShop );
-
-(function( $ ) {
-	$.Publisher = function() {
-		var events = {};
-
-		return {
-			registerEvents: function( eventList ) {
-				if( typeof eventList === "object" ) {
-					events = eventList;
-				}
-			},
-
-			registerSubscriber: function( subscriber ) {
-				if ( typeof subscriber.onRegister === "function" ) {
-					var listeners = subscriber.onRegister();
-
-					for( var i in listeners ) {
-						if( listeners.hasOwnProperty( i ) && 
-							typeof listeners[ i ] === "function" &&
-								typeof events[ i ] === "object" &&
-									typeof events[ i ].addListener === "function" ) {
-
-							events[ i ].addListener( listeners[ i ] );
-						}
-					}
-
-					subscriber.onRegister = function(){};
-				}
-			},
-
-			notify: function( event, data ) {
-				if ( typeof event.dispatch === "function" ) {
-					event.dispatch( data );
-				}
-			}
-		};
-	};
-})( DevShop );
+})( Activity );
 
 (function( $ ) {
 	$.MVCObservable = function( obj ) {
@@ -306,6 +251,7 @@
 			return {
 				onRegister: function() {
 				},
+
 				notify: function( eventName, observable ) {
 					this.observable = observable;
 
@@ -341,6 +287,7 @@
 
 	$.Proxy = function() {
 		var data = {};
+
 		return {
 			facade: null,
 
@@ -412,7 +359,9 @@
 
 				return {
 					facade: {},
+
 					notification: {},
+
 					registerMediator: function( mediator ) {
 						mediator.facade = this.facade;
 
@@ -430,6 +379,7 @@
 						if( typeof mediators[ key ].onRemove === "function" ) {
 							mediators[ key ].onRemove();
 						}
+
 						mediators[ key ] = null;
 					},
 
@@ -468,7 +418,7 @@
 				return {
 					facade: {},
 
-					NAME: "BTG.Controller",
+					NAME: "Controller",
 
 					registerCommand: function( key, command ) {
 						command.facade = this.facade;
@@ -553,4 +503,4 @@
 			}
 		};
 	};
-})( DevShop );
+})( Activity );

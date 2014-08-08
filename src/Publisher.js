@@ -34,4 +34,4 @@
 			}
 		};
 	};
-})( DevShop );
+})( Activity );

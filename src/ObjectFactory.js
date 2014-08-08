@@ -40,4 +40,4 @@
 
 		return singleton;
 	};
-})( DevShop );
+})( Activity );

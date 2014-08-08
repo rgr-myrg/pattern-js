@@ -37,6 +37,7 @@
 			return {
 				onRegister: function() {
 				},
+
 				notify: function( eventName, observable ) {
 					this.observable = observable;
 
@@ -72,6 +73,7 @@
 
 	$.Proxy = function() {
 		var data = {};
+
 		return {
 			facade: null,
 
@@ -143,7 +145,9 @@
 
 				return {
 					facade: {},
+
 					notification: {},
+
 					registerMediator: function( mediator ) {
 						mediator.facade = this.facade;
 
@@ -161,6 +165,7 @@
 						if( typeof mediators[ key ].onRemove === "function" ) {
 							mediators[ key ].onRemove();
 						}
+
 						mediators[ key ] = null;
 					},
 
@@ -199,7 +204,7 @@
 				return {
 					facade: {},
 
-					NAME: "BTG.Controller",
+					NAME: "Controller",
 
 					registerCommand: function( key, command ) {
 						command.facade = this.facade;
@@ -284,4 +289,4 @@
 			}
 		};
 	};
-})( DevShop );
+})( Activity );

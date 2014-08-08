@@ -41,4 +41,4 @@
 			}
 		};
 	};
-})( DevShop );
+})( Activity );

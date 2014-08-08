@@ -1,36 +1,53 @@
 /**
  * Copyright (c) 2011-2014 Activity, LLC.
  * Version: 1.0.0
- * Built: Thu Aug 07 2014 10:22:31 GMT-0400 (EDT)
+ * Built: Thu Aug 07 2014 23:23:24 GMT-0400 (EDT)
  * Released under the MIT license:
- * https://github.com/rgr-myrg/DevShop-JS/raw/master/MIT-LICENSE
+ * https://github.com/rgr-myrg/activity-js/raw/master/MIT-LICENSE
  */
-(function(w){w.DevShop=w.DevShop||{};})(window);(function( $ ) {
+(function(w){w.Activity=w.Activity||{};})(window);(function( $ ) {
 	$.Queue = function( options ) {
 		var	objectId   = null,
 			intervalId = null,
 			running    = false,
 			callback   = function(){},
+			onError    = function(){},
 			timeToWait = 300,
+			maxCount   = -1,
 			queue      = [];
 
 		if ( typeof options !== "object" || !options.id ) {
-			throw( "Queue options Object is Null" );
+			throw( new Error( "Queue options Object is Null" ) );
 		}
 
 		objectId = options.id;
 
-		if ( !isNaN( options.timeToWait ) ) {
+		if ( !isNaN( options.timeToWait ) && options.timeToWait > 0 ) {
 			timeToWait = options.timeToWait;
+		}
+
+		if ( !isNaN( options.maxCount ) && options.maxCount > 0 ) {
+			maxCount = options.maxCount;
 		}
 
 		if ( typeof options.callback === "function" ) {
 			callback = options.callback;
 		}
 
+		if ( typeof options.onError === "function" ) {
+			onError = options.onError;
+		}
+
 		return {
 			add: function() {
+				if ( maxCount > 0 && queue.length >= maxCount ) {
+					onError( new Error( "Max count exceeded: " + queue.length ) );
+
+					return false;
+				}
+
 				queue.push( arguments );
+				return true;
 			},
 
 			start: function() {
@@ -38,6 +55,7 @@
 					try {
 						intervalId = setInterval( objectId + ".run()", timeToWait );
 					} catch( e ) {
+						onError( e );
 					}
 				}
 			},
@@ -50,6 +68,7 @@
 						callback.apply( this, queue.shift() );
 					} catch( e ) {
 						this.stop();
+						onError( e );
 					}
 				} else {
 					this.stop();
@@ -63,10 +82,19 @@
 
 			isRunning : function() {
 				return running;
+			},
+
+			count: function() {
+				return queue.length;
+			},
+
+			clear: function() {
+				this.stop();
+				queue = [];
 			}
 		};
 	};
-})( DevShop );
+})( Activity );
 
 (function( $ ) {
 	$.ObjectFactory = function( $Object ) {
@@ -110,7 +138,7 @@
 
 		return singleton;
 	};
-})( DevShop );
+})( Activity );
 
 (function( $ ) {
 	$.EventSignal = function( $Object ) {
@@ -155,7 +183,7 @@
 			}
 		};
 	};
-})( DevShop );
+})( Activity );
 
 (function( $ ) {
 	$.Publisher = function() {
@@ -193,4 +221,4 @@
 			}
 		};
 	};
-})( DevShop );
+})( Activity );

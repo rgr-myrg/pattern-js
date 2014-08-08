@@ -5,7 +5,7 @@
 		<title>MVC Pattern</title>
 		<style>
 		</style>
-		<script type="text/javascript" src="../build/1.0.0/devshop.js"></script>
+		<script type="text/javascript" src="../build/1.0.0/activity.js"></script>
 		<script type="text/javascript">
 		var Echo={
 			onKeyUp:function(msg){
@@ -29,15 +29,15 @@
 				document.getElementById('vertical').innerHTML=msg;
 			}
 		};
-		var DataProxy=DevShop.ObjectFactory({
-			_extends_    : DevShop.Proxy,
-			_implements_ : DevShop.IProxy,
+		var DataProxy=Activity.ObjectFactory({
+			_extends_    : Activity.Proxy,
+			_implements_ : Activity.IProxy,
 			_public_ : {
 				NAME:"DataProxy"
 			}
 		});
-		var StartUpCmd=DevShop.ObjectFactory({
-			_implements_ : DevShop.ICommand,
+		var StartUpCmd=Activity.ObjectFactory({
+			_implements_ : Activity.ICommand,
 			_public_ : {
 				execute:function(notification){
 					this.facade.registerProxy(DataProxy);
@@ -45,8 +45,8 @@
 				}
 			}
 		});
-		var KeyUpCmd=DevShop.ObjectFactory({
-			_implements_ : DevShop.ICommand,
+		var KeyUpCmd=Activity.ObjectFactory({
+			_implements_ : Activity.ICommand,
 			_public_ : {
 				execute:function(notification){
 					var msg=this.facade.retrieveProxy(DataProxy.NAME).getData();
@@ -56,9 +56,9 @@
 				}
 			}
 		});
-		var UIMediator=DevShop.ObjectFactory({
-			_extends_    : DevShop.Mediator,
-			_implements_ : DevShop.IMediator,
+		var UIMediator=Activity.ObjectFactory({
+			_extends_    : Activity.Mediator,
+			_implements_ : Activity.IMediator,
 			_public_ : {
 				NAME:"UIMediator",
 				listNotificationInterests:function(){
@@ -76,8 +76,8 @@
 				}
 			}
 		});
-		var UI=DevShop.ObjectFactory({
-			_extends_:DevShop.Facade,
+		var UI=Activity.ObjectFactory({
+			_extends_:Activity.Facade,
 			_public_:{
 				ON_KEYUP:"ON_KEYUP",
 				CMD_KEYUP:"CMD_KEYUP",

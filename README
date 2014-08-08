@@ -1,8 +1,6 @@
-Activity
+pattern-js
 
-Activity is a light weight pocket-sized minimalist framework of common design patterns written in JavaScript.
-
-Patterns (Please view examples folder for usage):
+pattern-js is a light weight pocket-sized minimalist framework of common design patterns written in JavaScript.
 
 Publisher/Subscriber
 -Light weight pub/sub with custom events.

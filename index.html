@@ -36,8 +36,8 @@
 <p>Quick usage example:</p>
 
 <pre><code>var logger = Pattern.Observer({
-    write: function( data ) {
-        console.log( "message: " + data.msg );
+    write: function( eventData ) {
+        console.log( "message: " + eventData.msg );
     }
 });
 var emitter = Pattern.Observable({
@@ -47,7 +47,7 @@ var emitter = Pattern.Observable({
     notify: function( name, msg ) {
         this.notifyObservers({
             eventName: name,
-            data: {msg: msg}
+            eventData: {msg: msg}
         });
     }
 });
@@ -101,6 +101,16 @@ emitter.notify( "write", "The quick brown fox jumps..." );
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-    
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-1433575-5");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>

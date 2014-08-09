@@ -21,9 +21,7 @@
 				},
 
 				notifyObservers: function() {
-					var size = observers.length;
-
-					for ( var x = 0; x < size; x++ ) {
+					for ( var x = 0, size = observers.length; x < size; x++ ) {
 						var observer = observers[ x ];
 						observer.update.apply( observer, arguments );
 					}

@@ -8,6 +8,7 @@
 					if ( (typeof observer === "function" || typeof observer === "object") && 
 							typeof observer.update === "function" ){
 
+						observer._observable_ = this;
 						observers.push( observer );
 
 						if ( typeof observer.onRegister === "function" ) {

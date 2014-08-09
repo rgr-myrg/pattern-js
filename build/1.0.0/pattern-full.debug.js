@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2011-2014 Activity, LLC.
  * Version: 1.0.0
- * Built: Fri Aug 08 2014 07:27:16 GMT-0400 (EDT)
+ * Built: Fri Aug 08 2014 19:51:48 GMT-0400 (EDT)
  * Released under the MIT license:
  * https://github.com/rgr-myrg/pattern-js/raw/master/MIT-LICENSE
  */
@@ -150,6 +150,7 @@
 					if ( (typeof observer === "function" || typeof observer === "object") && 
 							typeof observer.update === "function" ){
 
+						observer._observable_ = this;
 						observers.push( observer );
 
 						if ( typeof observer.onRegister === "function" ) {

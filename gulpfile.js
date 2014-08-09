@@ -1,16 +1,16 @@
 var	headerFile  = "LICENSE",
-	 artifactId  = "pattern-full",
-	// artifactId  = "pattern-observer",
-	// artifactId  = "pattern-pubsub",
-	// artifactId  = "pattern-mvc",
+	artifactId  = "pattern-full",
+	//artifactId  = "pattern-observer",
+	//artifactId  = "pattern-pubsub",
+	//artifactId  = "pattern-mvc",
 	version     = "1.0.0",
 	packaging   = "js",
 	targetPath  = "build",
 	sourcePath  = "src",
-	 sourceFiles = [ "Queue.js", "ObjectFactory.js", "Observable.js", "Observer.js", "EventSignal.js", "Publisher.js", "MVC.js" ];
-	// sourceFiles = [ "Queue.js", "ObjectFactory.js", "Observable.js", "Observer.js" ];
-	// sourceFiles = [ "Queue.js", "ObjectFactory.js", "EventSignal.js", "Publisher.js" ];
-	// sourceFiles = [ "Queue.js", "ObjectFactory.js", "MVC.js" ];
+	sourceFiles = [ "Queue.js", "ObjectFactory.js", "Observable.js", "Observer.js", "EventSignal.js", "Publisher.js", "MVC.js" ];
+	//sourceFiles = [ "Queue.js", "ObjectFactory.js", "Observable.js", "Observer.js" ];
+	//sourceFiles = [ "Queue.js", "ObjectFactory.js", "EventSignal.js", "Publisher.js" ];
+	//sourceFiles = [ "Queue.js", "ObjectFactory.js", "MVC.js" ];
 
 var	gulp   = require( "gulp" ),
 	jshint = require( "gulp-jshint" ),

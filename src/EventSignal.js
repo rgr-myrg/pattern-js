@@ -1,5 +1,5 @@
-(function( $ ) {
-	$.EventSignal = function() {
+(function( $P ) {
+	$P.EventSignal = function() {
 		var listeners = [];
 
 		return {

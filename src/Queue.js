@@ -1,5 +1,5 @@
-(function( $ ) {
-	$.Queue = function( options ) {
+(function( $P ) {
+	$P.Queue = function( options ) {
 		var	objectId   = null,
 			intervalId = null,
 			running    = false,

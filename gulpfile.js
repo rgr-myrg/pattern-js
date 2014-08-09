@@ -23,7 +23,7 @@ var	gulp   = require( "gulp" ),
 	gccOPT = "SIMPLE_OPTIMIZATIONS";
 
 var	topNameSpace = function() {
-		return "(function(w){w.Pattern=w.Pattern||{};})(window);";
+		return "(function(w){w.Pattern=$P=w.Pattern||{};})(window);";
 	},
 	getHeaderFile = function() {
 		return nodeFS.readFileSync( headerFile, {encoding: "utf8"} )

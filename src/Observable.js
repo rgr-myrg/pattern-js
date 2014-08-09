@@ -1,5 +1,5 @@
-(function( $ ) {
-	$.Observable = function( $Object ) {
+(function( $P ) {
+	$P.Observable = function( $Object ) {
 		var $Observable = function() {
 			var observers = [];
 
@@ -40,7 +40,7 @@
 			};
 		};
 
-		return $.ObjectFactory({
+		return $P.ObjectFactory({
 				_extends_ : $Observable,
 				_public_  : $Object
 		});

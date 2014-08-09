@@ -1,5 +1,5 @@
-(function( $ ) {
-	$.MVCObservable = function( obj ) {
+(function( $P ) {
+	$P.MVCObservable = function( obj ) {
 		var observable = function() {
 			return {
 				observers: [],
@@ -26,13 +26,13 @@
 			};
 		};
 
-		return $.ObjectFactory({
+		return $P.ObjectFactory({
 			_extends_: observable,
 			_public_: obj
 		});
 	};
 
-	$.MVCObserver = function( obj ) {
+	$P.MVCObserver = function( obj ) {
 		var observer = function( obj ) {
 			return {
 				onRegister: function() {
@@ -51,27 +51,27 @@
 			};
 		};
 
-		return $.ObjectFactory({
+		return $P.ObjectFactory({
 			_extends_: observer,
 			_public_: obj
 		});
 	};
 
-	$.IProxy = {
+	$P.IProxy = {
 		NAME : ""
 	};
 
-	$.IMediator = {
+	$P.IMediator = {
 		NAME : "",
 		listNotificationInterests : function(){},
 		handleNotification : function(){}
 	};
 
-	$.ICommand = {
+	$P.ICommand = {
 		execute : function( notification ){}
 	};
 
-	$.Proxy = function() {
+	$P.Proxy = function() {
 		var data = {};
 
 		return {
@@ -95,7 +95,7 @@
 		};
 	};
 
-	$.Mediator = $.MVCObserver(function() {
+	$P.Mediator = $P.MVCObserver(function() {
 		return {
 			facade: null,
 			onRegister: function() {
@@ -107,7 +107,7 @@
 		};
 	});
 
-	$.Facade = function() {
+	$P.Facade = function() {
 		var	Model = (function() {
 				var proxies = {};
 
@@ -140,7 +140,7 @@
 				};
 			})(),
 
-			View = $.MVCObservable(function() {
+			View = $P.MVCObservable(function() {
 				var mediators = {};
 
 				return {
@@ -197,7 +197,7 @@
 				};
 			}),
 
-			Controller = new $.MVCObserver(function() {
+			Controller = new $P.MVCObserver(function() {
 				var	commands = {},
 					notifications = [];
 

@@ -1,5 +1,5 @@
-(function( $ ) {
-	$.Publisher = function() {
+(function( $P ) {
+	$P.Publisher = function() {
 		var events = {};
 
 		return {

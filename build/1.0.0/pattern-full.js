@@ -1,11 +1,11 @@
 /**
  * Copyright (c) 2011-2014 Activity, LLC.
  * Version: 1.0.0
- * Built: Fri Aug 08 2014 19:51:48 GMT-0400 (EDT)
+ * Built: Fri Aug 08 2014 23:15:26 GMT-0400 (EDT)
  * Released under the MIT license:
  * https://github.com/rgr-myrg/pattern-js/raw/master/MIT-LICENSE
  */
-(function(w){w.Pattern=w.Pattern||{};})(window);(function(b){b.Queue=function(a){var d=null,f=null,c=!1,e=function(){},b=function(){},j=300,h=-1,g=[];if(typeof a!=="object"||!a.id)throw Error("Queue options Object is Null");d=a.id;if(!isNaN(a.timeToWait)&&a.timeToWait>0)j=a.timeToWait;if(!isNaN(a.maxCount)&&a.maxCount>0)h=a.maxCount;if(typeof a.callback==="function")e=a.callback;if(typeof a.onError==="function")b=a.onError;return{add:function(){if(h>0&&g.length>=h)return b(Error("Max count exceeded: "+g.length)),!1;g.push(arguments);return!0},
+(function(w){w.Pattern=$P=w.Pattern||{};})(window);(function(b){b.Queue=function(a){var d=null,f=null,c=!1,e=function(){},b=function(){},j=300,h=-1,g=[];if(typeof a!=="object"||!a.id)throw Error("Queue options Object is Null");d=a.id;if(!isNaN(a.timeToWait)&&a.timeToWait>0)j=a.timeToWait;if(!isNaN(a.maxCount)&&a.maxCount>0)h=a.maxCount;if(typeof a.callback==="function")e=a.callback;if(typeof a.onError==="function")b=a.onError;return{add:function(){if(h>0&&g.length>=h)return b(Error("Max count exceeded: "+g.length)),!1;g.push(arguments);return!0},
 start:function(){if(!c)try{f=setInterval(d+".run()",j)}catch(e){b(e)}},run:function(){if(g.length>0){c=!0;try{e.apply(this,g.shift())}catch(d){this.stop(),b(d)}}else this.stop()},stop:function(){c=!1;clearInterval(f)},isRunning:function(){return c},count:function(){return g.length},clear:function(){this.stop();g=[]}}}})(Pattern);
 (function(b){b.ObjectFactory=function(a){if(typeof a!=="object")throw"Object not provided";var d=function(c){if(typeof c==="function")try{return new c}catch(e){}else if(typeof c==="object")return c},f=d(a._implements_),c=d(a._extends_),a=d(a._public_),e;for(e in c)c.hasOwnProperty(e)&&!a[e]&&(a[e]=c[e]);for(e in f)if(f.hasOwnProperty(e)&&!a[e])throw object.instance+" must implement '"+e+"' "+typeof f[e];if(typeof a.init==="function")try{a.init()}catch(b){}return a}})(Pattern);
 (function(b){b.Observable=function(a){return b.ObjectFactory({_extends_:function(){var d=[];return{addObserver:function(a){if((typeof a==="function"||typeof a==="object")&&typeof a.update==="function")if(a._observable_=this,d.push(a),typeof a.onRegister==="function")try{a.onRegister()}catch(c){}},notifyObservers:function(){for(var a=d.length,c=0;c<a;c++){var e=d[c];e.update.apply(e,arguments)}},removeObserver:function(a){for(var c=0,e=d.length;c<e;c++)if(d[c]===a){d.splice(c,1);break}}}},_public_:a})}})(Pattern);

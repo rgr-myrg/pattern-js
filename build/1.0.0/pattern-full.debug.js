@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2011-2014 Activity, LLC.
  * Version: 1.0.0
- * Built: Fri Aug 08 2014 19:51:48 GMT-0400 (EDT)
+ * Built: Fri Aug 08 2014 23:15:26 GMT-0400 (EDT)
  * Released under the MIT license:
  * https://github.com/rgr-myrg/pattern-js/raw/master/MIT-LICENSE
  */
-(function(w){w.Pattern=w.Pattern||{};})(window);(function( $ ) {
-	$.Queue = function( options ) {
+(function(w){w.Pattern=$P=w.Pattern||{};})(window);(function( $P ) {
+	$P.Queue = function( options ) {
 		var	objectId   = null,
 			intervalId = null,
 			running    = false,
@@ -96,8 +96,8 @@
 	};
 })( Pattern );
 
-(function( $ ) {
-	$.ObjectFactory = function( $Object ) {
+(function( $P ) {
+	$P.ObjectFactory = function( $Object ) {
 		if ( typeof $Object !== "object" ) {
 			throw( "Object not provided" );
 		}
@@ -113,35 +113,35 @@
 			}
 		},
 
-		interfase = getInstance( $Object._implements_ ),
-		baseclass = getInstance( $Object._extends_ ),
-		singleton = getInstance( $Object._public_ );
+		_interface_  = getInstance( $Object._implements_ ),
+		_superclass_ = getInstance( $Object._extends_ ),
+		_instance_   = getInstance( $Object._public_ );
 
-		for ( var i in baseclass ) {
-			if ( baseclass.hasOwnProperty( i ) && !singleton[ i ] ) {
-				singleton[ i ] = baseclass[ i ];
+		for ( var i in _superclass_ ) {
+			if ( _superclass_.hasOwnProperty( i ) && !_instance_[ i ] ) {
+				_instance_[ i ] = _superclass_[ i ];
 			}
 		}
 
-		for ( i in interfase ) {
-			if ( interfase.hasOwnProperty(i) && !singleton[i] ){
-				throw( object.instance + " must implement '" + i + "' " + typeof interfase[i] );
+		for ( i in _interface_ ) {
+			if ( _interface_.hasOwnProperty(i) && !_instance_[i] ){
+				throw( object.instance + " must implement '" + i + "' " + typeof _interface_[i] );
 			}
 		}
 
-		if ( typeof singleton.init === "function" ) {
+		if ( typeof _instance_.init === "function" ) {
 			try {
-				singleton.init();
+				_instance_.init();
 			} catch( e ) {
 			}
 		}
 
-		return singleton;
+		return _instance_;
 	};
 })( Pattern );
 
-(function( $ ) {
-	$.Observable = function( $Object ) {
+(function( $P ) {
+	$P.Observable = function( $Object ) {
 		var $Observable = function() {
 			var observers = [];
 
@@ -182,15 +182,15 @@
 			};
 		};
 
-		return $.ObjectFactory({
+		return $P.ObjectFactory({
 				_extends_ : $Observable,
 				_public_  : $Object
 		});
 	};
 })( Pattern );
 
-(function( $ ){
-	$.Observer = function( $Object ){
+(function( $P ){
+	$P.Observer = function( $Object ){
 		var $Observer = function( $Object ){
 			return {
 				update: function() {
@@ -206,15 +206,15 @@
 			};
 		};
 
-		return $.ObjectFactory({
+		return $P.ObjectFactory({
 			_extends_ : $Observer,
 			_public_  : $Object
 		});
 	};
 })( Pattern );
 
-(function( $ ) {
-	$.EventSignal = function() {
+(function( $P ) {
+	$P.EventSignal = function() {
 		var listeners = [];
 
 		return {
@@ -258,8 +258,8 @@
 	};
 })( Pattern );
 
-(function( $ ) {
-	$.Publisher = function() {
+(function( $P ) {
+	$P.Publisher = function() {
 		var events = {};
 
 		return {
@@ -296,8 +296,8 @@
 	};
 })( Pattern );
 
-(function( $ ) {
-	$.MVCObservable = function( obj ) {
+(function( $P ) {
+	$P.MVCObservable = function( obj ) {
 		var observable = function() {
 			return {
 				observers: [],
@@ -324,13 +324,13 @@
 			};
 		};
 
-		return $.ObjectFactory({
+		return $P.ObjectFactory({
 			_extends_: observable,
 			_public_: obj
 		});
 	};
 
-	$.MVCObserver = function( obj ) {
+	$P.MVCObserver = function( obj ) {
 		var observer = function( obj ) {
 			return {
 				onRegister: function() {
@@ -349,27 +349,27 @@
 			};
 		};
 
-		return $.ObjectFactory({
+		return $P.ObjectFactory({
 			_extends_: observer,
 			_public_: obj
 		});
 	};
 
-	$.IProxy = {
+	$P.IProxy = {
 		NAME : ""
 	};
 
-	$.IMediator = {
+	$P.IMediator = {
 		NAME : "",
 		listNotificationInterests : function(){},
 		handleNotification : function(){}
 	};
 
-	$.ICommand = {
+	$P.ICommand = {
 		execute : function( notification ){}
 	};
 
-	$.Proxy = function() {
+	$P.Proxy = function() {
 		var data = {};
 
 		return {
@@ -393,7 +393,7 @@
 		};
 	};
 
-	$.Mediator = $.MVCObserver(function() {
+	$P.Mediator = $P.MVCObserver(function() {
 		return {
 			facade: null,
 			onRegister: function() {
@@ -405,7 +405,7 @@
 		};
 	});
 
-	$.Facade = function() {
+	$P.Facade = function() {
 		var	Model = (function() {
 				var proxies = {};
 
@@ -438,7 +438,7 @@
 				};
 			})(),
 
-			View = $.MVCObservable(function() {
+			View = $P.MVCObservable(function() {
 				var mediators = {};
 
 				return {
@@ -495,7 +495,7 @@
 				};
 			}),
 
-			Controller = new $.MVCObserver(function() {
+			Controller = new $P.MVCObserver(function() {
 				var	commands = {},
 					notifications = [];
 

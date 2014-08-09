@@ -1,5 +1,5 @@
-(function( $ ){
-	$.Observer = function( $Object ){
+(function( $P ){
+	$P.Observer = function( $Object ){
 		var $Observer = function( $Object ){
 			return {
 				update: function() {
@@ -15,7 +15,7 @@
 			};
 		};
 
-		return $.ObjectFactory({
+		return $P.ObjectFactory({
 			_extends_ : $Observer,
 			_public_  : $Object
 		});

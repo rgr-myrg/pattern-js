@@ -1,5 +1,5 @@
-(function( $ ) {
-	$.ObjectFactory = function( $Object ) {
+(function( $P ) {
+	$P.ObjectFactory = function( $Object ) {
 		if ( typeof $Object !== "object" ) {
 			throw( "Object not provided" );
 		}
@@ -15,29 +15,29 @@
 			}
 		},
 
-		interfase = getInstance( $Object._implements_ ),
-		baseclass = getInstance( $Object._extends_ ),
-		singleton = getInstance( $Object._public_ );
+		_interface_  = getInstance( $Object._implements_ ),
+		_superclass_ = getInstance( $Object._extends_ ),
+		_instance_   = getInstance( $Object._public_ );
 
-		for ( var i in baseclass ) {
-			if ( baseclass.hasOwnProperty( i ) && !singleton[ i ] ) {
-				singleton[ i ] = baseclass[ i ];
+		for ( var i in _superclass_ ) {
+			if ( _superclass_.hasOwnProperty( i ) && !_instance_[ i ] ) {
+				_instance_[ i ] = _superclass_[ i ];
 			}
 		}
 
-		for ( i in interfase ) {
-			if ( interfase.hasOwnProperty(i) && !singleton[i] ){
-				throw( object.instance + " must implement '" + i + "' " + typeof interfase[i] );
+		for ( i in _interface_ ) {
+			if ( _interface_.hasOwnProperty(i) && !_instance_[i] ){
+				throw( object.instance + " must implement '" + i + "' " + typeof _interface_[i] );
 			}
 		}
 
-		if ( typeof singleton.init === "function" ) {
+		if ( typeof _instance_.init === "function" ) {
 			try {
-				singleton.init();
+				_instance_.init();
 			} catch( e ) {
 			}
 		}
 
-		return singleton;
+		return _instance_;
 	};
 })( Pattern );

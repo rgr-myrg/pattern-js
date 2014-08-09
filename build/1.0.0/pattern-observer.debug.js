@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2011-2014 Activity, LLC.
  * Version: 1.0.0
- * Built: Fri Aug 08 2014 20:00:05 GMT-0400 (EDT)
+ * Built: Fri Aug 08 2014 23:20:08 GMT-0400 (EDT)
  * Released under the MIT license:
  * https://github.com/rgr-myrg/pattern-js/raw/master/MIT-LICENSE
  */
-(function(w){w.Pattern=w.Pattern||{};})(window);(function( $ ) {
-	$.Queue = function( options ) {
+(function(w){w.Pattern=$P=w.Pattern||{};})(window);(function( $P ) {
+	$P.Queue = function( options ) {
 		var	objectId   = null,
 			intervalId = null,
 			running    = false,
@@ -96,8 +96,8 @@
 	};
 })( Pattern );
 
-(function( $ ) {
-	$.ObjectFactory = function( $Object ) {
+(function( $P ) {
+	$P.ObjectFactory = function( $Object ) {
 		if ( typeof $Object !== "object" ) {
 			throw( "Object not provided" );
 		}
@@ -113,35 +113,35 @@
 			}
 		},
 
-		interfase = getInstance( $Object._implements_ ),
-		baseclass = getInstance( $Object._extends_ ),
-		singleton = getInstance( $Object._public_ );
+		_interface_  = getInstance( $Object._implements_ ),
+		_superclass_ = getInstance( $Object._extends_ ),
+		_instance_   = getInstance( $Object._public_ );
 
-		for ( var i in baseclass ) {
-			if ( baseclass.hasOwnProperty( i ) && !singleton[ i ] ) {
-				singleton[ i ] = baseclass[ i ];
+		for ( var i in _superclass_ ) {
+			if ( _superclass_.hasOwnProperty( i ) && !_instance_[ i ] ) {
+				_instance_[ i ] = _superclass_[ i ];
 			}
 		}
 
-		for ( i in interfase ) {
-			if ( interfase.hasOwnProperty(i) && !singleton[i] ){
-				throw( object.instance + " must implement '" + i + "' " + typeof interfase[i] );
+		for ( i in _interface_ ) {
+			if ( _interface_.hasOwnProperty(i) && !_instance_[i] ){
+				throw( object.instance + " must implement '" + i + "' " + typeof _interface_[i] );
 			}
 		}
 
-		if ( typeof singleton.init === "function" ) {
+		if ( typeof _instance_.init === "function" ) {
 			try {
-				singleton.init();
+				_instance_.init();
 			} catch( e ) {
 			}
 		}
 
-		return singleton;
+		return _instance_;
 	};
 })( Pattern );
 
-(function( $ ) {
-	$.Observable = function( $Object ) {
+(function( $P ) {
+	$P.Observable = function( $Object ) {
 		var $Observable = function() {
 			var observers = [];
 
@@ -182,15 +182,15 @@
 			};
 		};
 
-		return $.ObjectFactory({
+		return $P.ObjectFactory({
 				_extends_ : $Observable,
 				_public_  : $Object
 		});
 	};
 })( Pattern );
 
-(function( $ ){
-	$.Observer = function( $Object ){
+(function( $P ){
+	$P.Observer = function( $Object ){
 		var $Observer = function( $Object ){
 			return {
 				update: function() {
@@ -206,7 +206,7 @@
 			};
 		};
 
-		return $.ObjectFactory({
+		return $P.ObjectFactory({
 			_extends_ : $Observer,
 			_public_  : $Object
 		});

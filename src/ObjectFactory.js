@@ -17,7 +17,7 @@
 
 		_interface_  = getInstance( $Object._implements_ ),
 		_superclass_ = getInstance( $Object._extends_ ),
-		_instance_   = getInstance( $Object._public_ );
+		_instance_   = getInstance( $Object._constructor_ );
 
 		for ( var i in _superclass_ ) {
 			if ( _superclass_.hasOwnProperty( i ) && !_instance_[ i ] ) {

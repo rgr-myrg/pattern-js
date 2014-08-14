@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2011-2014 Activity, LLC.
- * Version: 1.0.0
- * Built: Sun Aug 10 2014 21:34:45 GMT-0400 (EDT)
+ * Version: 1.0.1
+ * Built: Thu Aug 14 2014 02:42:51 GMT-0400 (EDT)
  * Released under the MIT license:
  * https://github.com/rgr-myrg/pattern-js/raw/master/MIT-LICENSE
  */
@@ -115,7 +115,7 @@
 
 		_interface_  = getInstance( $Object._implements_ ),
 		_superclass_ = getInstance( $Object._extends_ ),
-		_instance_   = getInstance( $Object._public_ );
+		_instance_   = getInstance( $Object._constructor_ );
 
 		for ( var i in _superclass_ ) {
 			if ( _superclass_.hasOwnProperty( i ) && !_instance_[ i ] ) {
@@ -181,8 +181,8 @@
 		};
 
 		return $P.ObjectFactory({
-				_extends_ : $Observable,
-				_public_  : $Object
+				_extends_: $Observable,
+				_constructor_: $Object
 		});
 	};
 })( Pattern );
@@ -194,19 +194,19 @@
 				update: function() {
 					var packet = arguments[ 0 ];
 
-					if (typeof this[ packet.eventName ] === "function" ) {
-						try{
+					if ( typeof this[ packet.eventName ] === "function" ) {
+						//try{
 							this[ packet.eventName ]( packet.eventData );
-						}catch(e){
-						}
+						//}catch(e){
+						//}
 					}
 				}
 			};
 		};
 
 		return $P.ObjectFactory({
-			_extends_ : $Observer,
-			_public_  : $Object
+			_extends_: $Observer,
+			_constructor_: $Object
 		});
 	};
 })( Pattern );
@@ -324,7 +324,7 @@
 
 		return $P.ObjectFactory({
 			_extends_: observable,
-			_public_: obj
+			_constructor_: obj
 		});
 	};
 
@@ -349,7 +349,7 @@
 
 		return $P.ObjectFactory({
 			_extends_: observer,
-			_public_: obj
+			_constructor_: obj
 		});
 	};
 

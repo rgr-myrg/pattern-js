@@ -1,8 +1,8 @@
 var	headerFile  = "LICENSE",
 	artifactId  = "pattern",
-	version     = "1.0.0",
+	version     = "1.0.1",
 	packaging   = "js",
-	targetPath  = "build",
+	targetPath  = "dist",
 	sourcePath  = "src",
 	sourceFiles = [ 
 		"Queue.js", 
@@ -34,8 +34,8 @@ var	topNameSpace = function() {
 			+ topNameSpace();
 	};
 
-var	artifactDebug = version + "/" + artifactId + ".debug." + packaging,
-	artifactMini  = version + "/" + artifactId + "." + packaging;
+var	artifactDebug = artifactId + "." + packaging,
+	artifactMini  = artifactId + ".min." + packaging;
 
 gulp.task( "init", function() {
 	var size = sourceFiles.length;

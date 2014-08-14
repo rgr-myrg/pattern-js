@@ -28,7 +28,7 @@
 
 		return $P.ObjectFactory({
 			_extends_: observable,
-			_public_: obj
+			_constructor_: obj
 		});
 	};
 
@@ -53,7 +53,7 @@
 
 		return $P.ObjectFactory({
 			_extends_: observer,
-			_public_: obj
+			_constructor_: obj
 		});
 	};
 

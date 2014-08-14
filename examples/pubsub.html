@@ -5,7 +5,7 @@
 		<title>DevShop.Me :: Event Signal</title>
 		<style>
 		</style>
-		<script type="text/javascript" src="../build/1.0.0/pattern.js"></script>
+		<script type="text/javascript" src="../dist/pattern.js"></script>
 		<script type="text/javascript">
 		//Subscriber must have onRegister method that returns notification interests
 		var Echo = {
@@ -67,7 +67,7 @@
 		//Alternate way of 'extending' the publisher example:
 		var UIx = Pattern.ObjectFactory({
 			_extends_: Pattern.Publisher,
-			_public_: function(){
+			_constructor_: function(){
 				this.onKeyUp = function() {
 					var data = document.getElementById('box').value;
 					this.notify(Events.ON_KEYUP, data);

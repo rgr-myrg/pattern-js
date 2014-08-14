@@ -5,7 +5,7 @@
 
 			return {
 				addObserver: function( observer ) {
-					if ( (typeof observer === "function" || typeof observer === "object") && 
+					if ( ( typeof observer === "function" || typeof observer === "object" ) && 
 							typeof observer.update === "function" ){
 
 						observer._observable_ = this;
@@ -39,8 +39,8 @@
 		};
 
 		return $P.ObjectFactory({
-				_extends_ : $Observable,
-				_public_  : $Object
+			_extends_: $Observable,
+			_constructor_: $Object
 		});
 	};
 })( Pattern );

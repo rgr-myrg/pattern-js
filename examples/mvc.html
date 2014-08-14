@@ -5,7 +5,7 @@
 		<title>MVC Pattern</title>
 		<style>
 		</style>
-		<script type="text/javascript" src="../build/1.0.0/pattern.js"></script>
+		<script type="text/javascript" src="../dist/pattern.js"></script>
 		<script type="text/javascript">
 		var Echo={
 			onKeyUp:function(msg){
@@ -32,13 +32,13 @@
 		var DataProxy=Pattern.ObjectFactory({
 			_extends_    : Pattern.Proxy,
 			_implements_ : Pattern.IProxy,
-			_public_ : {
+			_constructor_ : {
 				NAME:"DataProxy"
 			}
 		});
 		var StartUpCmd=Pattern.ObjectFactory({
 			_implements_ : Pattern.ICommand,
-			_public_ : {
+			_constructor_ : {
 				execute:function(notification){
 					this.facade.registerProxy(DataProxy);
 					this.facade.registerMediator(UIMediator);
@@ -47,7 +47,7 @@
 		});
 		var KeyUpCmd=Pattern.ObjectFactory({
 			_implements_ : Pattern.ICommand,
-			_public_ : {
+			_constructor_ : {
 				execute:function(notification){
 					var msg=this.facade.retrieveProxy(DataProxy.NAME).getData();
 					Echo.onKeyUp(msg);
@@ -59,7 +59,7 @@
 		var UIMediator=Pattern.ObjectFactory({
 			_extends_    : Pattern.Mediator,
 			_implements_ : Pattern.IMediator,
-			_public_ : {
+			_constructor_ : {
 				NAME:"UIMediator",
 				listNotificationInterests:function(){
 					return [this.facade.ON_KEYUP];
@@ -78,7 +78,7 @@
 		});
 		var UI = Pattern.ObjectFactory({
 			_extends_: Pattern.Facade,
-			_public_: {
+			_constructor_: {
 				ON_KEYUP: "ON_KEYUP",
 				CMD_KEYUP: "CMD_KEYUP",
 				init :function(){

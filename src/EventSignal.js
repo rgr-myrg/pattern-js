@@ -1,4 +1,3 @@
-(function( $P ) {
 	$P.EventSignal = function() {
 		var listeners = [];
 
@@ -41,4 +40,3 @@
 			}
 		};
 	};
-})( Pattern );

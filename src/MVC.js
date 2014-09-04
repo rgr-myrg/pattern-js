@@ -1,4 +1,3 @@
-(function( $P ) {
 	$P.MVCObservable = function( obj ) {
 		var observable = function() {
 			return {
@@ -289,4 +288,3 @@
 			}
 		};
 	};
-})( Pattern );

@@ -1,4 +1,3 @@
-(function( $P ) {
 	$P.Observable = function( $Object ) {
 		var $Observable = function() {
 			var observers = [];
@@ -43,4 +42,3 @@
 			_constructor_: $Object
 		});
 	};
-})( Pattern );

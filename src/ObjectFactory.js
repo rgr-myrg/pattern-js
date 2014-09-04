@@ -1,4 +1,3 @@
-(function( $P ) {
 	$P.ObjectFactory = function( $Object ) {
 		if ( typeof $Object !== "object" ) {
 			throw( "Object not provided" );
@@ -40,4 +39,3 @@
 
 		return _instance_;
 	};
-})( Pattern );

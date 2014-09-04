@@ -1,5 +1,4 @@
-(function( $P ) {
-	$P.Publisher = function() {
+$P.Publisher = function() {
 		var events = {};
 
 		return {
@@ -34,4 +33,3 @@
 			}
 		};
 	};
-})( Pattern );

@@ -1,4 +1,3 @@
-(function( $P ) {
 	$P.Queue = function( options ) {
 		var	objectId   = null,
 			intervalId = null,
@@ -87,4 +86,3 @@
 			}
 		};
 	};
-})( Pattern );

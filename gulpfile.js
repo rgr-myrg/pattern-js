@@ -17,9 +17,10 @@ var	headerFile  = "LICENSE",
 var	gulp   = require( "gulp" ),
 	jshint = require( "gulp-jshint" ),
 	concat = require( "gulp-concat" ),
-	uglify = require( "gulp-uglify" ),
+//	uglify = require( "gulp-uglify" ),
 	header = require( "gulp-header" ),
-	google = require( "gulp-closure-compiler" );
+	google = require( "gulp-closure-compiler"),
+    wrap   = require( "gulp-wrapper" ),
 	nodeFS = require( "fs" ),
 	gccJAR = "lib/compiler.jar",
 	gccOPT = "SIMPLE_OPTIMIZATIONS";
@@ -34,8 +35,8 @@ var	topNameSpace = function() {
 			+ topNameSpace();
 	};
 
-var	artifactDebug = artifactId + "." + packaging,
-	artifactMini  = artifactId + ".min." + packaging;
+var	artifactDebug = artifactId + ".debug." + packaging,
+	artifactMini  = artifactId + "." + packaging;
 
 gulp.task( "init", function() {
 	var size = sourceFiles.length;
@@ -47,7 +48,7 @@ gulp.task( "init", function() {
 });
 
 gulp.task( "clean", function() {
-	var	path  = nodeFS.realpathSync( targetPath + "/" + version),
+	var	path  = nodeFS.realpathSync( targetPath ),
 		files = nodeFS.readdirSync( path );
 
 	for( var i in files ) {
@@ -67,6 +68,11 @@ gulp.task( "lint", function() {
 gulp.task( "concat", function() {
 	return gulp.src( sourceFiles )
 		.pipe( concat( artifactDebug ) )
+		.pipe(
+			wrap({
+			header: "(function($P){",
+			footer: "})(Pattern);"
+		}))
 		.pipe( header( getHeaderFile() ) )
 		.pipe( gulp.dest( targetPath ) );
 });
@@ -84,6 +90,11 @@ gulp.task( "google-cc", function() {
 				}
 			})
 		)
+		.pipe(
+			wrap({
+			header: "(function($P){",
+			footer: "})(Pattern);"
+		}))
 		.pipe( header( getHeaderFile() ) )
 		.pipe( gulp.dest( targetPath ) );
 });

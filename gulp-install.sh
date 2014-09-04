@@ -7,7 +7,7 @@ sudo npm install --save-dev gulp
 
 echo -n "Installing packages"
 
-sudo npm install gulp-jshint gulp-concat gulp-uglify gulp-header gulp-remote-src gulp-closure-compiler --save-dev
+sudo npm install gulp-jshint gulp-concat gulp-uglify gulp-header gulp-wrapper gulp-remote-src gulp-closure-compiler --save-dev
 
 echo -n "Installation finished"
 

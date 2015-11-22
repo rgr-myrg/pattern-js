@@ -20,12 +20,14 @@
   },
   "homepage": "https://github.com/rgr-myrg/activity-js",
   "devDependencies": {
-    "gulp": "^3.8.7",
-    "gulp-closure-compiler": "^0.2.2",
-    "gulp-concat": "^2.3.4",
-    "gulp-header": "^1.0.5",
-    "gulp-jshint": "^1.8.4",
-    "gulp-remote-src": "^0.2.1",
-    "gulp-uglify": "^0.3.1"
+    "gulp": "^3.9.0",
+    "gulp-closure-compiler": "^0.3.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-header": "^1.7.1",
+    "gulp-jshint": "^2.0.0",
+    "gulp-remote-src": "^0.4.0",
+    "gulp-uglify": "^1.5.1",
+    "gulp-wrapper": "^1.0.0",
+    "jshint": "^2.8.0"
   }
 }

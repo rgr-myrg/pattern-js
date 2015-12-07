@@ -1,41 +1,41 @@
-	$P.ObjectFactory = function( $Object ) {
-		if ( typeof $Object !== "object" ) {
-			throw( "Object not provided" );
-		}
+	// $P.ObjectFactory = function( $Object ) {
+	// 	if ( typeof $Object !== "object" ) {
+	// 		throw( "Object not provided" );
+	// 	}
 
-		var getInstance = function( Konstructor ) {
-			if ( typeof Konstructor === "function" ) {
-				try {
-					return new Konstructor();
-				} catch( e ) {
-				}
-			} else if ( typeof Konstructor === "object" ) {
-				return Konstructor;
-			}
-		},
+	// 	var getInstance = function( Konstructor ) {
+	// 		if ( typeof Konstructor === "function" ) {
+	// 			try {
+	// 				return new Konstructor();
+	// 			} catch( e ) {
+	// 			}
+	// 		} else if ( typeof Konstructor === "object" ) {
+	// 			return Konstructor;
+	// 		}
+	// 	},
 
-		_interface_  = getInstance( $Object._implements_ ),
-		_superclass_ = getInstance( $Object._extends_ ),
-		_instance_   = getInstance( $Object._constructor_ );
+	// 	_interface_  = getInstance( $Object._implements_ ),
+	// 	_superclass_ = getInstance( $Object._extends_ ),
+	// 	_instance_   = getInstance( $Object._constructor_ );
 
-		for ( var i in _superclass_ ) {
-			if ( _superclass_.hasOwnProperty( i ) && !_instance_[ i ] ) {
-				_instance_[ i ] = _superclass_[ i ];
-			}
-		}
+	// 	for ( var i in _superclass_ ) {
+	// 		if ( _superclass_.hasOwnProperty( i ) && !_instance_[ i ] ) {
+	// 			_instance_[ i ] = _superclass_[ i ];
+	// 		}
+	// 	}
 
-		for ( i in _interface_ ) {
-			if ( _interface_.hasOwnProperty(i) && !_instance_[i] ){
-				throw( $Object.instance + " must implement '" + i + "' " + typeof _interface_[i] );
-			}
-		}
+	// 	for ( i in _interface_ ) {
+	// 		if ( _interface_.hasOwnProperty(i) && !_instance_[i] ){
+	// 			throw( $Object.instance + " must implement '" + i + "' " + typeof _interface_[i] );
+	// 		}
+	// 	}
 
-		if ( typeof _instance_.init === "function" ) {
-			try {
-				_instance_.init();
-			} catch( e ) {
-			}
-		}
+	// 	if ( typeof _instance_.init === "function" ) {
+	// 		try {
+	// 			_instance_.init();
+	// 		} catch( e ) {
+	// 		}
+	// 	}
 
-		return _instance_;
-	};
+	// 	return _instance_;
+	// };

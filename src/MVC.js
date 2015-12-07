@@ -1,290 +1,290 @@
-	$P.MVCObservable = function( obj ) {
-		var observable = function() {
-			return {
-				observers: [],
+	// $P.MVCObservable = function( obj ) {
+	// 	var observable = function() {
+	// 		return {
+	// 			observers: [],
 
-				addObserver: function( o ){
-					if( (typeof o === "function" || typeof o === "object") && 
-							typeof o.notify === "function" ){
+	// 			addObserver: function( o ){
+	// 				if( (typeof o === "function" || typeof o === "object") && 
+	// 						typeof o.notify === "function" ){
 
-						this.observers.push( o );
+	// 					this.observers.push( o );
 
-						if( typeof o.onRegister === "function" ) {
-							o.onRegister();
-						}
-					}
-				},
+	// 					if( typeof o.onRegister === "function" ) {
+	// 						o.onRegister();
+	// 					}
+	// 				}
+	// 			},
 
-				notifyObservers: function( eventName ) {
-					var size = this.observers.length;
+	// 			notifyObservers: function( eventName ) {
+	// 				var size = this.observers.length;
 
-					for( var x = 0; x < size; x++ ) {
-						this.observers[x].notify( eventName, this );
-					}
-				}
-			};
-		};
+	// 				for( var x = 0; x < size; x++ ) {
+	// 					this.observers[x].notify( eventName, this );
+	// 				}
+	// 			}
+	// 		};
+	// 	};
 
-		return $P.ObjectFactory({
-			_extends_: observable,
-			_constructor_: obj
-		});
-	};
+	// 	return $P.ObjectFactory({
+	// 		_extends_: observable,
+	// 		_constructor_: obj
+	// 	});
+	// };
 
-	$P.MVCObserver = function( obj ) {
-		var observer = function( obj ) {
-			return {
-				onRegister: function() {
-				},
+	// $P.MVCObserver = function( obj ) {
+	// 	var observer = function( obj ) {
+	// 		return {
+	// 			onRegister: function() {
+	// 			},
 
-				notify: function( eventName, observable ) {
-					this.observable = observable;
+	// 			notify: function( eventName, observable ) {
+	// 				this.observable = observable;
 
-					if( typeof this[ eventName ] === "function" ) {
-						try {
-							this[ eventName ]();
-						} catch( e ) {
-						}
-					}
-				}
-			};
-		};
+	// 				if( typeof this[ eventName ] === "function" ) {
+	// 					try {
+	// 						this[ eventName ]();
+	// 					} catch( e ) {
+	// 					}
+	// 				}
+	// 			}
+	// 		};
+	// 	};
 
-		return $P.ObjectFactory({
-			_extends_: observer,
-			_constructor_: obj
-		});
-	};
+	// 	return $P.ObjectFactory({
+	// 		_extends_: observer,
+	// 		_constructor_: obj
+	// 	});
+	// };
 
-	$P.IProxy = {
-		NAME : ""
-	};
+	// $P.IProxy = {
+	// 	NAME : ""
+	// };
 
-	$P.IMediator = {
-		NAME : "",
-		listNotificationInterests : function(){},
-		handleNotification : function(){}
-	};
+	// $P.IMediator = {
+	// 	NAME : "",
+	// 	listNotificationInterests : function(){},
+	// 	handleNotification : function(){}
+	// };
 
-	$P.ICommand = {
-		execute : function( notification ){}
-	};
+	// $P.ICommand = {
+	// 	execute : function( notification ){}
+	// };
 
-	$P.Proxy = function() {
-		var data = {};
+	// $P.Proxy = function() {
+	// 	var data = {};
 
-		return {
-			facade: null,
+	// 	return {
+	// 		facade: null,
 
-			setData: function( obj ) {
-				data = obj;
-			},
+	// 		setData: function( obj ) {
+	// 			data = obj;
+	// 		},
 
-			getData: function() {
-				return data;
-			},
+	// 		getData: function() {
+	// 			return data;
+	// 		},
 
-			onRegister: function() {
-				return;
-			},
+	// 		onRegister: function() {
+	// 			return;
+	// 		},
 
-			onRemove: function() {
-				return;
-			}
-		};
-	};
+	// 		onRemove: function() {
+	// 			return;
+	// 		}
+	// 	};
+	// };
 
-	$P.Mediator = $P.MVCObserver(function() {
-		return {
-			facade: null,
-			onRegister: function() {
-				return;
-			},
-			onRemove: function() {
-				return;
-			}
-		};
-	});
+	// $P.Mediator = $P.MVCObserver(function() {
+	// 	return {
+	// 		facade: null,
+	// 		onRegister: function() {
+	// 			return;
+	// 		},
+	// 		onRemove: function() {
+	// 			return;
+	// 		}
+	// 	};
+	// });
 
-	$P.Facade = function() {
-		var	Model = (function() {
-				var proxies = {};
+	// $P.Facade = function() {
+	// 	var	Model = (function() {
+	// 			var proxies = {};
 
-				return {
-					facade: {},
+	// 			return {
+	// 				facade: {},
 
-					registerProxy: function( proxy ) {
-						proxy.facade = this.facade;
+	// 				registerProxy: function( proxy ) {
+	// 					proxy.facade = this.facade;
 
-						if( !proxies[ proxy.NAME ] ) {
-							proxies[ proxy.NAME ] = proxy;
-						}
+	// 					if( !proxies[ proxy.NAME ] ) {
+	// 						proxies[ proxy.NAME ] = proxy;
+	// 					}
 
-						if(typeof proxy.onRegister === "function" ){
-							proxy.onRegister();
-						}
-					},
+	// 					if(typeof proxy.onRegister === "function" ){
+	// 						proxy.onRegister();
+	// 					}
+	// 				},
 
-					retrieveProxy : function( key ) {
-						return proxies[ key ] ? proxies[ key ] : null;
-					},
+	// 				retrieveProxy : function( key ) {
+	// 					return proxies[ key ] ? proxies[ key ] : null;
+	// 				},
 
-					removeProxy : function( key ){
-						if( typeof proxies[ key ].onRemove === "function" ){
-							proxies[ key ].onRemove();
-						}
+	// 				removeProxy : function( key ){
+	// 					if( typeof proxies[ key ].onRemove === "function" ){
+	// 						proxies[ key ].onRemove();
+	// 					}
 
-						proxies[ key ] = null;
-					}
-				};
-			})(),
+	// 					proxies[ key ] = null;
+	// 				}
+	// 			};
+	// 		})(),
 
-			View = $P.MVCObservable(function() {
-				var mediators = {};
+	// 		View = $P.MVCObservable(function() {
+	// 			var mediators = {};
 
-				return {
-					facade: {},
+	// 			return {
+	// 				facade: {},
 
-					notification: {},
+	// 				notification: {},
 
-					registerMediator: function( mediator ) {
-						mediator.facade = this.facade;
+	// 				registerMediator: function( mediator ) {
+	// 					mediator.facade = this.facade;
 
-						if( !mediators[ mediator.NAME ] ) {
-							mediators[ mediator.NAME ] = mediator;
-							this.addObserver( mediator );
-						}
-					},
+	// 					if( !mediators[ mediator.NAME ] ) {
+	// 						mediators[ mediator.NAME ] = mediator;
+	// 						this.addObserver( mediator );
+	// 					}
+	// 				},
 
-					retrieveMediator: function( key ) {
-						return mediators[ key ] ? mediators[ key ] : null;
-					},
+	// 				retrieveMediator: function( key ) {
+	// 					return mediators[ key ] ? mediators[ key ] : null;
+	// 				},
 
-					removeMediator: function( key ) {
-						if( typeof mediators[ key ].onRemove === "function" ) {
-							mediators[ key ].onRemove();
-						}
+	// 				removeMediator: function( key ) {
+	// 					if( typeof mediators[ key ].onRemove === "function" ) {
+	// 						mediators[ key ].onRemove();
+	// 					}
 
-						mediators[ key ] = null;
-					},
+	// 					mediators[ key ] = null;
+	// 				},
 
-					notifyObservers: function( eventName ) {
-						var size = this.observers.length;
+	// 				notifyObservers: function( eventName ) {
+	// 					var size = this.observers.length;
 
-						for ( var x = 0; x < size; x++ ) {
-							var	notices = this.observers[ x ].listNotificationInterests(),
-								deliver = false;
+	// 					for ( var x = 0; x < size; x++ ) {
+	// 						var	notices = this.observers[ x ].listNotificationInterests(),
+	// 							deliver = false;
 
-							for (var i = 0, l = notices.length; i < l; i++ ) {
-								if( notices[ i ] === this.notification.name ) {
-									deliver = true;
-									break;
-								}
-							}
+	// 						for (var i = 0, l = notices.length; i < l; i++ ) {
+	// 							if( notices[ i ] === this.notification.name ) {
+	// 								deliver = true;
+	// 								break;
+	// 							}
+	// 						}
 
-							if( deliver ){
-								this.observers[ x ].notification = this.notification;
-								this.observers[ x ].notify( eventName, this );
-							}
-						}
-					},
+	// 						if( deliver ){
+	// 							this.observers[ x ].notification = this.notification;
+	// 							this.observers[ x ].notify( eventName, this );
+	// 						}
+	// 					}
+	// 				},
 
-					sendNotification: function( notification ) {
-						this.notification = notification;
-						this.notifyObservers( "handleNotification" );
-					}
-				};
-			}),
+	// 				sendNotification: function( notification ) {
+	// 					this.notification = notification;
+	// 					this.notifyObservers( "handleNotification" );
+	// 				}
+	// 			};
+	// 		}),
 
-			Controller = new $P.MVCObserver(function() {
-				var	commands = {},
-					notifications = [];
+	// 		Controller = new $P.MVCObserver(function() {
+	// 			var	commands = {},
+	// 				notifications = [];
 
-				return {
-					facade: {},
+	// 			return {
+	// 				facade: {},
 
-					NAME: "Controller",
+	// 				NAME: "Controller",
 
-					registerCommand: function( key, command ) {
-						command.facade = this.facade;
+	// 				registerCommand: function( key, command ) {
+	// 					command.facade = this.facade;
 
-						if( !commands[ key ] ) {
-							commands[ key ] = command;
-							notifications.push( key );
-						}
-					},
+	// 					if( !commands[ key ] ) {
+	// 						commands[ key ] = command;
+	// 						notifications.push( key );
+	// 					}
+	// 				},
 
-					listNotificationInterests: function() {
-						return notifications;
-					},
+	// 				listNotificationInterests: function() {
+	// 					return notifications;
+	// 				},
 
-					handleNotification: function() {
-						var notification = this.notification;
+	// 				handleNotification: function() {
+	// 					var notification = this.notification;
 
-						if( typeof commands[ notification.name ] === "object" && 
-								typeof commands[ notification.name ].execute === "function" ) {
-							commands[ notification.name ].execute( notification );
-						}
-					}
-				};
-			}),
+	// 					if( typeof commands[ notification.name ] === "object" && 
+	// 							typeof commands[ notification.name ].execute === "function" ) {
+	// 						commands[ notification.name ].execute( notification );
+	// 					}
+	// 				}
+	// 			};
+	// 		}),
 
-			initializeModel = function( app ) {
-				Model.facade = app;
-			},
+	// 		initializeModel = function( app ) {
+	// 			Model.facade = app;
+	// 		},
 
-			initializeView = function( app ) {
-				View.facade = app;
-			},
+	// 		initializeView = function( app ) {
+	// 			View.facade = app;
+	// 		},
 
-			initializeController = function( app ) {
-				Controller.facade = app;
-				app.registerMediator( Controller );
-			};
+	// 		initializeController = function( app ) {
+	// 			Controller.facade = app;
+	// 			app.registerMediator( Controller );
+	// 		};
 
-		return {
-			CMD_STARTUP: "CMD_STARTUP",
+	// 	return {
+	// 		CMD_STARTUP: "CMD_STARTUP",
 
-			registerProxy: function( proxy ) {
-				Model.registerProxy( proxy );
-			},
+	// 		registerProxy: function( proxy ) {
+	// 			Model.registerProxy( proxy );
+	// 		},
 
-			registerMediator : function( mediator ) {
-				View.registerMediator( mediator );
-			},
+	// 		registerMediator : function( mediator ) {
+	// 			View.registerMediator( mediator );
+	// 		},
 
-			registerCommand : function( key, command ) {
-				Controller.registerCommand( key, command );
-			},
+	// 		registerCommand : function( key, command ) {
+	// 			Controller.registerCommand( key, command );
+	// 		},
 
-			retrieveProxy : function( key ) {
-				return Model.retrieveProxy( key );
-			},
+	// 		retrieveProxy : function( key ) {
+	// 			return Model.retrieveProxy( key );
+	// 		},
 
-			retrieveMediator : function( key ) {
-				return View.retrieveMediator( key );
-			},
+	// 		retrieveMediator : function( key ) {
+	// 			return View.retrieveMediator( key );
+	// 		},
 
-			removeProxy : function( key ) {
-				Model.removeProxy( key );
-			},
+	// 		removeProxy : function( key ) {
+	// 			Model.removeProxy( key );
+	// 		},
 
-			removeMediator : function( key ) {
-				View.removeMediator( key );
-			},
+	// 		removeMediator : function( key ) {
+	// 			View.removeMediator( key );
+	// 		},
 
-			sendNotification : function( name, body, type ) {
-				View.sendNotification({
-					name: name,
-					body: body,
-					type: type
-				});
-			},
+	// 		sendNotification : function( name, body, type ) {
+	// 			View.sendNotification({
+	// 				name: name,
+	// 				body: body,
+	// 				type: type
+	// 			});
+	// 		},
 
-			initializeFacade: function() {
-				initializeModel( this );
-				initializeView( this );
-				initializeController( this );
-			}
-		};
-	};
+	// 		initializeFacade: function() {
+	// 			initializeModel( this );
+	// 			initializeView( this );
+	// 			initializeController( this );
+	// 		}
+	// 	};
+	// };

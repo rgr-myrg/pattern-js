@@ -20,11 +20,9 @@ var	karma		= require( "karma" ).Server,
 	log			= require( "gulp-util" ).log,
 	replace     = require( "gulp-replace" );
 
-var	headerText  = "/* v{version} {date} */",
+var	headerText  = "/* {artifact} v{version} {date} */",
 
 	artifactId  = "pattern",
-
-	version     = pkg.version,
 
 	packaging   = "js",
 
@@ -39,15 +37,10 @@ var	headerText  = "/* v{version} {date} */",
 	sourceFiles = [
 
 		"global/*.js",
-		"queue/*.js",
 		"eventsignal/*.js",
-
-		"Queue.js", 
-		"ObjectFactory.js", 
-		"Observable.js", 
-		"Observer.js", 
-		"Publisher.js",
-		"MVC.js"
+		"observer/*.js",
+		"pubsub/*.js",
+		"queue/*.js"
 
 	],
 	
@@ -73,7 +66,7 @@ var	headerText  = "/* v{version} {date} */",
 
 	wrapHeader = "(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){";
 
-	wrapFooter  = "$P.version='" + version + "';})(Pattern);",
+	wrapFooter  = "$P.version='" + pkg.version + "';})(Pattern);",
 	
 	sourceBentoFile = "./dist/pattern.js",
 	
@@ -99,10 +92,12 @@ gulp.task( "init", function() {
 	}
 
 	// Prepare header text with timestamp
-	headerText = headerText.replace(/{version}/, version ).replace( /{date}/, (new Date).toString() );
+	headerText = headerText
+		.replace( /{artifact}/, pkg.name )
+		.replace( /{version}/, pkg.version )
+		.replace( /{date}/, (new Date).toString() );
 
 });
-
 
 gulp.task( "clean", [ "init" ], function() {
 
@@ -179,7 +174,6 @@ gulp.task( "browserify", [ "minify" ], function() {
 		.transform( istanbul() );
 
 });
-
 
 gulp.task( "test", [ "browserify" ], function ( done ) {
 

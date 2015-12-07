@@ -26,6 +26,6 @@ IS_NUMBER = function( num ) {
 
 LOGTAG = function() {
 
-	return "[Pattern JS] " + ( new Date() ).toLocaleTimeString() + " ";
+	return "[Pattern Js] " + ( new Date() ).toLocaleTimeString() + " ";
 
 };

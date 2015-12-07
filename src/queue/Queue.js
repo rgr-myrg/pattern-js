@@ -39,7 +39,7 @@ $P.Queue = function( options ) {
 		/**
 		* Method to add items to queue.	
 		* @param {object[]} arguments - Array of arguments.
-		* @returns {array} Modified queue array.
+		* @returns {array} queue - Modified queue array.
 		* @since 1.0
 		*/
 		add: function() {
@@ -61,7 +61,7 @@ $P.Queue = function( options ) {
 		/**
 		 * Method to add items to beginning of the queue, to be processed first
 		 * @param {object[]} arguments - Array of arguments.
-		 * @returns {array} Modified queue array.
+		 * @returns {array} queue - Modified queue array.
 		 * @throws Error if the max count exceeded.
 		 * @since 1.1
 		 */
@@ -104,7 +104,7 @@ $P.Queue = function( options ) {
 
 		/**
 		* Method to run the queue.
-		* @returns {array} The queue array.	
+		* @returns {array} queue - The queue array.	
 		* @since 1.0
 		*/
 		run: function() {
@@ -131,7 +131,7 @@ $P.Queue = function( options ) {
 
 		/**
 		* Method to stop the queue.
-		* @returns {boolean} Whether queue is running or not.
+		* @returns {boolean} running - Whether queue is running or not.
 		* @since 1.0
 		*/
 		stop: function() {
@@ -144,7 +144,7 @@ $P.Queue = function( options ) {
 
 		/**
 		* Method to check whether the queue is running.	
-		* @returns {boolean} Whether queue is running or not.
+		* @returns {boolean} running - Whether queue is running or not.
 		* @since 1.0
 		*/
 		isRunning: function() {
@@ -155,7 +155,7 @@ $P.Queue = function( options ) {
 
 		/**
 		* Method to get the length of the queue.	
-		* @returns {number} Length of the queue.
+		* @returns {number} queue.length - Length of the queue.
 		* @since 1.0
 		*/
 		count: function() {
@@ -166,7 +166,7 @@ $P.Queue = function( options ) {
 
 		/**
 		* Method to clear the queue.
-		* @returns {array} The queue array.	
+		* @returns {array} queue - The queue array.	
 		* @since 1.0
 		*/
 		clear: function() {

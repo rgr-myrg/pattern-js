@@ -18,7 +18,7 @@ $P.EventSignal = function() {
 
 		removeListener: function( listener ) {
 
-			var	size = listeners.length;
+			var size = listeners.length;
 
 			for ( var x = 0; x < size; x++ ) {
 

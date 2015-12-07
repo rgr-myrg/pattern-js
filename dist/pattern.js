@@ -1,4 +1,4 @@
-/* v1.1.0 Mon Dec 07 2015 00:33:39 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
+/* v1.1.0 Mon Dec 07 2015 00:46:37 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
 
 FALSE = false,
 
@@ -71,7 +71,7 @@ $P.Queue = function( options ) {
 		/**
 		* Method to add items to queue.	
 		* @param {object[]} arguments - Array of arguments.
-		* @returns {number} Length of queue.
+		* @returns {array} Modified queue array.
 		* @since 1.0
 		*/
 		add: function() {
@@ -80,7 +80,7 @@ $P.Queue = function( options ) {
 
 				onError( new Error( "maxCount exceeded: " + queue.length ) );
 
-				return FALSE;
+				return NULL;
 
 			}
 
@@ -93,7 +93,8 @@ $P.Queue = function( options ) {
 		/**
 		 * Method to add items to beginning of the queue, to be processed first
 		 * @param {object[]} arguments - Array of arguments.
-		 * @returns {number} Length of queue.
+		 * @returns {array} Modified queue array.
+		 * @throws Error if the max count exceeded.
 		 * @since 1.1
 		 */
 		addPriority: function() {
@@ -102,7 +103,7 @@ $P.Queue = function( options ) {
 
 				onError( new Error( "maxCount exceeded: " + queue.length ) );
 
-				return FALSE;
+				return NULL;
 
 			}
 
@@ -115,6 +116,7 @@ $P.Queue = function( options ) {
 
 		/**
 		* Method to start the queue.	
+		* @returns {boolean} Whether queue is running or not.
 		* @since 1.0
 		*/
 		start: function() {
@@ -133,7 +135,8 @@ $P.Queue = function( options ) {
 		},
 
 		/**
-		* Method to run the queue.	
+		* Method to run the queue.
+		* @returns {array} The queue array.	
 		* @since 1.0
 		*/
 		run: function() {
@@ -159,7 +162,8 @@ $P.Queue = function( options ) {
 		},
 
 		/**
-		* Method to stop the queue.	
+		* Method to stop the queue.
+		* @returns {boolean} Whether queue is running or not.
 		* @since 1.0
 		*/
 		stop: function() {
@@ -193,7 +197,8 @@ $P.Queue = function( options ) {
 		},
 
 		/**
-		* Method to clear the queue.	
+		* Method to clear the queue.
+		* @returns {array} The queue array.	
 		* @since 1.0
 		*/
 		clear: function() {

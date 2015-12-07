@@ -1,102 +1,270 @@
-var	headerFile  = "LICENSE",
+var	karma		= require( "karma" ).Server,
+	pkg         = require("./package.json"),
+	JSCS		= require( "jscs" ),
+	gulp    	= require( "gulp" ),
+	gutil 		= require( "gulp-util" ),
+	chalk 		= require( "chalk" ),
+	jshint  	= require( "gulp-jshint" ),
+	concat  	= require( "gulp-concat" ),
+	uglify  	= require( "gulp-uglify" ),
+	header  	= require( "gulp-header" ),
+	wrapper 	= require( "gulp-wrapper" ),
+	watch		= require( "gulp-watch" ),
+	nodeFS  	= require( "fs" ),
+	browserSync = require( "browser-sync" ),
+	browserify  = require( "browserify" ),
+	nodeFTP 	= require("jsftp"),
+	istanbul 	= require( "browserify-istanbul" ),
+	shell 		= require( "gulp-shell" ),
+	color		= require( "chalk" ),
+	log			= require( "gulp-util" ).log,
+	replace     = require( "gulp-replace" );
+
+var	headerText  = "/* v{version} {date} */",
+
 	artifactId  = "pattern",
-	version     = "1.0.1",
+
+	version     = pkg.version,
+
 	packaging   = "js",
+
 	targetPath  = "dist",
+
 	sourcePath  = "src",
-	sourceFiles = [ 
+	
+	testPath = "test",
+	
+	textSuffix = ".Spec",
+
+	sourceFiles = [
+
+		"global/*.js",
+		"queue/*.js",
+		"eventsignal/*.js",
+
 		"Queue.js", 
 		"ObjectFactory.js", 
 		"Observable.js", 
 		"Observer.js", 
-		"EventSignal.js", 
 		"Publisher.js",
 		"MVC.js"
-	];
 
-var	gulp   = require( "gulp" ),
-	jshint = require( "gulp-jshint" ),
-	concat = require( "gulp-concat" ),
-//	uglify = require( "gulp-uglify" ),
-	header = require( "gulp-header" ),
-	google = require( "gulp-closure-compiler"),
-    wrap   = require( "gulp-wrapper" ),
-	nodeFS = require( "fs" ),
-	gccJAR = "lib/compiler.jar",
-	gccOPT = "SIMPLE_OPTIMIZATIONS";
-
-var	topNameSpace = function() {
-		return "(function(w){w.Pattern=$P=w.Pattern||{};})(window);";
+	],
+	
+	lintFiles = sourceFiles.filter( function( item ) {
+		return item.indexOf( "lib/" ) === -1
+	}),
+	
+	watchDirectories = [
+		"src/**/*.js", 
+		"test/*.js"
+	],
+	
+	codeStyleSettings = {
+		preset: "idiomatic",
+		validateIndentation: "\t"	
 	},
-	getHeaderFile = function() {
-		return nodeFS.readFileSync( headerFile, {encoding: "utf8"} )
-			.replace( /{version}/, version )
-			.replace( /{date}/, (new Date).toString() )
-			+ topNameSpace();
-	};
 
-var	artifactDebug = artifactId + ".debug." + packaging,
-	artifactMini  = artifactId + "." + packaging;
+	jshintConfig = pkg.jshintConfig,
+	
+	buildSource = [],
+	
+	jsDocLocation = "./documentation",
+
+	wrapHeader = "(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){";
+
+	wrapFooter  = "$P.version='" + version + "';})(Pattern);",
+	
+	sourceBentoFile = "./dist/pattern.js",
+	
+	sourceBentoMinFile = "./dist/pattern.min.js";
+
+var	artifactDebug = "/" + artifactId + "." + packaging,
+	artifactMini  = "/" + artifactId + ".min." + packaging;
 
 gulp.task( "init", function() {
-	var size = sourceFiles.length;
 
-	for ( var x = 0; x < size; x++ ) {
-		sourceFiles[ x ] = sourcePath + "/" + sourceFiles[ x ];
-		console.log( "Adding " + sourceFiles[ x ] );
+	// Create new array of sourceFiles appended with the proper source directory.
+	buildSource = sourceFiles.map( function( file ) {
+		return sourcePath + "/" + file;
+	});
+	
+	lintFiles = buildSource.filter( function( item ) {
+		return item.indexOf( "lib/" ) === -1
+	});
+	
+	// Check for dist folder existence, create if not found.	
+	if ( !nodeFS.existsSync( targetPath ) ) {
+		nodeFS.mkdirSync( "./" + targetPath );
 	}
+
+	// Prepare header text with timestamp
+	headerText = headerText.replace(/{version}/, version ).replace( /{date}/, (new Date).toString() );
+
 });
 
-gulp.task( "clean", function() {
+
+gulp.task( "clean", [ "init" ], function() {
+
 	var	path  = nodeFS.realpathSync( targetPath ),
 		files = nodeFS.readdirSync( path );
-
-	for( var i in files ) {
-		if ( files.hasOwnProperty( i ) ) {
-			console.log( "Removing " + targetPath + "/" + files[ i ] );
-			nodeFS.unlink( path + "/" + files[ i ], function( e ){if(e)console.log( e );} );
+		
+	files.forEach( function ( file, index, files ) {
+		if ( files.hasOwnProperty( index ) ) {
+			nodeFS.unlinkSync( path + "/" + file );
 		}
-	}
+	});
+
 });
 
-gulp.task( "lint", function() {
-	return gulp.src( sourcePath )
-		.pipe( jshint() )
-		.pipe( jshint.reporter( "default" ) );
+gulp.task( "lint", [ "clean" ], function() {
+
+	return gulp.src( lintFiles )
+
+		.pipe( jshint( jshintConfig ) )
+		.pipe( jshint.reporter( "default" ) )
+		.pipe( jshint.reporter( "fail" ) );
+
 });
 
-gulp.task( "concat", function() {
-	return gulp.src( sourceFiles )
+gulp.task( "concat", [ "lint" ], function() {
+
+	return gulp.src( buildSource )
+
 		.pipe( concat( artifactDebug ) )
-		.pipe(
-			wrap({
-			header: "(function($P){",
-			footer: "})(Pattern);"
-		}))
-		.pipe( header( getHeaderFile() ) )
-		.pipe( gulp.dest( targetPath ) );
-});
 
-gulp.task( "google-cc", function() {
-	return gulp.src( sourceFiles )
-		.pipe( concat( artifactDebug ) )
 		.pipe(
-			google({
-				compilerPath: gccJAR,
-				fileName: artifactMini,
-				compilerFlags: {
-					compilation_level: gccOPT,
-					js_output_file: artifactMini
-				}
+
+			wrapper({
+
+				header: wrapHeader,
+				footer: wrapFooter
+
 			})
+
 		)
-		.pipe(
-			wrap({
-			header: "(function($P){",
-			footer: "})(Pattern);"
-		}))
-		.pipe( header( getHeaderFile() ) )
+
+		.pipe( header( headerText ) )
 		.pipe( gulp.dest( targetPath ) );
+
 });
 
-gulp.task( "default", ["init", "lint", "concat", "google-cc"] );
+gulp.task( "minify", [ "concat" ], function() {
+
+	//return gulp.src( buildSource )
+	return gulp.src( targetPath + artifactDebug )
+
+		.pipe( concat( artifactMini ) )
+
+		.pipe(
+
+			uglify({
+				compress: {
+					drop_console: true
+				}
+			}) 
+
+		)
+
+		.pipe( header( headerText ) )
+
+		.pipe( gulp.dest( targetPath ) );
+
+});
+
+gulp.task( "browserify", [ "minify" ], function() {
+
+	return browserify( gulp.src( "dist" ) )
+
+		.transform( istanbul() );
+
+});
+
+
+gulp.task( "test", [ "browserify" ], function ( done ) {
+
+	var server = new karma({
+		configFile: __dirname + "/karma.conf.js",
+		singleRun: true
+
+	}, function( exitCode ) {
+
+		if ( exitCode === 0 ) {
+
+			return done();
+
+		} else {
+			process.exit( 1 );
+
+		};
+
+	});
+
+	server.start();
+
+});
+
+gulp.task( "priority-tests", [ "minify" ], function ( done ) {
+
+	var changedFileName = require( "path" ).basename( lastChangedFile ).replace( /\.[^/.]+$/, "" ),
+		files = [];
+		
+	changedFileName.indexOf( textSuffix ) === -1 ? ( changedFileName = changedFileName + textSuffix + "." + packaging ) : ( changedFileName = changedFileName + "." + packaging );
+	
+	if ( nodeFS.existsSync( testPath + "/" + changedFileName ) ) {
+		files = [
+			targetPath + "/pattern.min.js",
+			testPath + "/datapoints/*",
+			testPath + "/" + changedFileName
+		]
+	}
+
+	if ( files.length ) {
+		
+		var server = new karma({
+			configFile: __dirname + "/karma.conf.js",
+			files: files
+
+			}, function( exitCode ) {
+
+				return done();
+
+
+		});
+
+		server.start();
+
+	} else {
+
+		if ( changedFileName.indexOf( "Vars" ) === -1 ) {
+		
+			console.log( "" );
+			
+			log( color.red.bold( "Please provide tests for " + lastChangedFile + " if applicable!" + "\n" ) );
+		
+		}
+
+		done();
+	}
+
+});
+
+gulp.task( "watch", function () {
+
+	var watch = gulp.watch( watchDirectories, [ "priority-tests" ] );
+	
+	watch.on( "change", function( event ) {
+	
+		lastChangedFile = event.path;
+
+	});
+
+});
+
+gulp.task( "document", [ "test" ], shell.task(
+	[ "jsdoc --private -c jsdoc.json --readme README.md -d " + jsDocLocation ]
+));
+
+gulp.task( "default", [ "watch", "minify" ] );
+gulp.task( "finalize", [ "test" ]  );
+gulp.task( "release", [ "document" ] );

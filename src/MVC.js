@@ -176,7 +176,7 @@
 								deliver = false;
 
 							for (var i = 0, l = notices.length; i < l; i++ ) {
-								if( notices[ i ] == this.notification.name ) {
+								if( notices[ i ] === this.notification.name ) {
 									deliver = true;
 									break;
 								}

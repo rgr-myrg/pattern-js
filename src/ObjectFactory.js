@@ -3,14 +3,14 @@
 			throw( "Object not provided" );
 		}
 
-		var getInstance = function( $Constructor ) {
-			if ( typeof $Constructor === "function" ) {
+		var getInstance = function( Konstructor ) {
+			if ( typeof Konstructor === "function" ) {
 				try {
-					return new $Constructor();
+					return new Konstructor();
 				} catch( e ) {
 				}
-			} else if ( typeof $Constructor === "object" ) {
-				return $Constructor;
+			} else if ( typeof Konstructor === "object" ) {
+				return Konstructor;
 			}
 		},
 
@@ -26,7 +26,7 @@
 
 		for ( i in _interface_ ) {
 			if ( _interface_.hasOwnProperty(i) && !_instance_[i] ){
-				throw( object.instance + " must implement '" + i + "' " + typeof _interface_[i] );
+				throw( $Object.instance + " must implement '" + i + "' " + typeof _interface_[i] );
 			}
 		}
 

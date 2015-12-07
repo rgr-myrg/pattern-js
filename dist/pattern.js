@@ -1,22 +1,718 @@
+/* v1.1.0 Mon Dec 07 2015 00:15:44 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
+
+FALSE = false,
+
+NULL = null,
+
+EMPTY_FUNCTION = function(){},
+
+IS_FUNCTION = function( fn ) {
+
+	return typeof fn === "function";
+
+},
+
+IS_OBJECT = function( obj ) {
+
+	return typeof obj === "object";
+
+},
+
+IS_NUMBER = function( num ) {
+
+	return typeof num === "number";
+
+},
+
+LOGTAG = function() {
+
+	return "[Pattern JS] " + ( new Date() ).toLocaleTimeString() + " ";
+
+};
+
 /**
- * Copyright (c) 2011-2014 Activity, LLC.
- * Version: 1.0.1
- * Built: Thu Sep 04 2014 10:54:07 GMT-0400 (EDT)
- * Released under the MIT license:
- * https://github.com/rgr-myrg/pattern-js/raw/master/MIT-LICENSE
+ * @file Simple FIFO Queue
+ * @exports queue/Queue
+ * @extends {Pattern}  
  */
-(function(w){w.Pattern=$P=w.Pattern||{};})(window);(function($P){$P.Queue=function(a){var d=null,e=null,c=!1,b=function(){},g=function(){},j=300,h=-1,f=[];if(typeof a!=="object"||!a.id)throw Error("Queue options Object is Null");d=a.id;if(!isNaN(a.timeToWait)&&a.timeToWait>0)j=a.timeToWait;if(!isNaN(a.maxCount)&&a.maxCount>0)h=a.maxCount;if(typeof a.callback==="function")b=a.callback;if(typeof a.onError==="function")g=a.onError;return{add:function(){if(h>0&&f.length>=h)return g(Error("Max count exceeded: "+f.length)),!1;f.push(arguments);return!0},start:function(){if(!c)try{e=
-setInterval(d+".run()",j)}catch(b){g(b)}},run:function(){if(f.length>0){c=!0;try{b.apply(this,f.shift())}catch(d){this.stop(),g(d)}}else this.stop()},stop:function(){c=!1;clearInterval(e)},isRunning:function(){return c},count:function(){return f.length},clear:function(){this.stop();f=[]}}};
-$P.ObjectFactory=function(a){if(typeof a!=="object")throw"Object not provided";var d=function(c){if(typeof c==="function")try{return new c}catch(b){}else if(typeof c==="object")return c},e=d(a._implements_),c=d(a._extends_),a=d(a._constructor_),b;for(b in c)c.hasOwnProperty(b)&&!a[b]&&(a[b]=c[b]);for(b in e)if(e.hasOwnProperty(b)&&!a[b])throw object.instance+" must implement '"+b+"' "+typeof e[b];if(typeof a.init==="function")try{a.init()}catch(g){}return a};
-$P.Observable=function(a){return $P.ObjectFactory({_extends_:function(){var d=[];return{addObserver:function(a){if((typeof a==="function"||typeof a==="object")&&typeof a.update==="function")if(a._observable_=this,d.push(a),typeof a.onRegister==="function")try{a.onRegister()}catch(c){}},notifyObservers:function(){for(var a=0,c=d.length;a<c;a++){var b=d[a];b.update.apply(b,arguments)}},removeObserver:function(a){for(var c=0,b=d.length;c<b;c++)if(d[c]===a){d.splice(c,1);break}}}},_constructor_:a})};
-$P.Observer=function(a){return $P.ObjectFactory({_extends_:function(){return{update:function(a){if(typeof this[a.eventName]==="function")try{this[a.eventName](a.eventData)}catch(e){}}}},_constructor_:a})};
-$P.EventSignal=function(){var a=[];return{addListener:function(d){typeof d==="function"&&a.push(d)},removeListener:function(d){for(var e=a.length,c=0;c<e;c++)a[c]===d&&(a[c]=null)},dispatch:function(){for(var d=[],e=a.length,c=0;c<e;c++){var b=a[c];typeof b==="function"?b.apply(this,arguments):d.push(c)}e=d.length;for(c=0;c<e;c++)a.splice(c,1)}}};
-$P.Publisher=function(){var a={};return{registerEvents:function(d){typeof d==="object"&&(a=d)},registerSubscriber:function(d){if(typeof d.onRegister==="function"){var e=d.onRegister(),c;for(c in e)e.hasOwnProperty(c)&&typeof e[c]==="function"&&typeof a[c]==="object"&&typeof a[c].addListener==="function"&&a[c].addListener(e[c]);d.onRegister=function(){}}},notify:function(a,e){typeof a.dispatch==="function"&&a.dispatch(e)}}};
-$P.MVCObservable=function(a){return $P.ObjectFactory({_extends_:function(){return{observers:[],addObserver:function(a){if((typeof a==="function"||typeof a==="object")&&typeof a.notify==="function")if(this.observers.push(a),typeof a.onRegister==="function")a.onRegister()},notifyObservers:function(a){for(var e=this.observers.length,c=0;c<e;c++)this.observers[c].notify(a,this)}}},_constructor_:a})};
-$P.MVCObserver=function(a){return $P.ObjectFactory({_extends_:function(){return{onRegister:function(){},notify:function(a,e){this.observable=e;if(typeof this[a]==="function")try{this[a]()}catch(c){}}}},_constructor_:a})};$P.IProxy={NAME:""};$P.IMediator={NAME:"",listNotificationInterests:function(){},handleNotification:function(){}};$P.ICommand={execute:function(){}};$P.Proxy=function(){var a={};return{facade:null,setData:function(d){a=d},getData:function(){return a},onRegister:function(){},onRemove:function(){}}};
-$P.Mediator=$P.MVCObserver(function(){return{facade:null,onRegister:function(){},onRemove:function(){}}});
-$P.Facade=function(){var a=function(){var a={};return{facade:{},registerProxy:function(b){b.facade=this.facade;a[b.NAME]||(a[b.NAME]=b);if(typeof b.onRegister==="function")b.onRegister()},retrieveProxy:function(b){return a[b]?a[b]:null},removeProxy:function(b){if(typeof a[b].onRemove==="function")a[b].onRemove();a[b]=null}}}(),d=$P.MVCObservable(function(){var a={};return{facade:{},notification:{},registerMediator:function(b){b.facade=this.facade;a[b.NAME]||(a[b.NAME]=b,this.addObserver(b))},retrieveMediator:function(b){return a[b]?
-a[b]:null},removeMediator:function(b){if(typeof a[b].onRemove==="function")a[b].onRemove();a[b]=null},notifyObservers:function(a){for(var c=this.observers.length,d=0;d<c;d++){for(var e=this.observers[d].listNotificationInterests(),f=!1,i=0,k=e.length;i<k;i++)if(e[i]==this.notification.name){f=!0;break}if(f)this.observers[d].notification=this.notification,this.observers[d].notify(a,this)}},sendNotification:function(a){this.notification=a;this.notifyObservers("handleNotification")}}}),e=new $P.MVCObserver(function(){var a=
-{},b=[];return{facade:{},NAME:"Controller",registerCommand:function(d,e){e.facade=this.facade;a[d]||(a[d]=e,b.push(d))},listNotificationInterests:function(){return b},handleNotification:function(){var b=this.notification;typeof a[b.name]==="object"&&typeof a[b.name].execute==="function"&&a[b.name].execute(b)}}});return{CMD_STARTUP:"CMD_STARTUP",registerProxy:function(c){a.registerProxy(c)},registerMediator:function(a){d.registerMediator(a)},registerCommand:function(a,b){e.registerCommand(a,b)},retrieveProxy:function(c){return a.retrieveProxy(c)},
-retrieveMediator:function(a){return d.retrieveMediator(a)},removeProxy:function(c){a.removeProxy(c)},removeMediator:function(a){d.removeMediator(a)},sendNotification:function(a,b,e){d.sendNotification({name:a,body:b,type:e})},initializeFacade:function(){a.facade=this;d.facade=this;e.facade=this;this.registerMediator(e)}}};
-})(Pattern);
+
+$P.Queue = function( options ) {
+
+	var	running   = FALSE,
+		delegate  = NULL,
+		onError   = EMPTY_FUNCTION,
+		maxCount  = -1,
+		queue     = [];
+
+	if ( options === NULL || 
+		!IS_OBJECT( options ) || 
+		!IS_OBJECT( options.delegate ) || 
+		!IS_FUNCTION( options.delegate.onQueueItem ) ) {
+
+		return NULL;
+
+	}
+
+	delegate = options.delegate;
+
+	if ( IS_FUNCTION( delegate.onQueueError ) ) {
+
+		onError = delegate.onQueueError;
+
+	}
+
+	if ( IS_NUMBER( delegate.maxCount ) && delegate.maxCount > 0 ) {
+
+		maxCount = delegate.maxCount;
+
+	}
+
+	return {
+		/**
+		* Method to add items to queue.	
+		* @param {object[]} arguments - Array of arguments.
+		* @returns {number} Length of queue.
+		* @since 1.0
+		*/
+		add: function() {
+
+			if ( maxCount > 0 && queue.length >= maxCount ) {
+
+				onError( new Error( "maxCount exceeded: " + queue.length ) );
+
+				return FALSE;
+
+			}
+
+			queue.push( arguments );
+
+			return queue;
+
+		},
+
+		/**
+		 * Method to add items to beginning of the queue, to be processed first
+		 * @param {object[]} arguments - Array of arguments.
+		 * @returns {number} Length of queue.
+		 * @since 1.1
+		 */
+		addPriority: function() {
+
+			if ( maxCount > 0 && queue.length >= maxCount ) {
+
+				onError( new Error( "maxCount exceeded: " + queue.length ) );
+
+				return FALSE;
+
+			}
+
+			queue.unshift( arguments );
+
+			return queue;
+
+		},
+
+
+		/**
+		* Method to start the queue.	
+		* @since 1.0
+		*/
+		start: function() {
+
+			console.debug( LOGTAG() + "Queue.start running: " + running );
+
+			if ( !running ) {
+
+				running = TRUE;
+				this.run();
+
+			}
+
+			return running;
+
+		},
+
+		/**
+		* Method to run the queue.	
+		* @since 1.0
+		*/
+		run: function() {
+
+			console.debug( LOGTAG() + "Queue.run queue.length: " + queue.length );
+
+			while ( running ) {
+
+				if ( queue.length > 0 ) {
+
+					delegate.onQueueItem.apply( delegate, queue.shift() );
+
+				} else {
+
+					this.stop();
+
+				}
+
+			}
+
+			return queue;
+
+		},
+
+		/**
+		* Method to stop the queue.	
+		* @since 1.0
+		*/
+		stop: function() {
+
+			running = FALSE;
+
+			return running;
+
+		},
+
+		/**
+		* Method to check whether the queue is running.	
+		* @returns {boolean} Whether queue is running or not.
+		* @since 1.0
+		*/
+		isRunning: function() {
+
+			return running;
+
+		},
+
+		/**
+		* Method to get the length of the queue.	
+		* @returns {number} Length of the queue.
+		* @since 1.0
+		*/
+		count: function() {
+
+			return queue.length;
+
+		},
+
+		/**
+		* Method to clear the queue.	
+		* @since 1.0
+		*/
+		clear: function() {
+
+			this.stop();
+			queue = [];
+
+			return queue;
+
+		}
+
+	};
+};
+
+$P.EventSignal = function() {
+
+	var listeners = [];
+
+	return {
+
+		addListener: function( listener ) {
+
+			if ( IS_FUNCTION( listener ) ) {
+
+				listeners.push( listener );
+
+			}
+
+			return listeners;
+
+		},
+
+		removeListener: function( listener ) {
+
+			var	size = listeners.length;
+
+			for ( var x = 0; x < size; x++ ) {
+
+				if ( listeners[ x ] === listener ) {
+
+					listeners[ x ] = null;
+
+				}
+
+			}
+
+			return listeners;
+
+		},
+
+		dispatch: function() {
+
+			var	temp = [],
+
+				size = listeners.length;
+
+			for ( var x = 0; x < size; x++ ) {
+
+				var listener = listeners[ x ];
+
+				if ( IS_FUNCTION( listener ) ) {
+
+					listener.apply( this, arguments );
+
+				} else {
+
+					temp.push( x );
+
+				}
+
+			}
+
+			size = temp.length;
+
+			for ( x = 0; x < size; x++ ) {
+
+				listeners.splice( x, 1 );
+
+			}
+
+		}
+
+	};
+
+};
+
+	$P.ObjectFactory = function( $Object ) {
+		if ( typeof $Object !== "object" ) {
+			throw( "Object not provided" );
+		}
+
+		var getInstance = function( Konstructor ) {
+			if ( typeof Konstructor === "function" ) {
+				try {
+					return new Konstructor();
+				} catch( e ) {
+				}
+			} else if ( typeof Konstructor === "object" ) {
+				return Konstructor;
+			}
+		},
+
+		_interface_  = getInstance( $Object._implements_ ),
+		_superclass_ = getInstance( $Object._extends_ ),
+		_instance_   = getInstance( $Object._constructor_ );
+
+		for ( var i in _superclass_ ) {
+			if ( _superclass_.hasOwnProperty( i ) && !_instance_[ i ] ) {
+				_instance_[ i ] = _superclass_[ i ];
+			}
+		}
+
+		for ( i in _interface_ ) {
+			if ( _interface_.hasOwnProperty(i) && !_instance_[i] ){
+				throw( $Object.instance + " must implement '" + i + "' " + typeof _interface_[i] );
+			}
+		}
+
+		if ( typeof _instance_.init === "function" ) {
+			try {
+				_instance_.init();
+			} catch( e ) {
+			}
+		}
+
+		return _instance_;
+	};
+
+	$P.Observable = function( $Object ) {
+		var $Observable = function() {
+			var observers = [];
+
+			return {
+				addObserver: function( observer ) {
+					if ( ( typeof observer === "function" || typeof observer === "object" ) && 
+							typeof observer.update === "function" ){
+
+						observer._observable_ = this;
+						observers.push( observer );
+
+						if ( typeof observer.onRegister === "function" ) {
+							try {
+								observer.onRegister();
+							} catch( e ) {
+							}
+						}
+					}
+				},
+
+				notifyObservers: function() {
+					for ( var x = 0, size = observers.length; x < size; x++ ) {
+						var observer = observers[ x ];
+						observer.update.apply( observer, arguments );
+					}
+				},
+
+				removeObserver: function( observer ) {
+					for ( var x = 0, size = observers.length; x < size; x++ ) {
+						if ( observers[ x ] === observer ) {
+							observers.splice( x, 1 );
+							break;
+						}
+					}
+				}
+			};
+		};
+
+		return $P.ObjectFactory({
+			_extends_: $Observable,
+			_constructor_: $Object
+		});
+	};
+
+	$P.Observer = function( $Object ) {
+		var $Observer = function( $Object ) {
+			return {
+				update: function() {
+					var packet = arguments[ 0 ];
+
+					if ( typeof this[ packet.eventName ] === "function" ) {
+						try {
+							this[ packet.eventName ]( packet.eventData );
+						} catch( e ) {
+						}
+					}
+				}
+			};
+		};
+
+		return $P.ObjectFactory({
+			_extends_: $Observer,
+			_constructor_: $Object
+		});
+	};
+
+$P.Publisher = function() {
+		var events = {};
+
+		return {
+			registerEvents: function( eventList ) {
+				if( typeof eventList === "object" ) {
+					events = eventList;
+				}
+			},
+
+			registerSubscriber: function( subscriber ) {
+				if ( typeof subscriber.onRegister === "function" ) {
+					var listeners = subscriber.onRegister();
+
+					for( var i in listeners ) {
+						if( listeners.hasOwnProperty( i ) && 
+							typeof listeners[ i ] === "function" &&
+								typeof events[ i ] === "object" &&
+									typeof events[ i ].addListener === "function" ) {
+
+							events[ i ].addListener( listeners[ i ] );
+						}
+					}
+
+					subscriber.onRegister = function(){};
+				}
+			},
+
+			notify: function( event, data ) {
+				if ( typeof event.dispatch === "function" ) {
+					event.dispatch( data );
+				}
+			}
+		};
+	};
+
+	$P.MVCObservable = function( obj ) {
+		var observable = function() {
+			return {
+				observers: [],
+
+				addObserver: function( o ){
+					if( (typeof o === "function" || typeof o === "object") && 
+							typeof o.notify === "function" ){
+
+						this.observers.push( o );
+
+						if( typeof o.onRegister === "function" ) {
+							o.onRegister();
+						}
+					}
+				},
+
+				notifyObservers: function( eventName ) {
+					var size = this.observers.length;
+
+					for( var x = 0; x < size; x++ ) {
+						this.observers[x].notify( eventName, this );
+					}
+				}
+			};
+		};
+
+		return $P.ObjectFactory({
+			_extends_: observable,
+			_constructor_: obj
+		});
+	};
+
+	$P.MVCObserver = function( obj ) {
+		var observer = function( obj ) {
+			return {
+				onRegister: function() {
+				},
+
+				notify: function( eventName, observable ) {
+					this.observable = observable;
+
+					if( typeof this[ eventName ] === "function" ) {
+						try {
+							this[ eventName ]();
+						} catch( e ) {
+						}
+					}
+				}
+			};
+		};
+
+		return $P.ObjectFactory({
+			_extends_: observer,
+			_constructor_: obj
+		});
+	};
+
+	$P.IProxy = {
+		NAME : ""
+	};
+
+	$P.IMediator = {
+		NAME : "",
+		listNotificationInterests : function(){},
+		handleNotification : function(){}
+	};
+
+	$P.ICommand = {
+		execute : function( notification ){}
+	};
+
+	$P.Proxy = function() {
+		var data = {};
+
+		return {
+			facade: null,
+
+			setData: function( obj ) {
+				data = obj;
+			},
+
+			getData: function() {
+				return data;
+			},
+
+			onRegister: function() {
+				return;
+			},
+
+			onRemove: function() {
+				return;
+			}
+		};
+	};
+
+	$P.Mediator = $P.MVCObserver(function() {
+		return {
+			facade: null,
+			onRegister: function() {
+				return;
+			},
+			onRemove: function() {
+				return;
+			}
+		};
+	});
+
+	$P.Facade = function() {
+		var	Model = (function() {
+				var proxies = {};
+
+				return {
+					facade: {},
+
+					registerProxy: function( proxy ) {
+						proxy.facade = this.facade;
+
+						if( !proxies[ proxy.NAME ] ) {
+							proxies[ proxy.NAME ] = proxy;
+						}
+
+						if(typeof proxy.onRegister === "function" ){
+							proxy.onRegister();
+						}
+					},
+
+					retrieveProxy : function( key ) {
+						return proxies[ key ] ? proxies[ key ] : null;
+					},
+
+					removeProxy : function( key ){
+						if( typeof proxies[ key ].onRemove === "function" ){
+							proxies[ key ].onRemove();
+						}
+
+						proxies[ key ] = null;
+					}
+				};
+			})(),
+
+			View = $P.MVCObservable(function() {
+				var mediators = {};
+
+				return {
+					facade: {},
+
+					notification: {},
+
+					registerMediator: function( mediator ) {
+						mediator.facade = this.facade;
+
+						if( !mediators[ mediator.NAME ] ) {
+							mediators[ mediator.NAME ] = mediator;
+							this.addObserver( mediator );
+						}
+					},
+
+					retrieveMediator: function( key ) {
+						return mediators[ key ] ? mediators[ key ] : null;
+					},
+
+					removeMediator: function( key ) {
+						if( typeof mediators[ key ].onRemove === "function" ) {
+							mediators[ key ].onRemove();
+						}
+
+						mediators[ key ] = null;
+					},
+
+					notifyObservers: function( eventName ) {
+						var size = this.observers.length;
+
+						for ( var x = 0; x < size; x++ ) {
+							var	notices = this.observers[ x ].listNotificationInterests(),
+								deliver = false;
+
+							for (var i = 0, l = notices.length; i < l; i++ ) {
+								if( notices[ i ] === this.notification.name ) {
+									deliver = true;
+									break;
+								}
+							}
+
+							if( deliver ){
+								this.observers[ x ].notification = this.notification;
+								this.observers[ x ].notify( eventName, this );
+							}
+						}
+					},
+
+					sendNotification: function( notification ) {
+						this.notification = notification;
+						this.notifyObservers( "handleNotification" );
+					}
+				};
+			}),
+
+			Controller = new $P.MVCObserver(function() {
+				var	commands = {},
+					notifications = [];
+
+				return {
+					facade: {},
+
+					NAME: "Controller",
+
+					registerCommand: function( key, command ) {
+						command.facade = this.facade;
+
+						if( !commands[ key ] ) {
+							commands[ key ] = command;
+							notifications.push( key );
+						}
+					},
+
+					listNotificationInterests: function() {
+						return notifications;
+					},
+
+					handleNotification: function() {
+						var notification = this.notification;
+
+						if( typeof commands[ notification.name ] === "object" && 
+								typeof commands[ notification.name ].execute === "function" ) {
+							commands[ notification.name ].execute( notification );
+						}
+					}
+				};
+			}),
+
+			initializeModel = function( app ) {
+				Model.facade = app;
+			},
+
+			initializeView = function( app ) {
+				View.facade = app;
+			},
+
+			initializeController = function( app ) {
+				Controller.facade = app;
+				app.registerMediator( Controller );
+			};
+
+		return {
+			CMD_STARTUP: "CMD_STARTUP",
+
+			registerProxy: function( proxy ) {
+				Model.registerProxy( proxy );
+			},
+
+			registerMediator : function( mediator ) {
+				View.registerMediator( mediator );
+			},
+
+			registerCommand : function( key, command ) {
+				Controller.registerCommand( key, command );
+			},
+
+			retrieveProxy : function( key ) {
+				return Model.retrieveProxy( key );
+			},
+
+			retrieveMediator : function( key ) {
+				return View.retrieveMediator( key );
+			},
+
+			removeProxy : function( key ) {
+				Model.removeProxy( key );
+			},
+
+			removeMediator : function( key ) {
+				View.removeMediator( key );
+			},
+
+			sendNotification : function( name, body, type ) {
+				View.sendNotification({
+					name: name,
+					body: body,
+					type: type
+				});
+			},
+
+			initializeFacade: function() {
+				initializeModel( this );
+				initializeView( this );
+				initializeController( this );
+			}
+		};
+	};
+$P.version='1.1.0';})(Pattern);

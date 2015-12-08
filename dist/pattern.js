@@ -1,4 +1,4 @@
-/* pattern-js v1.1.0 Tue Dec 08 2015 00:54:49 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
+/* pattern-js v1.1.0 Tue Dec 08 2015 13:00:32 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
 
 FALSE = false,
 
@@ -216,7 +216,7 @@ $P.Receiver = function( object ) {
 
 	receiver.notify = function( eventName, eventData ) {
 
-		if ( callOnce[ eventName ] ) {
+		if ( IS_FUNCTION( callOnce[ eventName ] ) ) {
 
 			FUNCTION_APPLY( callOnce[ eventName ], receiver, eventData );
 
@@ -224,11 +224,13 @@ $P.Receiver = function( object ) {
 
 		}
 
-		if ( callbacks[ eventName ] ) {
+		if ( IS_FUNCTION( callbacks[ eventName ] ) ) {
 
 			FUNCTION_APPLY( callbacks[ eventName ], receiver, eventData );
 
 		}
+
+		return eventName;
 
 	};
 
@@ -237,9 +239,6 @@ $P.Receiver = function( object ) {
 	return receiver;
 
 };
-
-// var r = $P.Receiver();
-// r.on( "method", function() {} );
 
 $P.Observable = function( object ) {
 

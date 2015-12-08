@@ -50,6 +50,8 @@ $P.Receiver = function( object ) {
 
 		}
 
+		return eventName;
+
 	};
 
 	EXEC_INIT_METHOD( receiver );
@@ -57,6 +59,3 @@ $P.Receiver = function( object ) {
 	return receiver;
 
 };
-
-// var r = $P.Receiver();
-// r.on( "method", function() {} );

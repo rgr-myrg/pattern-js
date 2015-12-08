@@ -1,10 +1,10 @@
 $P.Publisher = function( object ) {
 
-	var subscribers = [];
+	var subscribers = [],
 
-	object = IS_OBJECT( object ) ? object : {};
+	publisher = IS_OBJECT( object ) ? object : {};
 
-	object.registerSubscriber = function( subscriber ) {
+	publisher.registerSubscriber = function( subscriber ) {
 
 		if ( IS_OBJECT( subscriber ) ) {
 
@@ -16,7 +16,7 @@ $P.Publisher = function( object ) {
 
 	};
 
-	object.removeSubscriber = function( subscriber ) {
+	publisher.removeSubscriber = function( subscriber ) {
 
 		for ( var x = 0, size = subscribers.length; x < size; x++ ) {
 
@@ -34,7 +34,7 @@ $P.Publisher = function( object ) {
 
 	};
 
-	object.notify = function( eventName, eventData ) {
+	publisher.notify = function( eventName, eventData ) {
 
 		for ( var x = 0, size = subscribers.length; x < size; x++ ) {
 
@@ -42,7 +42,12 @@ $P.Publisher = function( object ) {
 
 			if ( IS_FUNCTION( subscriber[ eventName ] ) ) {
 
-				subscriber[ eventName ]( eventData );
+				/*jshint loopfunc: true */
+				(function() {
+
+					subscriber[ eventName ].apply( subscriber, arguments );
+
+				})(eventData);
 
 			}
 
@@ -52,6 +57,12 @@ $P.Publisher = function( object ) {
 
 	};
  
-	return object;
+ 	if ( IS_FUNCTION( publisher.init ) ) {
+
+		publisher.init();
+
+	}
+
+	return publisher;
 
 };

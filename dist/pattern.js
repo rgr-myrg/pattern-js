@@ -1,4 +1,4 @@
-/* pattern-js v1.1.0 Tue Dec 08 2015 00:02:56 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
+/* pattern-js v1.1.0 Tue Dec 08 2015 00:44:46 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
 
 FALSE = false,
 
@@ -54,6 +54,30 @@ FUNCTION_APPLY = function( func, parent, args ) {
 
 	})( args );
 
+},
+
+REMOVE_ARRAY_ITEM = function( array, item ) {
+
+	for ( var x = 0, size = array.length; x < size; x++ ) {
+
+		if ( array[ x ] === item ) {
+
+			array.splice( x, 1 );
+
+			if ( IS_FUNCTION( item.onRemove ) ) {
+
+				item.onRemove();
+
+			}
+
+			break;
+
+		}
+
+	}
+
+	return array;
+
 };
 
 $P.EventSignal = function() {
@@ -76,17 +100,7 @@ $P.EventSignal = function() {
 
 		removeListener: function( listener ) {
 
-			var size = listeners.length;
-
-			for ( var x = 0; x < size; x++ ) {
-
-				if ( listeners[ x ] === listener ) {
-
-					listeners[ x ] = null;
-
-				}
-
-			}
+			listeners = REMOVE_ARRAY_ITEM( listeners, listener );
 
 			return listeners;
 
@@ -111,14 +125,6 @@ $P.EventSignal = function() {
 					temp.push( x );
 
 				}
-
-			}
-
-			size = temp.length;
-
-			for ( x = 0; x < size; x++ ) {
-
-				listeners.splice( x, 1 );
 
 			}
 
@@ -158,35 +164,17 @@ $P.Observable = function( object ) {
 
 	observable.removeObserver = function( observer ) {
 
-		for ( var x = 0, size = observers.length; x < size; x++ ) {
-
-			if ( observers[ x ] === observer ) {
-
-				observers.splice( x, 1 );
-
-				if ( IS_FUNCTION( observer.onRemove ) ) {
-
-					observer.onRemove();
-
-				}
-
-				break;
-
-			}
-
-		}
+		observers = REMOVE_ARRAY_ITEM( observers, observer );
 
 		return observers;
 
 	};
 
-	observable.notifyObservers = function() {
+	observable.notifyObservers = function( eventName, eventData ) {
 
 		for ( var x = 0, size = observers.length; x < size; x++ ) {
 
-			var observer = observers[ x ];
-
-			observer.onUpdate.apply( observer, arguments );
+			observers[ x ].onUpdate( eventName, eventData );
 
 		}
 
@@ -215,17 +203,17 @@ $P.Observer = function( object ) {
 	* @since 1.0
 	*/
 
-	observer.onUpdate = function() {
+	observer.onUpdate = function( eventName, eventData ) {
 
-		var notification = arguments[ 0 ];
+		//var notification = arguments[ 0 ];
 
-		if ( IS_FUNCTION( object[ notification.eventName ] ) ) {
+		if ( IS_FUNCTION( observer[ eventName ] ) ) {
 
-			FUNCTION_APPLY( object[ notification.eventName ], observer, notification.eventData );
+			FUNCTION_APPLY( observer[ eventName ], observer, eventData );
 
 		}
 
-		return notification;
+		return eventName;
 
 	};
 
@@ -255,17 +243,7 @@ $P.Publisher = function( object ) {
 
 	publisher.removeSubscriber = function( subscriber ) {
 
-		for ( var x = 0, size = subscribers.length; x < size; x++ ) {
-
-			if ( subscribers[ x ] === subscriber ) {
-
-				subscribers.splice( x, 1 );
-
-				break;
-
-			}
-
-		}
+		subscribers = REMOVE_ARRAY_ITEM( subscribers, subscriber );
 
 		return subscribers;
 

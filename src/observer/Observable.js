@@ -28,35 +28,17 @@ $P.Observable = function( object ) {
 
 	observable.removeObserver = function( observer ) {
 
-		for ( var x = 0, size = observers.length; x < size; x++ ) {
-
-			if ( observers[ x ] === observer ) {
-
-				observers.splice( x, 1 );
-
-				if ( IS_FUNCTION( observer.onRemove ) ) {
-
-					observer.onRemove();
-
-				}
-
-				break;
-
-			}
-
-		}
+		observers = REMOVE_ARRAY_ITEM( observers, observer );
 
 		return observers;
 
 	};
 
-	observable.notifyObservers = function() {
+	observable.notifyObservers = function( eventName, eventData ) {
 
 		for ( var x = 0, size = observers.length; x < size; x++ ) {
 
-			var observer = observers[ x ];
-
-			observer.onUpdate.apply( observer, arguments );
+			observers[ x ].onUpdate( eventName, eventData );
 
 		}
 

@@ -18,17 +18,7 @@ $P.EventSignal = function() {
 
 		removeListener: function( listener ) {
 
-			var size = listeners.length;
-
-			for ( var x = 0; x < size; x++ ) {
-
-				if ( listeners[ x ] === listener ) {
-
-					listeners[ x ] = null;
-
-				}
-
-			}
+			listeners = REMOVE_ARRAY_ITEM( listeners, listener );
 
 			return listeners;
 
@@ -53,14 +43,6 @@ $P.EventSignal = function() {
 					temp.push( x );
 
 				}
-
-			}
-
-			size = temp.length;
-
-			for ( x = 0; x < size; x++ ) {
-
-				listeners.splice( x, 1 );
 
 			}
 

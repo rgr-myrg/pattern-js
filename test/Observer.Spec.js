@@ -56,7 +56,7 @@ describe( "Pattern.Observer", function() {
 
 		spyOn( observer, "onEventComplete" ).and.callThrough();
 
-		observer.onUpdate( notification );
+		observer.onUpdate( notification.eventName, notification.eventData );
 
 		expect( observer.onEventComplete ).toHaveBeenCalledWith( notification.eventData );
 		expect( typeof observer.getEventData() ).toBe( typeof {} );

@@ -15,17 +15,17 @@ $P.Observer = function( object ) {
 	* @since 1.0
 	*/
 
-	observer.onUpdate = function() {
+	observer.onUpdate = function( eventName, eventData ) {
 
-		var notification = arguments[ 0 ];
+		//var notification = arguments[ 0 ];
 
-		if ( IS_FUNCTION( object[ notification.eventName ] ) ) {
+		if ( IS_FUNCTION( observer[ eventName ] ) ) {
 
-			FUNCTION_APPLY( object[ notification.eventName ], observer, notification.eventData );
+			FUNCTION_APPLY( observer[ eventName ], observer, eventData );
 
 		}
 
-		return notification;
+		return eventName;
 
 	};
 

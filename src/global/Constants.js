@@ -54,4 +54,28 @@ FUNCTION_APPLY = function( func, parent, args ) {
 
 	})( args );
 
+},
+
+REMOVE_ARRAY_ITEM = function( array, item ) {
+
+	for ( var x = 0, size = array.length; x < size; x++ ) {
+
+		if ( array[ x ] === item ) {
+
+			array.splice( x, 1 );
+
+			if ( IS_FUNCTION( item.onRemove ) ) {
+
+				item.onRemove();
+
+			}
+
+			break;
+
+		}
+
+	}
+
+	return array;
+
 };

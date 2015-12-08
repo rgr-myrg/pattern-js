@@ -73,8 +73,8 @@ describe( "Pattern.EventSignal", function() {
 
 		var listeners = testSignal.removeListener( testListener );
 
-		expect( listeners.length ).toEqual( 1 );
-		expect( listeners[ 0 ] ).toEqual( null );
+		expect( listeners.length ).toEqual( 0 );
+		expect( listeners[ 0 ] ).toEqual( undefined );
 
 	});
 

@@ -46,7 +46,8 @@
       "IS_NUMBER": true,
       "EXEC_INIT_METHOD": true,
       "GET_OBJECT_IF_DEFINED": true,
-      "FUNCTION_APPLY": true
+      "FUNCTION_APPLY": true,
+      "REMOVE_ARRAY_ITEM": true
     }
   },
   "author": "rgr-myrg",

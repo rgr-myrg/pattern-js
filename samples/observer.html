@@ -39,17 +39,17 @@
 		});
 
 		var UI = Pattern.Observable({
-			init: function() {console.log( "init", this );
+			init: function() {
 				this.addObserver( Echo );
 				this.addObserver( Mirror );
 				this.addObserver( Vertical );
 			},
 
 			onKeyUp: function() {
-				this.notifyObservers({
-					eventName: "onKeyUp",
-					eventData: document.getElementById('box').value
-				});
+				this.notifyObservers(
+					"onKeyUp", 
+					document.getElementById('box').value
+				);
 			},
 
 			getMsg: function() {

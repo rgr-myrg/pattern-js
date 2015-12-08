@@ -18,17 +18,7 @@ $P.Publisher = function( object ) {
 
 	publisher.removeSubscriber = function( subscriber ) {
 
-		for ( var x = 0, size = subscribers.length; x < size; x++ ) {
-
-			if ( subscribers[ x ] === subscriber ) {
-
-				subscribers.splice( x, 1 );
-
-				break;
-
-			}
-
-		}
+		subscribers = REMOVE_ARRAY_ITEM( subscribers, subscriber );
 
 		return subscribers;
 

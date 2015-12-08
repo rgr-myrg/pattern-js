@@ -62,6 +62,12 @@ $P.Observable = function( observable ) {
 
 	};
 
+	if ( IS_FUNCTION( observable.init ) ) {
+
+		observable.init();
+
+	}
+
 	return observable;
 
 };

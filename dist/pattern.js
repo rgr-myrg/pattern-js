@@ -1,4 +1,4 @@
-/* pattern-js v1.1.0 Mon Dec 07 2015 17:10:44 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
+/* pattern-js v1.1.0 Mon Dec 07 2015 17:27:15 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
 
 FALSE = false,
 
@@ -254,12 +254,13 @@ $P.Publisher = function( object ) {
 
 			if ( IS_FUNCTION( subscriber[ eventName ] ) ) {
 
-				/*jshint loopfunc: true */
-				(function() {
+				subscriber[ eventName ]( eventData );
+				// /*jshint loopfunc: true */
+				// (function() {
 
-					subscriber[ eventName ].apply( subscriber, arguments );
+				// 	subscriber[ eventName ].apply( subscriber, arguments );
 
-				})( eventData );
+				// })( eventData );
 
 			}
 

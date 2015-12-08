@@ -42,12 +42,7 @@ $P.Publisher = function( object ) {
 
 			if ( IS_FUNCTION( subscriber[ eventName ] ) ) {
 
-				/*jshint loopfunc: true */
-				(function() {
-
-					subscriber[ eventName ].apply( subscriber, arguments );
-
-				})( eventData );
+				subscriber[ eventName ]( eventData );
 
 			}
 

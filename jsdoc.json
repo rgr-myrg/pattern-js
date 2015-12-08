@@ -1,0 +1,42 @@
+{
+	"tags": {
+		"allowUnknownTags": true,
+		"dictionaries": [ "jsdoc" ]
+	},
+	
+	"source": {
+		"include": [
+			"src/global/",
+			"src/eventsignal/",
+			"src/notifier/",
+			"src/observer/",
+			"src/pubsub/"
+		],
+		"includePattern": ".+\\.js(doc)?$"
+	},
+	
+	"plugins": [],
+	
+	"templates": {
+		"cleverLinks": false,
+		"monospaceLinks": true,
+		"default": {
+			"outputSourceFiles": true
+		},
+		"systemName"      : "PatternJS",
+		"footer"          : "",
+		"copyright"       : "rgr-myrg 2011-2016",
+		"navType"         : "vertical",
+		"theme"           : "united",
+		"linenums"        : true,
+		"collapseSymbols" : false,
+		"inverseNav"      : true
+	},
+	
+	"opts": {
+		"template": "templates/default",
+		"encoding": "utf8",
+		"destination": "./documentation/",
+		"recurse": true
+	}
+}

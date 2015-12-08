@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml' lang='en' xml:lang='en:us'>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Sample :: Observer</title>
+		<style>
+		</style>
+		<script type="text/javascript" src="../dist/pattern.js"></script>
+		<script type="text/javascript">
+		var Echo = Pattern.Observer({
+			onKeyUp: function( data ) {
+				//document.getElementById( "echo" ).innerHTML=data;
+
+				// Use a reference to observable instead
+				document.getElementById( "echo" ).innerHTML = Echo._observable.getMsg();
+			}
+		});
+
+		var Mirror = Pattern.Observer({
+			onKeyUp: function( data ) {
+				var arr = data.split('');
+				var msg='';
+
+				if(arr.length>0)
+					for(var x=arr.length-1;x>=0;x--)
+						msg+=arr[x];
+
+				document.getElementById("mirror").innerHTML=msg;
+			}
+		});
+
+		var Vertical = Pattern.Observer({
+			onKeyUp: function( data ) {
+				var arr = data.split('');
+				var msg = arr.join( "<br>" );
+
+				document.getElementById( "vertical" ).innerHTML=msg;
+			}
+		});
+
+		var UI = Pattern.Observable({
+			init: function() {
+				this.addObserver( Echo );
+				this.addObserver( Mirror );
+				this.addObserver( Vertical );
+			},
+
+			onKeyUp: function() {
+				this.notifyObservers(
+					"onKeyUp", 
+					document.getElementById('box').value
+				);
+			},
+
+			getMsg: function() {
+				return document.getElementById('box').value;
+			}
+		});
+		// var UI = Pattern.Observable(
+		// 	(function() {
+
+		// 	})()
+		// ); 
+		</script>
+	</head>
+	<body>
+		<h1>Sample :: Observer</h1>
+	<form>
+	<table>
+		<tr>
+			<td>Type in this box:</td>
+			<td><input onkeyup="UI.onKeyUp()" type="text" id="box" name="box" value="" size="50"/></td>
+		</tr>
+		<tr>
+			<td>Echo:</td><td><div id="echo"></div></td>
+		</tr>
+		<tr>
+			<td>Mirror:</td><td><div id="mirror"></div></td>
+		</tr>
+		<tr>
+			<td valign="top">Vertical:</td><td valign="top"><div id="vertical"></div></td>
+		</tr>
+	</table>
+	</form>
+	</body>
+</html>

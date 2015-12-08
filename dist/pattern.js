@@ -1,22 +1,381 @@
+/* pattern-js v1.1.0 Tue Dec 08 2015 13:05:22 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
+
+FALSE = false,
+
+NULL = null,
+
+EMPTY_FUNCTION = function(){},
+
+IS_FUNCTION = function( fn ) {
+
+	return typeof fn === "function";
+
+},
+
+IS_OBJECT = function( obj ) {
+
+	return typeof obj === "object";
+
+},
+
+IS_NUMBER = function( num ) {
+
+	return typeof num === "number";
+
+},
+
+LOGTAG = function() {
+
+	return "[Pattern Js] " + ( new Date() ).toLocaleTimeString() + " ";
+
+},
+
+EXEC_INIT_METHOD = function( object ) {
+
+	if ( IS_FUNCTION( object.init ) ) {
+
+		object.init();
+
+	}
+
+},
+
+GET_OBJECT_IF_DEFINED = function( object ) {
+
+	return IS_OBJECT( object ) ? object : {};
+
+},
+
+FUNCTION_APPLY = function( func, parent, args ) {
+
+	(function() {
+
+		func.apply( parent, arguments );
+
+	})( args );
+
+},
+
+REMOVE_ARRAY_ITEM = function( array, item ) {
+
+	for ( var x = 0, size = array.length; x < size; x++ ) {
+
+		if ( array[ x ] === item ) {
+
+			array.splice( x, 1 );
+
+			if ( IS_FUNCTION( item.onRemove ) ) {
+
+				item.onRemove();
+
+			}
+
+			break;
+
+		}
+
+	}
+
+	return array;
+
+};
+
+$P.EventSignal = function() {
+
+	var listeners = [];
+
+	return {
+
+		addListener: function( listener ) {
+
+			if ( IS_FUNCTION( listener ) ) {
+
+				listeners.push( listener );
+
+			}
+
+			return listeners;
+
+		},
+
+		removeListener: function( listener ) {
+
+			listeners = REMOVE_ARRAY_ITEM( listeners, listener );
+
+			return listeners;
+
+		},
+
+		dispatch: function() {
+
+			var	temp = [],
+
+				size = listeners.length;
+
+			for ( var x = 0; x < size; x++ ) {
+
+				var listener = listeners[ x ];
+
+				if ( IS_FUNCTION( listener ) ) {
+
+					listener.apply( this, arguments );
+
+				} else {
+
+					temp.push( x );
+
+				}
+
+			}
+
+		}
+
+	};
+
+};
+
+$P.Notifier = function( object ) {
+
+	var receivers = [],
+
+	notifier = GET_OBJECT_IF_DEFINED( object );
+
+	notifier.addReceiver = function( receiver ) {
+
+		if ( IS_FUNCTION( receiver.notify ) ) {
+
+			receivers.push( receiver );
+
+		}
+
+		return receivers;
+
+	};
+
+	notifier.removeReceiver = function( receiver ) {
+
+		receivers = REMOVE_ARRAY_ITEM( receivers, receiver );
+
+		return receivers;
+
+	};
+
+	notifier.notify = function( eventName, eventData ) {
+
+		for ( var x = 0, size = receivers.length; x < size; x++ ) {
+
+			receivers[ x ].notify( eventName, eventData );
+
+		}
+
+		return eventName;
+
+	};
+
+	EXEC_INIT_METHOD( notifier );
+
+	return notifier;
+
+};
+
+$P.Receiver = function( object ) {
+
+	var callbacks = {},
+
+	callOnce = {},
+
+	addCallback = function( collection, eventName, eventCallback ) {
+
+		if ( !collection[ eventName ] && IS_FUNCTION( eventCallback ) ) {
+
+			collection[ eventName ] = eventCallback;
+
+		}
+
+		return collection;
+
+	},
+
+	receiver = GET_OBJECT_IF_DEFINED( object );
+
+	receiver.on = function( eventName, eventCallback ) {
+
+		callbacks = addCallback( callbacks, eventName, eventCallback );
+
+		return callbacks;
+
+	};
+
+	receiver.once = function( eventName, eventCallback ) {
+
+		callOnce = addCallback( callOnce, eventName, eventCallback );
+
+		return callOnce;
+
+	};
+
+	receiver.notify = function( eventName, eventData ) {
+
+		if ( IS_FUNCTION( callOnce[ eventName ] ) ) {
+
+			FUNCTION_APPLY( callOnce[ eventName ], receiver, eventData );
+
+			delete callOnce[ eventName ];
+
+		}
+
+		if ( IS_FUNCTION( callbacks[ eventName ] ) ) {
+
+			FUNCTION_APPLY( callbacks[ eventName ], receiver, eventData );
+
+		}
+
+		return eventName;
+
+	};
+
+	EXEC_INIT_METHOD( receiver );
+
+	return receiver;
+
+};
+
+$P.Observable = function( object ) {
+
+	var observers = [],
+
+	observable = GET_OBJECT_IF_DEFINED( object );
+
+	observable.addObserver = function( observer ) {
+
+		if ( !IS_OBJECT( observer ) || !IS_FUNCTION( observer.onUpdate ) ) {
+
+			return observer;
+
+		}
+
+		observer._observable = observable;
+
+		observers.push( observer );
+
+		if ( IS_FUNCTION( observer.onRegister ) ) {
+
+			observer.onRegister();
+
+		}
+
+		return observers;
+
+	};
+
+	observable.removeObserver = function( observer ) {
+
+		observers = REMOVE_ARRAY_ITEM( observers, observer );
+
+		return observers;
+
+	};
+
+	observable.notifyObservers = function( eventName, eventData ) {
+
+		for ( var x = 0, size = observers.length; x < size; x++ ) {
+
+			observers[ x ].onUpdate( eventName, eventData );
+
+		}
+
+	};
+
+	EXEC_INIT_METHOD( observable );
+
+	return observable;
+
+};
+
 /**
- * Copyright (c) 2011-2014 Activity, LLC.
- * Version: 1.0.1
- * Built: Thu Sep 04 2014 10:54:07 GMT-0400 (EDT)
- * Released under the MIT license:
- * https://github.com/rgr-myrg/pattern-js/raw/master/MIT-LICENSE
+ * @file Classic Observer Pattern
+ * @exports observer/Observer
+ * @extends {Pattern}  
  */
-(function(w){w.Pattern=$P=w.Pattern||{};})(window);(function($P){$P.Queue=function(a){var d=null,e=null,c=!1,b=function(){},g=function(){},j=300,h=-1,f=[];if(typeof a!=="object"||!a.id)throw Error("Queue options Object is Null");d=a.id;if(!isNaN(a.timeToWait)&&a.timeToWait>0)j=a.timeToWait;if(!isNaN(a.maxCount)&&a.maxCount>0)h=a.maxCount;if(typeof a.callback==="function")b=a.callback;if(typeof a.onError==="function")g=a.onError;return{add:function(){if(h>0&&f.length>=h)return g(Error("Max count exceeded: "+f.length)),!1;f.push(arguments);return!0},start:function(){if(!c)try{e=
-setInterval(d+".run()",j)}catch(b){g(b)}},run:function(){if(f.length>0){c=!0;try{b.apply(this,f.shift())}catch(d){this.stop(),g(d)}}else this.stop()},stop:function(){c=!1;clearInterval(e)},isRunning:function(){return c},count:function(){return f.length},clear:function(){this.stop();f=[]}}};
-$P.ObjectFactory=function(a){if(typeof a!=="object")throw"Object not provided";var d=function(c){if(typeof c==="function")try{return new c}catch(b){}else if(typeof c==="object")return c},e=d(a._implements_),c=d(a._extends_),a=d(a._constructor_),b;for(b in c)c.hasOwnProperty(b)&&!a[b]&&(a[b]=c[b]);for(b in e)if(e.hasOwnProperty(b)&&!a[b])throw object.instance+" must implement '"+b+"' "+typeof e[b];if(typeof a.init==="function")try{a.init()}catch(g){}return a};
-$P.Observable=function(a){return $P.ObjectFactory({_extends_:function(){var d=[];return{addObserver:function(a){if((typeof a==="function"||typeof a==="object")&&typeof a.update==="function")if(a._observable_=this,d.push(a),typeof a.onRegister==="function")try{a.onRegister()}catch(c){}},notifyObservers:function(){for(var a=0,c=d.length;a<c;a++){var b=d[a];b.update.apply(b,arguments)}},removeObserver:function(a){for(var c=0,b=d.length;c<b;c++)if(d[c]===a){d.splice(c,1);break}}}},_constructor_:a})};
-$P.Observer=function(a){return $P.ObjectFactory({_extends_:function(){return{update:function(a){if(typeof this[a.eventName]==="function")try{this[a.eventName](a.eventData)}catch(e){}}}},_constructor_:a})};
-$P.EventSignal=function(){var a=[];return{addListener:function(d){typeof d==="function"&&a.push(d)},removeListener:function(d){for(var e=a.length,c=0;c<e;c++)a[c]===d&&(a[c]=null)},dispatch:function(){for(var d=[],e=a.length,c=0;c<e;c++){var b=a[c];typeof b==="function"?b.apply(this,arguments):d.push(c)}e=d.length;for(c=0;c<e;c++)a.splice(c,1)}}};
-$P.Publisher=function(){var a={};return{registerEvents:function(d){typeof d==="object"&&(a=d)},registerSubscriber:function(d){if(typeof d.onRegister==="function"){var e=d.onRegister(),c;for(c in e)e.hasOwnProperty(c)&&typeof e[c]==="function"&&typeof a[c]==="object"&&typeof a[c].addListener==="function"&&a[c].addListener(e[c]);d.onRegister=function(){}}},notify:function(a,e){typeof a.dispatch==="function"&&a.dispatch(e)}}};
-$P.MVCObservable=function(a){return $P.ObjectFactory({_extends_:function(){return{observers:[],addObserver:function(a){if((typeof a==="function"||typeof a==="object")&&typeof a.notify==="function")if(this.observers.push(a),typeof a.onRegister==="function")a.onRegister()},notifyObservers:function(a){for(var e=this.observers.length,c=0;c<e;c++)this.observers[c].notify(a,this)}}},_constructor_:a})};
-$P.MVCObserver=function(a){return $P.ObjectFactory({_extends_:function(){return{onRegister:function(){},notify:function(a,e){this.observable=e;if(typeof this[a]==="function")try{this[a]()}catch(c){}}}},_constructor_:a})};$P.IProxy={NAME:""};$P.IMediator={NAME:"",listNotificationInterests:function(){},handleNotification:function(){}};$P.ICommand={execute:function(){}};$P.Proxy=function(){var a={};return{facade:null,setData:function(d){a=d},getData:function(){return a},onRegister:function(){},onRemove:function(){}}};
-$P.Mediator=$P.MVCObserver(function(){return{facade:null,onRegister:function(){},onRemove:function(){}}});
-$P.Facade=function(){var a=function(){var a={};return{facade:{},registerProxy:function(b){b.facade=this.facade;a[b.NAME]||(a[b.NAME]=b);if(typeof b.onRegister==="function")b.onRegister()},retrieveProxy:function(b){return a[b]?a[b]:null},removeProxy:function(b){if(typeof a[b].onRemove==="function")a[b].onRemove();a[b]=null}}}(),d=$P.MVCObservable(function(){var a={};return{facade:{},notification:{},registerMediator:function(b){b.facade=this.facade;a[b.NAME]||(a[b.NAME]=b,this.addObserver(b))},retrieveMediator:function(b){return a[b]?
-a[b]:null},removeMediator:function(b){if(typeof a[b].onRemove==="function")a[b].onRemove();a[b]=null},notifyObservers:function(a){for(var c=this.observers.length,d=0;d<c;d++){for(var e=this.observers[d].listNotificationInterests(),f=!1,i=0,k=e.length;i<k;i++)if(e[i]==this.notification.name){f=!0;break}if(f)this.observers[d].notification=this.notification,this.observers[d].notify(a,this)}},sendNotification:function(a){this.notification=a;this.notifyObservers("handleNotification")}}}),e=new $P.MVCObserver(function(){var a=
-{},b=[];return{facade:{},NAME:"Controller",registerCommand:function(d,e){e.facade=this.facade;a[d]||(a[d]=e,b.push(d))},listNotificationInterests:function(){return b},handleNotification:function(){var b=this.notification;typeof a[b.name]==="object"&&typeof a[b.name].execute==="function"&&a[b.name].execute(b)}}});return{CMD_STARTUP:"CMD_STARTUP",registerProxy:function(c){a.registerProxy(c)},registerMediator:function(a){d.registerMediator(a)},registerCommand:function(a,b){e.registerCommand(a,b)},retrieveProxy:function(c){return a.retrieveProxy(c)},
-retrieveMediator:function(a){return d.retrieveMediator(a)},removeProxy:function(c){a.removeProxy(c)},removeMediator:function(a){d.removeMediator(a)},sendNotification:function(a,b,e){d.sendNotification({name:a,body:b,type:e})},initializeFacade:function(){a.facade=this;d.facade=this;e.facade=this;this.registerMediator(e)}}};
-})(Pattern);
+
+$P.Observer = function( object ) {
+
+	var observer = GET_OBJECT_IF_DEFINED( object );
+
+	/**
+	* Method triggered by Observable.notify	
+	* @param {object[]} arguments - Array of arguments.
+	* @returns {object} notification - First object in arguments array.
+	* @since 1.0
+	*/
+
+	observer.onUpdate = function( eventName, eventData ) {
+
+		//var notification = arguments[ 0 ];
+
+		if ( IS_FUNCTION( observer[ eventName ] ) ) {
+
+			FUNCTION_APPLY( observer[ eventName ], observer, eventData );
+
+		}
+
+		return eventName;
+
+	};
+
+	EXEC_INIT_METHOD( observer );
+
+	return observer;
+
+};
+
+$P.Publisher = function( object ) {
+
+	var subscribers = [],
+
+	publisher = GET_OBJECT_IF_DEFINED( object );
+
+	publisher.registerSubscriber = function( subscriber ) {
+
+		if ( IS_OBJECT( subscriber ) ) {
+
+			subscribers.push( subscriber );
+
+		}
+
+		return subscribers;
+
+	};
+
+	publisher.removeSubscriber = function( subscriber ) {
+
+		subscribers = REMOVE_ARRAY_ITEM( subscribers, subscriber );
+
+		return subscribers;
+
+	};
+
+	publisher.notify = function( eventName, eventData ) {
+
+		for ( var x = 0, size = subscribers.length; x < size; x++ ) {
+
+			var subscriber = subscribers[ x ];
+
+			if ( IS_FUNCTION( subscriber[ eventName ] ) ) {
+
+				FUNCTION_APPLY( subscriber[ eventName ], subscriber, eventData );
+
+			}
+
+		}
+
+		return eventName;
+
+	};
+ 
+ 	EXEC_INIT_METHOD( publisher );
+
+	return publisher;
+
+};
+$P.version='1.1.0';})(Pattern);

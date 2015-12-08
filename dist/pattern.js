@@ -1,4 +1,4 @@
-/* pattern-js v1.1.0 Tue Dec 08 2015 00:44:46 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
+/* pattern-js v1.1.0 Tue Dec 08 2015 00:54:49 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
 
 FALSE = false,
 
@@ -133,6 +133,113 @@ $P.EventSignal = function() {
 	};
 
 };
+
+$P.Notifier = function( object ) {
+
+	var receivers = [],
+
+	notifier = GET_OBJECT_IF_DEFINED( object );
+
+	notifier.addReceiver = function( receiver ) {
+
+		if ( IS_FUNCTION( receiver.notify ) ) {
+
+			receivers.push( receiver );
+
+		}
+
+		return receivers;
+
+	};
+
+	notifier.removeReceiver = function( receiver ) {
+
+		receivers = REMOVE_ARRAY_ITEM( receivers, receiver );
+
+		return receivers;
+
+	};
+
+	notifier.notify = function( eventName, eventData ) {
+
+		for ( var x = 0, size = receivers.length; x < size; x++ ) {
+
+			receivers[ x ].notify( eventName, eventData );
+
+		}
+
+		return eventName;
+
+	};
+
+	EXEC_INIT_METHOD( notifier );
+
+	return notifier;
+
+};
+
+$P.Receiver = function( object ) {
+
+	var callbacks = {},
+
+	callOnce = {},
+
+	addCallback = function( collection, eventName, eventCallback ) {
+
+		if ( !collection[ eventName ] && IS_FUNCTION( eventCallback ) ) {
+
+			collection[ eventName ] = eventCallback;
+
+		}
+
+		return collection;
+
+	},
+
+	receiver = GET_OBJECT_IF_DEFINED( object );
+
+	receiver.on = function( eventName, eventCallback ) {
+
+		callbacks = addCallback( callbacks, eventName, eventCallback );
+
+		return callbacks;
+
+	};
+
+	receiver.once = function( eventName, eventCallback ) {
+
+		callOnce = addCallback( callOnce, eventName, eventCallback );
+
+		return callOnce;
+
+	};
+
+	receiver.notify = function( eventName, eventData ) {
+
+		if ( callOnce[ eventName ] ) {
+
+			FUNCTION_APPLY( callOnce[ eventName ], receiver, eventData );
+
+			delete callOnce[ eventName ];
+
+		}
+
+		if ( callbacks[ eventName ] ) {
+
+			FUNCTION_APPLY( callbacks[ eventName ], receiver, eventData );
+
+		}
+
+	};
+
+	EXEC_INIT_METHOD( receiver );
+
+	return receiver;
+
+};
+
+// var r = $P.Receiver();
+// r.on( "method", function() {} );
 
 $P.Observable = function( object ) {
 

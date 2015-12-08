@@ -2,7 +2,7 @@ $P.Publisher = function( object ) {
 
 	var subscribers = [],
 
-	publisher = IS_OBJECT( object ) ? object : {};
+	publisher = GET_OBJECT_IF_DEFINED( object );
 
 	publisher.registerSubscriber = function( subscriber ) {
 
@@ -42,12 +42,7 @@ $P.Publisher = function( object ) {
 
 			if ( IS_FUNCTION( subscriber[ eventName ] ) ) {
 
-				/*jshint loopfunc: true */
-				(function() {
-
-					subscriber[ eventName ].apply( subscriber, arguments );
-
-				})(eventData);
+				FUNCTION_APPLY( subscriber[ eventName ], subscriber, eventData );
 
 			}
 

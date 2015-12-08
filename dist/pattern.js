@@ -1,4 +1,4 @@
-/* pattern-js v1.1.0 Mon Dec 07 2015 23:50:09 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
+/* pattern-js v1.1.0 Tue Dec 08 2015 00:02:56 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
 
 FALSE = false,
 
@@ -37,6 +37,22 @@ EXEC_INIT_METHOD = function( object ) {
 		object.init();
 
 	}
+
+},
+
+GET_OBJECT_IF_DEFINED = function( object ) {
+
+	return IS_OBJECT( object ) ? object : {};
+
+},
+
+FUNCTION_APPLY = function( func, parent, args ) {
+
+	(function() {
+
+		func.apply( parent, arguments );
+
+	})( args );
 
 };
 
@@ -116,7 +132,7 @@ $P.Observable = function( object ) {
 
 	var observers = [],
 
-	observable = IS_OBJECT( object ) ? object : {};
+	observable = GET_OBJECT_IF_DEFINED( object );
 
 	observable.addObserver = function( observer ) {
 
@@ -190,7 +206,7 @@ $P.Observable = function( object ) {
 
 $P.Observer = function( object ) {
 
-	object = IS_OBJECT( object ) ? object : {};
+	var observer = GET_OBJECT_IF_DEFINED( object );
 
 	/**
 	* Method triggered by Observable.notify	
@@ -199,18 +215,13 @@ $P.Observer = function( object ) {
 	* @since 1.0
 	*/
 
-	object.onUpdate = function() {
+	observer.onUpdate = function() {
 
 		var notification = arguments[ 0 ];
 
 		if ( IS_FUNCTION( object[ notification.eventName ] ) ) {
 
-			// Retain scope
-			(function() {
-
-				object[ notification.eventName ].apply( this, arguments );
-
-			})( notification.eventData );
+			FUNCTION_APPLY( object[ notification.eventName ], observer, notification.eventData );
 
 		}
 
@@ -218,9 +229,9 @@ $P.Observer = function( object ) {
 
 	};
 
-	EXEC_INIT_METHOD( object );
+	EXEC_INIT_METHOD( observer );
 
-	return object;
+	return observer;
 
 };
 
@@ -228,7 +239,7 @@ $P.Publisher = function( object ) {
 
 	var subscribers = [],
 
-	publisher = IS_OBJECT( object ) ? object : {};
+	publisher = GET_OBJECT_IF_DEFINED( object );
 
 	publisher.registerSubscriber = function( subscriber ) {
 
@@ -268,12 +279,7 @@ $P.Publisher = function( object ) {
 
 			if ( IS_FUNCTION( subscriber[ eventName ] ) ) {
 
-				/*jshint loopfunc: true */
-				(function() {
-
-					subscriber[ eventName ].apply( subscriber, arguments );
-
-				})(eventData);
+				FUNCTION_APPLY( subscriber[ eventName ], subscriber, eventData );
 
 			}
 

@@ -2,7 +2,7 @@ $P.Observable = function( object ) {
 
 	var observers = [],
 
-	observable = IS_OBJECT( object ) ? object : {};
+	observable = GET_OBJECT_IF_DEFINED( object );
 
 	observable.addObserver = function( observer ) {
 

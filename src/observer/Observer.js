@@ -6,7 +6,7 @@
 
 $P.Observer = function( object ) {
 
-	object = IS_OBJECT( object ) ? object : {};
+	var observer = GET_OBJECT_IF_DEFINED( object );
 
 	/**
 	* Method triggered by Observable.notify	
@@ -15,18 +15,13 @@ $P.Observer = function( object ) {
 	* @since 1.0
 	*/
 
-	object.onUpdate = function() {
+	observer.onUpdate = function() {
 
 		var notification = arguments[ 0 ];
 
 		if ( IS_FUNCTION( object[ notification.eventName ] ) ) {
 
-			// Retain scope
-			(function() {
-
-				object[ notification.eventName ].apply( this, arguments );
-
-			})( notification.eventData );
+			FUNCTION_APPLY( object[ notification.eventName ], observer, notification.eventData );
 
 		}
 
@@ -34,8 +29,8 @@ $P.Observer = function( object ) {
 
 	};
 
-	EXEC_INIT_METHOD( object );
+	EXEC_INIT_METHOD( observer );
 
-	return object;
+	return observer;
 
 };

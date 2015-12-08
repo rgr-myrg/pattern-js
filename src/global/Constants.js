@@ -38,4 +38,20 @@ EXEC_INIT_METHOD = function( object ) {
 
 	}
 
+},
+
+GET_OBJECT_IF_DEFINED = function( object ) {
+
+	return IS_OBJECT( object ) ? object : {};
+
+},
+
+FUNCTION_APPLY = function( func, parent, args ) {
+
+	(function() {
+
+		func.apply( parent, arguments );
+
+	})( args );
+
 };

@@ -40,8 +40,7 @@ var	headerText  = "/* {artifact} v{version} {date} */",
 		"eventsignal/*.js",
 		"notifier/*.js",
 		"observer/*.js",
-		"pubsub/*.js",
-		"queue/*.js"
+		"pubsub/*.js"
 
 	],
 	

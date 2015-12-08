@@ -1,8 +1,8 @@
-$P.Observable = function( observable ) {
+$P.Observable = function( object ) {
 
-	var observers = [];
+	var observers = [],
 
-	observable = IS_OBJECT( observable ) ? observable : {};
+	observable = IS_OBJECT( object ) ? object : {};
 
 	observable.addObserver = function( observer ) {
 
@@ -62,11 +62,7 @@ $P.Observable = function( observable ) {
 
 	};
 
-	if ( IS_FUNCTION( observable.init ) ) {
-
-		observable.init();
-
-	}
+	EXEC_INIT_METHOD( observable );
 
 	return observable;
 

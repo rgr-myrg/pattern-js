@@ -1,4 +1,4 @@
-/* pattern-js v1.1.0 Mon Dec 07 2015 21:59:48 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
+/* pattern-js v1.1.0 Mon Dec 07 2015 23:50:09 GMT-0500 (EST) */(function(w){w.Pattern=w.Pattern||{};})(window);(function($P){var TRUE = true,
 
 FALSE = false,
 
@@ -27,6 +27,16 @@ IS_NUMBER = function( num ) {
 LOGTAG = function() {
 
 	return "[Pattern Js] " + ( new Date() ).toLocaleTimeString() + " ";
+
+},
+
+EXEC_INIT_METHOD = function( object ) {
+
+	if ( IS_FUNCTION( object.init ) ) {
+
+		object.init();
+
+	}
 
 };
 
@@ -102,11 +112,11 @@ $P.EventSignal = function() {
 
 };
 
-$P.Observable = function( observable ) {
+$P.Observable = function( object ) {
 
-	var observers = [];
+	var observers = [],
 
-	observable = IS_OBJECT( observable ) ? observable : {};
+	observable = IS_OBJECT( object ) ? object : {};
 
 	observable.addObserver = function( observer ) {
 
@@ -166,11 +176,7 @@ $P.Observable = function( observable ) {
 
 	};
 
-	if ( IS_FUNCTION( observable.init ) ) {
-
-		observable.init();
-
-	}
+	EXEC_INIT_METHOD( observable );
 
 	return observable;
 
@@ -211,6 +217,8 @@ $P.Observer = function( object ) {
 		return notification;
 
 	};
+
+	EXEC_INIT_METHOD( object );
 
 	return object;
 
@@ -275,11 +283,7 @@ $P.Publisher = function( object ) {
 
 	};
  
- 	if ( IS_FUNCTION( publisher.init ) ) {
-
-		publisher.init();
-
-	}
+ 	EXEC_INIT_METHOD( publisher );
 
 	return publisher;
 

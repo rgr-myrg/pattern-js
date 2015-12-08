@@ -28,4 +28,14 @@ LOGTAG = function() {
 
 	return "[Pattern Js] " + ( new Date() ).toLocaleTimeString() + " ";
 
+},
+
+EXEC_INIT_METHOD = function( object ) {
+
+	if ( IS_FUNCTION( object.init ) ) {
+
+		object.init();
+
+	}
+
 };

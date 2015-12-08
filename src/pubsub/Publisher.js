@@ -57,11 +57,7 @@ $P.Publisher = function( object ) {
 
 	};
  
- 	if ( IS_FUNCTION( publisher.init ) ) {
-
-		publisher.init();
-
-	}
+ 	EXEC_INIT_METHOD( publisher );
 
 	return publisher;
 

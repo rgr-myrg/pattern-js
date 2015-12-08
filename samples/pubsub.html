@@ -7,23 +7,13 @@
 		</style>
 		<script type="text/javascript" src="../dist/pattern.js"></script>
 		<script type="text/javascript">
-		//Subscriber must have onRegister method that returns notification interests
+
 		var Echo = {
-			onRegister: function() {
-				return {
-					ON_KEYUP: this.onKeyUp
-				};
-			},
 			onKeyUp: function( msg ){
 				document.getElementById( 'echo' ).innerHTML = msg;
 			}
 		};
 		var Mirror = {
-			onRegister: function() {
-				return {
-					ON_KEYUP: this.onKeyUp
-				};
-			},
 			onKeyUp:function( msg ){
 				var arr = msg.split('');
 				var msg = '';
@@ -34,11 +24,6 @@
 			}
 		};
 		var Vertical={
-			onRegister: function() {
-				return {
-					ON_KEYUP: this.onKeyUp
-				};
-			},
 			onKeyUp:function( msg ) {
 				var arr=msg.split('');
 				var msg=arr.join('<br>');

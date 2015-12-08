@@ -34,6 +34,8 @@ $P.Observer = function( object ) {
 
 	};
 
+	EXEC_INIT_METHOD( object );
+
 	return object;
 
 };

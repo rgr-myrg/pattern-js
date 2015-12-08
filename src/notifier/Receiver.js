@@ -36,7 +36,7 @@ $P.Receiver = function( object ) {
 
 	receiver.notify = function( eventName, eventData ) {
 
-		if ( callOnce[ eventName ] ) {
+		if ( IS_FUNCTION( callOnce[ eventName ] ) ) {
 
 			FUNCTION_APPLY( callOnce[ eventName ], receiver, eventData );
 
@@ -44,7 +44,7 @@ $P.Receiver = function( object ) {
 
 		}
 
-		if ( callbacks[ eventName ] ) {
+		if ( IS_FUNCTION( callbacks[ eventName ] ) ) {
 
 			FUNCTION_APPLY( callbacks[ eventName ], receiver, eventData );
 

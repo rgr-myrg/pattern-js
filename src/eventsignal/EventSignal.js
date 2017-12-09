@@ -1,53 +1,26 @@
-$P.EventSignal = function() {
+Pattern.EventSignal = function() {
+    var listeners = [];
 
-	var listeners = [];
+    return {
+        addListener: function(listener) {
+            if (typeof listener === "function") {
+                listeners.push(listener);
+            }
+            return listeners;
+        },
 
-	return {
+        removeListener: function(listener) {
+            listeners = REMOVE_ARRAY_ITEM(listeners, listener);
+            return listeners;
+        },
 
-		addListener: function( listener ) {
+        dispatch: function() {
+            var	size = listeners.length;
 
-			if ( IS_FUNCTION( listener ) ) {
-
-				listeners.push( listener );
-
-			}
-
-			return listeners;
-
-		},
-
-		removeListener: function( listener ) {
-
-			listeners = REMOVE_ARRAY_ITEM( listeners, listener );
-
-			return listeners;
-
-		},
-
-		dispatch: function() {
-
-			var	temp = [],
-
-				size = listeners.length;
-
-			for ( var x = 0; x < size; x++ ) {
-
-				var listener = listeners[ x ];
-
-				if ( IS_FUNCTION( listener ) ) {
-
-					listener.apply( this, arguments );
-
-				} else {
-
-					temp.push( x );
-
-				}
-
-			}
-
-		}
-
-	};
-
+            for (var x = 0; x < size; x++) {
+                var listener = listeners[x];
+                listener.apply(this, arguments);
+            }
+        }
+    };
 };

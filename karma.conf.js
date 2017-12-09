@@ -1,22 +1,22 @@
 // Karma configuration
-// Generated on Sat Nov 08 2014 00:13:25 GMT-0500 (EST)
+// Generated on Sun Aug 20 2017 00:17:53 GMT-0400 (EDT)
 
-module.exports = function( config ) {
+module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: "",
+    basePath: '',
 
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: [ "jasmine" ],
+    frameworks: ['jasmine'],
 
 
     // list of files / patterns to load in the browser
     files: [
-      "dist/pattern.min.js",
-      "test/*.js"
+      'build/pattern-js.js',
+      'test/*.Spec.js'
     ],
 
 
@@ -28,26 +28,13 @@ module.exports = function( config ) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-
-        "dist/pattern.js": [ "coverage" ]
-
     },
 
 
     // test results reporter to use
-    // possible values: 'spec', 'dots', 'progress'
+    // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: [ "spec", "coverage" ],
-
-
-    coverageReporter: {
-
-      reporters: [
-        { type: "html", dir: "test/coverage" },
-        { type: "cobertura", dir: "test/coverage/" }
-      ]
-
-    },
+    reporters: ['progress'],
 
 
     // web server port
@@ -60,7 +47,7 @@ module.exports = function( config ) {
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_DISABLE,
+    logLevel: config.LOG_INFO,
 
 
     // enable / disable watching file and executing tests whenever any file changes
@@ -69,11 +56,15 @@ module.exports = function( config ) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [ "PhantomJS" ],
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode
-    // If true, Karma captures browsers, runs the tests and exits
-    singleRun: true
-  });
-};
+    // if true, Karma captures browsers, runs the tests and exits
+    singleRun: false,
+
+    // Concurrency level
+    // how many browser should be started simultaneous
+    concurrency: Infinity
+  })
+}

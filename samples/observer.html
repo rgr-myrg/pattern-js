@@ -5,14 +5,14 @@
 		<title>Sample :: Observer</title>
 		<style>
 		</style>
-		<script type="text/javascript" src="../dist/pattern.js"></script>
+		<script type="text/javascript" src="../build/pattern-js.js"></script>
 		<script type="text/javascript">
 		var Echo = Pattern.Observer({
 			onKeyUp: function( data ) {
 				//document.getElementById( "echo" ).innerHTML=data;
 
 				// Use a reference to observable instead
-				document.getElementById( "echo" ).innerHTML = Echo._observable.getMsg();
+				document.getElementById("echo").innerHTML = Echo._observable.getMsg();
 			}
 		});
 
@@ -32,9 +32,9 @@
 		var Vertical = Pattern.Observer({
 			onKeyUp: function( data ) {
 				var arr = data.split('');
-				var msg = arr.join( "<br>" );
+				var msg = arr.join("<br>");
 
-				document.getElementById( "vertical" ).innerHTML=msg;
+				document.getElementById("vertical").innerHTML=msg;
 			}
 		});
 
@@ -56,11 +56,6 @@
 				return document.getElementById('box').value;
 			}
 		});
-		// var UI = Pattern.Observable(
-		// 	(function() {
-
-		// 	})()
-		// ); 
 		</script>
 	</head>
 	<body>

@@ -5,12 +5,12 @@
 		<title>Sample :: PubSub</title>
 		<style>
 		</style>
-		<script type="text/javascript" src="../dist/pattern.js"></script>
+		<script type="text/javascript" src="../build/pattern-js.js"></script>
 		<script type="text/javascript">
 
 		var Echo = {
 			onKeyUp: function( msg ){
-				document.getElementById( 'echo' ).innerHTML = msg;
+				document.getElementById('echo').innerHTML = msg;
 			}
 		};
 		var Mirror = {
@@ -20,21 +20,21 @@
 				if(arr.length>0)
 					for(var x=arr.length-1;x>=0;x--)
 						msg+=arr[x];
-				document.getElementById( 'mirror' ).innerHTML = msg;
+				document.getElementById('mirror').innerHTML = msg;
 			}
 		};
 		var Vertical={
 			onKeyUp:function( msg ) {
 				var arr=msg.split('');
 				var msg=arr.join('<br>');
-				document.getElementById( 'vertical' ).innerHTML = msg;
+				document.getElementById('vertical').innerHTML = msg;
 			}
 		};
 
 		//Create an instance of Publisher
 		var UI=new Pattern.Publisher({
 			onKeyUp: function() {
-				this.notify( "onKeyUp", document.getElementById('box').value );
+				this.notify("onKeyUp", document.getElementById('box').value);
 			},
 
 			// init will be invoked when the Publisher instantiates

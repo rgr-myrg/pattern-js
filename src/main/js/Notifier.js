@@ -1,31 +1,47 @@
-Pattern.Notifier = function(object) {
-	var receivers = [];
-	var notifier  = GET_OBJECT_IF_DEFINED(object);
+Pattern.Notifier = function() {
+    var receivers = [];
+ 
+    return {
+        addReceiver: function(receiver) {
+            if (IS_FUNCTION(receiver.notify)) {
+                receivers.push(receiver);
+            }
 
-    notifier.addReceiver = function(receiver) {
+            return receivers;
+        },
 
-		if (IS_FUNCTION(receiver.notify)) {
-			receivers.push(receiver);
-		}
+        addReceivers: function(receiverList) {
+            for (var x = 0, size = receiverList.length; x < size; x++) {
+                this.addReceiver(receiverList[x]);
+            }
 
-		return receivers;
-	};
+            return this;
+        },
 
-	notifier.removeReceiver = function(receiver) {
-		receivers = REMOVE_ARRAY_ITEM(receivers, receiver);
+        removeReceiver: function(receiver) {
+            receivers = REMOVE_ARRAY_ITEM(receivers, receiver);
 
-		return receivers;
-	};
+            return receivers;
+        },
 
-	notifier.notify = function(eventName, eventData) {
-		for (var x = 0, size = receivers.length; x < size; x++) {
-			receivers[x].notify(eventName, eventData);
-		}
+        notify: function(eventName, eventData) {
+            for (var x = 0, size = receivers.length; x < size; x++) {
+                receivers[x].notify(eventName, eventData);
+            }
 
-		return eventName;
-	};
+            return eventName;
+        },
 
-	EXEC_INIT_METHOD(notifier);
+        notifyWith: function(object) {
+            if (IS_OBJECT(object)) {
+                for (var i in object) {
+                    if (object.hasOwnProperty(i)) {
+                        this[i] = object[i];
+                    }
+                }
+            }
 
-	return notifier;
+            return this;
+        }
+    };
 };

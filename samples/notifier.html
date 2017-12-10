@@ -71,32 +71,13 @@ mkdir <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/ht
 			console.log( "Logging once! msg: " + msg );
 		});
 
-//		var UI = Pattern.Notifier({
-//
-//			init: function() {
-//
-//				this.addReceiver( Log );
-//				this.addReceiver( Echo );
-//				this.addReceiver( Mirror );
-//				this.addReceiver( Vertical );
-//
-//			},
-//
-//			onKeyUp: function() {
-//
-//				this.notify( "onKeyUp", document.getElementById('box').value );
-//
-//			}
-//
-//		});
-
         var UI = Pattern.Notifier()
             .addReceivers([Log, Echo, Mirror, Vertical])
             .notifyWith({
                 onKeyUp: function() {
                     this.notify("onKeyUp", document.getElementById('box').value);
                 }
-        });
+            });
 		</script>
 	</head>
 	<body>

@@ -1,4 +1,4 @@
-/* pattern-js v1.1.1 Sun Dec 10 2017 13:45:55 GMT-0500 (EST) */
+/* pattern-js v1.1.1 Sun Dec 10 2017 16:01:35 GMT-0500 (EST) */
 (function(w) {w.Pattern = w.Pattern || {};})(window);
 (function(p) {p.version = '1.1.1';})(Pattern);
 
@@ -39,40 +39,9 @@
     };
 };
 
-//Pattern.Notifier = function(object) {
-//	var receivers = [];
-//	var notifier  = GET_OBJECT_IF_DEFINED(object);
-//
-//    notifier.addReceiver = function(receiver) {
-//
-//		if (IS_FUNCTION(receiver.notify)) {
-//			receivers.push(receiver);
-//		}
-//
-//		return receivers;
-//	};
-//
-//	notifier.removeReceiver = function(receiver) {
-//		receivers = REMOVE_ARRAY_ITEM(receivers, receiver);
-//
-//		return receivers;
-//	};
-//
-//	notifier.notify = function(eventName, eventData) {
-//		for (var x = 0, size = receivers.length; x < size; x++) {
-//			receivers[x].notify(eventName, eventData);
-//		}
-//
-//		return eventName;
-//	};
-//
-//	EXEC_INIT_METHOD(notifier);
-//
-//	return notifier;
-//};
-
 Pattern.Notifier = function() {
     var receivers = [];
+ 
     return {
         addReceiver: function(receiver) {
             if (IS_FUNCTION(receiver.notify)) {
@@ -81,6 +50,7 @@ Pattern.Notifier = function() {
 
             return receivers;
         },
+
         addReceivers: function(receiverList) {
             for (var x = 0, size = receiverList.length; x < size; x++) {
                 this.addReceiver(receiverList[x]);
@@ -88,11 +58,13 @@ Pattern.Notifier = function() {
 
             return this;
         },
+
         removeReceiver: function(receiver) {
             receivers = REMOVE_ARRAY_ITEM(receivers, receiver);
 
             return receivers;
         },
+
         notify: function(eventName, eventData) {
             for (var x = 0, size = receivers.length; x < size; x++) {
                 receivers[x].notify(eventName, eventData);
@@ -100,6 +72,7 @@ Pattern.Notifier = function() {
 
             return eventName;
         },
+
         notifyWith: function(object) {
             if (IS_OBJECT(object)) {
                 for (var i in object) {
@@ -319,51 +292,91 @@ Pattern.Queue = function(options) {
 		};
 	};
 
-Pattern.Receiver = function(object) {
+//Pattern.Receiver = function(object) {
+//	var callbacks = {};
+//	var callOnce = {};
+//
+//    var addCallback = function(collection, eventName, eventCallback) {
+//		if (!collection[eventName] && IS_FUNCTION(eventCallback)) {
+//			collection[eventName] = eventCallback;
+//		}
+//
+//		return collection;
+//
+//	};
+//
+//	var receiver = GET_OBJECT_IF_DEFINED(object);
+//
+//	receiver.on = function(eventName, eventCallback) {
+//		callbacks = addCallback(callbacks, eventName, eventCallback);
+//
+//		return callbacks;
+//	};
+//
+//	receiver.once = function(eventName, eventCallback) {
+//		callOnce = addCallback(callOnce, eventName, eventCallback);
+//		return callOnce;
+//
+//	};
+//
+//	receiver.notify = function(eventName, eventData) {
+//
+//		if (IS_FUNCTION(callOnce[eventName])) {
+//			FUNCTION_APPLY(callOnce[eventName], receiver, eventData);
+//
+//			delete callOnce[ eventName ];
+//		}
+//
+//		if (IS_FUNCTION(callbacks[eventName])){
+//			FUNCTION_APPLY(callbacks[eventName], receiver, eventData);
+//		}
+//
+//		return eventName;
+//	};
+//
+//	EXEC_INIT_METHOD(receiver);
+//
+//	return receiver;
+//};
+
+Pattern.Receiver = function() {
 	var callbacks = {};
 	var callOnce = {};
-
     var addCallback = function(collection, eventName, eventCallback) {
 		if (!collection[eventName] && IS_FUNCTION(eventCallback)) {
 			collection[eventName] = eventCallback;
 		}
 
 		return collection;
-
 	};
 
-	var receiver = GET_OBJECT_IF_DEFINED(object);
+    return {
+        on: function(eventName, eventCallback) {
+            callbacks = addCallback(callbacks, eventName, eventCallback);
 
-	receiver.on = function(eventName, eventCallback) {
-		callbacks = addCallback(callbacks, eventName, eventCallback);
+            return this;
+        },
 
-		return callbacks;
-	};
+        once: function(eventName, eventCallback) {
+            callOnce = addCallback(callOnce, eventName, eventCallback);
 
-	receiver.once = function(eventName, eventCallback) {
-		callOnce = addCallback(callOnce, eventName, eventCallback);
-		return callOnce;
+            return this;
+        },
 
-	};
+        notify: function(eventName, eventData) {
+            if (IS_FUNCTION(callOnce[eventName])) {
+                FUNCTION_APPLY(callOnce[eventName], this, eventData);
 
-	receiver.notify = function(eventName, eventData) {
+                delete callOnce[eventName];
+            }
 
-		if (IS_FUNCTION(callOnce[eventName])) {
-			FUNCTION_APPLY(callOnce[eventName], receiver, eventData);
+            if (IS_FUNCTION(callbacks[eventName])){
+                FUNCTION_APPLY(callbacks[eventName], this, eventData);
+            }
 
-			delete callOnce[ eventName ];
-		}
-
-		if (IS_FUNCTION(callbacks[eventName])){
-			FUNCTION_APPLY(callbacks[eventName], receiver, eventData);
-		}
-
-		return eventName;
-	};
-
-	EXEC_INIT_METHOD(receiver);
-
-	return receiver;
+            return eventName;
+        }
+    };
 };
 
 var IS_FUNCTION = function(fn) {

@@ -1,46 +1,39 @@
-Pattern.Receiver = function(object) {
+Pattern.Receiver = function() {
 	var callbacks = {};
 	var callOnce = {};
-
     var addCallback = function(collection, eventName, eventCallback) {
 		if (!collection[eventName] && IS_FUNCTION(eventCallback)) {
 			collection[eventName] = eventCallback;
 		}
 
 		return collection;
-
 	};
 
-	var receiver = GET_OBJECT_IF_DEFINED(object);
+    return {
+        on: function(eventName, eventCallback) {
+            callbacks = addCallback(callbacks, eventName, eventCallback);
 
-	receiver.on = function(eventName, eventCallback) {
-		callbacks = addCallback(callbacks, eventName, eventCallback);
+            return this;
+        },
 
-		return callbacks;
-	};
+        once: function(eventName, eventCallback) {
+            callOnce = addCallback(callOnce, eventName, eventCallback);
 
-	receiver.once = function(eventName, eventCallback) {
-		callOnce = addCallback(callOnce, eventName, eventCallback);
-		return callOnce;
+            return this;
+        },
 
-	};
+        notify: function(eventName, eventData) {
+            if (IS_FUNCTION(callOnce[eventName])) {
+                FUNCTION_APPLY(callOnce[eventName], this, eventData);
 
-	receiver.notify = function(eventName, eventData) {
+                delete callOnce[eventName];
+            }
 
-		if (IS_FUNCTION(callOnce[eventName])) {
-			FUNCTION_APPLY(callOnce[eventName], receiver, eventData);
+            if (IS_FUNCTION(callbacks[eventName])){
+                FUNCTION_APPLY(callbacks[eventName], this, eventData);
+            }
 
-			delete callOnce[ eventName ];
-		}
-
-		if (IS_FUNCTION(callbacks[eventName])){
-			FUNCTION_APPLY(callbacks[eventName], receiver, eventData);
-		}
-
-		return eventName;
-	};
-
-	EXEC_INIT_METHOD(receiver);
-
-	return receiver;
+            return eventName;
+        }
+    };
 };

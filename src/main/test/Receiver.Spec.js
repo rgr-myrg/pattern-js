@@ -20,12 +20,11 @@ describe( "Pattern.Receiver", function() {
 
 	});
 
-	it( "Receiver.on should return an Object of callbacks", function() {
+	it( "Receiver.on should return an Object", function() {
 
 		var callbacks = receiver.on( "testMethod", function(){} );
 
 		expect( typeof callbacks ).toBe( typeof {} );
-		expect( typeof callbacks.testMethod ).toBe( typeof function(){} );
 
 	});
 
@@ -35,12 +34,11 @@ describe( "Pattern.Receiver", function() {
 
 	});
 
-	it( "Receiver.on should return an Object of callbacks", function() {
+	it( "Receiver.on should return an Object", function() {
 
 		var callbacks = receiver.once( "testMethod", function(){} );
 
 		expect( typeof callbacks ).toBe( typeof {} );
-		expect( typeof callbacks.testMethod ).toBe( typeof function(){} );
 
 	});
 

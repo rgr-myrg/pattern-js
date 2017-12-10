@@ -8,74 +8,83 @@ mkdir <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/ht
 		<script type="text/javascript" src="../build/pattern-js.js"></script>
 		<script type="text/javascript">
 
-		// var Echo = Pattern.Receiver({
-
-		// 	init: function() {
-
-		// 		this.on( "onKeyUp", function( msg ) {
-
-		// 			document.getElementById( 'echo' ).innerHTML = msg;
-
-		// 		});
-
-		// 	}
-
-		// });
-
 		// Different ways of creation Receiver
 
 		// Create Receiver and specify on() method
-		var Echo = Pattern.Receiver();
-		Echo.on( "onKeyUp", function( msg ) {
-			document.getElementById( 'echo' ).innerHTML = msg;
-		});
+//		var Echo = Pattern.Receiver();
+//		Echo.on( "onKeyUp", function( msg ) {
+//			document.getElementById( 'echo' ).innerHTML = msg;
+//		});
 
-		// Inline Receiver with init()
-		var Mirror = Pattern.Receiver({
+        var Echo = Pattern.Receiver()
+            .on("keyUp", function(msg) {
+                document.getElementById('echo').innerHTML = msg;
+            })
+            .on("sendMsg", function(msg) {
+                console.log("sendMsg", msg);
+            });
 
-			init: function() {
+        var Mirror = Pattern.Receiver()
+            .on("keyUp", function(msg) {
+                var arr = msg.split('');
+				var msg = '';
+				if(arr.length>0)
+					for(var x=arr.length-1;x>=0;x--)
+						msg+=arr[x];
+				document.getElementById('mirror').innerHTML = msg;
+            });
+            // Inline Receiver with init()
+//		var Mirror = Pattern.Receiver({
+//
+//			init: function() {
+//
+//				this.on( "onKeyUp", function( msg ) {
+//
+//					var arr = msg.split('');
+//					var msg = '';
+//					if(arr.length>0)
+//						for(var x=arr.length-1;x>=0;x--)
+//							msg+=arr[x];
+//					document.getElementById( 'mirror' ).innerHTML = msg;
+//
+//				});
+//
+//			}
+//
+//		});
 
-				this.on( "onKeyUp", function( msg ) {
-
-					var arr = msg.split('');
-					var msg = '';
-					if(arr.length>0)
-						for(var x=arr.length-1;x>=0;x--)
-							msg+=arr[x];
-					document.getElementById( 'mirror' ).innerHTML = msg;
-
-				});
-
-			}
-
-		});
-
-		var Vertical = Pattern.Receiver({
-
-			init: function() {
-
-				this.on( "onKeyUp", function( msg ) {
-
-					var arr = msg.split('');
-					var msg = arr.join('<br>');
-					document.getElementById( 'vertical' ).innerHTML = msg;
-
-				});
-
-			}
-
-		});
+        var Vertical = Pattern.Receiver()
+            .on("keyUp", function(msg) {
+                var arr = msg.split('');
+				var msg = arr.join('<br>');
+				document.getElementById( 'vertical' ).innerHTML = msg;
+            });
+//		var Vertical = Pattern.Receiver({
+//
+//			init: function() {
+//
+//				this.on( "onKeyUp", function( msg ) {
+//
+//					var arr = msg.split('');
+//					var msg = arr.join('<br>');
+//					document.getElementById( 'vertical' ).innerHTML = msg;
+//
+//				});
+//
+//			}
+//
+//		});
 
 		var Log = Pattern.Receiver();
-		Log.once( "onKeyUp", function( msg ) {
-			console.log( "Logging once! msg: " + msg );
-		});
+            .once("keyUp", function(msg) {
+                console.log("Logging once! msg: " + msg);
+            });
 
         var UI = Pattern.Notifier()
             .addReceivers([Log, Echo, Mirror, Vertical])
             .notifyWith({
                 onKeyUp: function() {
-                    this.notify("onKeyUp", document.getElementById('box').value);
+                    this.notify("keyUp", document.getElementById('box').value);
                 }
             });
 		</script>

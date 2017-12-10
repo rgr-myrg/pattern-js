@@ -1,4 +1,4 @@
-/* pattern-js v1.1.1 Sun Dec 10 2017 12:45:06 GMT-0500 (EST) */
+/* pattern-js v1.1.1 Sun Dec 10 2017 13:21:29 GMT-0500 (EST) */
 (function(w) {w.Pattern = w.Pattern || {};})(window);
 (function(p) {p.version = '1.1.1';})(Pattern);
 

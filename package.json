@@ -18,7 +18,7 @@
   "homepage": "https://github.com/rgr-myrg/pattern-js#readme",
   "sourcePath": "src/main/js/*.js",
   "buildPath": "./build",
-  "testPath": "./test/*.js",
+  "testPath": "src/main/test/*.js",
   "karmaConf": "/karma.conf.js",
   "packaging": ".js",
   "namespace": "(function(w) {w.Pattern = w.Pattern || {};})(window);",

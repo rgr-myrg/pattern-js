@@ -1,4 +1,4 @@
-/* pattern-js v1.1.1 Sun Dec 10 2017 12:03:57 GMT-0500 (EST) */
+/* pattern-js v1.1.1 Sun Dec 10 2017 12:27:23 GMT-0500 (EST) */
 (function(w) {w.Pattern = w.Pattern || {};})(window);
 (function(p) {p.version = '1.1.1';})(Pattern);
 
@@ -129,53 +129,6 @@ Pattern.Observer = function(object) {
 	return observer;
 };
 
-//Pattern.Publisher = function(object) {
-//	var subscribers = [];
-//	var publisher = GET_OBJECT_IF_DEFINED(object);
-//
-//	publisher.registerSubscriber = function(subscriber) {
-//		if (IS_OBJECT(subscriber)) {
-//			subscribers.push(subscriber);
-//		}
-//
-//		return subscribers;
-//
-//	};
-//
-//    publisher.registerSubscribers = function(subscriberList) {
-//        for (var x = 0, size = subscriberList.length; x < size; x++) {
-//            this.registerSubscriber(subscriberList[x]);
-////            if (IS_OBJECT(subscriberList[x])) {
-////                subscribers.push(subscriberList[x]);
-////            }
-//        }
-//
-//        return subscribers;
-//	};
-//
-//    publisher.removeSubscriber = function(subscriber) {
-//		subscribers = REMOVE_ARRAY_ITEM(subscribers, subscriber);
-//
-//		return subscribers;
-//	};
-//
-//	publisher.notify = function(eventName, eventData) {
-//		for (var x = 0, size = subscribers.length; x < size; x++) {
-//			var subscriber = subscribers[x];
-//
-//			if (IS_FUNCTION(subscriber[eventName])) {
-//				FUNCTION_APPLY(subscriber[eventName], subscriber, eventData);
-//			}
-//		}
-//
-//		return eventName;
-//	};
-//
-//    EXEC_INIT_METHOD(publisher);
-//
-//	return publisher;
-//};
-
 Pattern.Publisher = function() {
     var subscribers = [];
     this.registerSubscribers = function(subscriberList) {
@@ -196,6 +149,7 @@ Pattern.Publisher = function() {
                 }
             }
         }
+
         return this;
     };
 

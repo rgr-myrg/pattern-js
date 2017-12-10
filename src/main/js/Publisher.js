@@ -18,6 +18,7 @@ Pattern.Publisher = function() {
                 }
             }
         }
+
         return this;
     };
 

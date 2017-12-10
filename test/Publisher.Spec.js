@@ -1,34 +1,22 @@
 describe( "Pattern.Publisher", function() {
-
-//	var publisher = new Pattern.Publisher({
-//
-//	}),
 	var subscriber = (function() {
 
 		var eventData = {};
 
 		return {
-
 			onEventComplete: function( data ) {
-
 				eventData = data;
-
 			},
 
 			getEventData: function() {
-
 				return eventData;
-
 			}
-
 		};
 
 	})();
 
 	var eventData = {
-
 		aKey: "aValue"
-
 	};
 
     var publisher = Pattern.Publisher()
@@ -38,7 +26,8 @@ describe( "Pattern.Publisher", function() {
                 this.notify("onEventComplete", eventData);
             }
         });
-	it( "Publisher should be a Constructor Function", function() {
+
+    it( "Publisher should be a Constructor Function", function() {
 
 		expect( typeof Pattern.Publisher ).toBe( typeof function(){} );
 

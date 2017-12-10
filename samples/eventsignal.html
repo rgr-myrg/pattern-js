@@ -30,20 +30,13 @@
 			}
 		};
 
-		var UI = new Pattern.Publisher({
+        var onKeyUp = new Pattern.EventSignal()
+            .addListeners([
+                Echo.onKeyUp, 
+                Mirror.onKeyUp, 
+                Vertical.onKeyUp
+            ]);
 
-			onKeyUp: function() {
-				this.notify( "onKeyUp", document.getElementById('box').value );
-			},
-
-			// init will be invoked when the Publisher instantiates
-			init: function() {
-				this.registerSubscriber( Echo );
-				this.registerSubscriber( Mirror );
-				this.registerSubscriber( Vertical );
-			}
-
-		});
 		</script>
 	</head>
 	<body>
@@ -52,7 +45,7 @@
 	<table>
 		<tr>
 			<td>Type in this box:</td>
-			<td><input onkeyup="UI.onKeyUp()" type="text" id="box" name="box" value="" size="50"/></td>
+			<td><input onkeyup="onKeyUp.dispatch(document.getElementById('box').value)" type="text" id="box" name="box" value="" size="50"/></td>
 		</tr>
 		<tr>
 			<td>Echo:</td><td><div id="echo"></div></td>

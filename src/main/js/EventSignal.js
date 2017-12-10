@@ -6,11 +6,21 @@ Pattern.EventSignal = function() {
             if (IS_FUNCTION(listener)) {
                 listeners.push(listener);
             }
+
             return listeners;
+        },
+
+        addListeners: function(listenerList) {
+            for (var x = 0, size = listenerList.length; x < size; x++) {
+                this.addListener(listenerList[x]);
+            }
+
+            return this;
         },
 
         removeListener: function(listener) {
             listeners = REMOVE_ARRAY_ITEM(listeners, listener);
+
             return listeners;
         },
 

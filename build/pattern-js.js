@@ -1,4 +1,4 @@
-/* pattern-js v1.1.1 Sun Dec 10 2017 12:27:23 GMT-0500 (EST) */
+/* pattern-js v1.1.1 Sun Dec 10 2017 12:45:06 GMT-0500 (EST) */
 (function(w) {w.Pattern = w.Pattern || {};})(window);
 (function(p) {p.version = '1.1.1';})(Pattern);
 
@@ -10,11 +10,21 @@
             if (IS_FUNCTION(listener)) {
                 listeners.push(listener);
             }
+
             return listeners;
+        },
+
+        addListeners: function(listenerList) {
+            for (var x = 0, size = listenerList.length; x < size; x++) {
+                this.addListener(listenerList[x]);
+            }
+
+            return this;
         },
 
         removeListener: function(listener) {
             listeners = REMOVE_ARRAY_ITEM(listeners, listener);
+
             return listeners;
         },
 

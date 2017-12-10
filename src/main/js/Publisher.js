@@ -1,23 +1,33 @@
-Pattern.Publisher = function(object) {
-	var subscribers = [];
-	var publisher = GET_OBJECT_IF_DEFINED(object);
+Pattern.Publisher = function() {
+    var subscribers = [];
+    this.registerSubscribers = function(subscriberList) {
+        for (var x = 0, size = subscriberList.length; x < size; x++) {
+            if (IS_OBJECT(subscriberList[x])) {
+                subscribers.push(subscriberList[x]);
+            }
+        }
 
-	publisher.registerSubscriber = function(subscriber) {
-		if (IS_OBJECT(subscriber)) {
-			subscribers.push(subscriber);
-		}
-
-		return subscribers;
-
+        return this;
 	};
 
-	publisher.removeSubscriber = function(subscriber) {
+    this.notifyWith = function(object) {
+        if (IS_OBJECT(object)) {
+            for (var i in object) {
+                if (object.hasOwnProperty(i)) {
+                    this[i] = object[i];
+                }
+            }
+        }
+        return this;
+    };
+
+    this.removeSubscriber = function(subscriber) {
 		subscribers = REMOVE_ARRAY_ITEM(subscribers, subscriber);
 
 		return subscribers;
 	};
 
-	publisher.notify = function(eventName, eventData) {
+	this.notify = function(eventName, eventData) {
 		for (var x = 0, size = subscribers.length; x < size; x++) {
 			var subscriber = subscribers[x];
 
@@ -28,8 +38,10 @@ Pattern.Publisher = function(object) {
 
 		return eventName;
 	};
- 
- 	EXEC_INIT_METHOD(publisher);
 
-	return publisher;
+    this.getSubscribers = function() {
+        return subscribers;
+    };
+
+    return this;
 };

@@ -1,9 +1,9 @@
 describe( "Pattern.Publisher", function() {
 
-	var publisher = new Pattern.Publisher({
-
-	}),
-	subscriber = (function() {
+//	var publisher = new Pattern.Publisher({
+//
+//	}),
+	var subscriber = (function() {
 
 		var eventData = {};
 
@@ -23,31 +23,40 @@ describe( "Pattern.Publisher", function() {
 
 		};
 
-	})(),
+	})();
 
-	eventData = {
+	var eventData = {
 
 		aKey: "aValue"
 
 	};
 
+    var publisher = Pattern.Publisher()
+        .registerSubscribers([subscriber])
+        .notifyWith({
+            onEventComplete: function() {
+                this.notify("onEventComplete", eventData);
+            }
+        });
 	it( "Publisher should be a Constructor Function", function() {
 
 		expect( typeof Pattern.Publisher ).toBe( typeof function(){} );
 
 	});
 
-	it( "Publisher.registerSubscriber should be a Function", function() {
+	it( "Publisher.registerSubscribers should be a Function", function() {
 
-		expect( typeof publisher.registerSubscriber ).toBe( typeof function(){} );
+		expect( typeof publisher.registerSubscribers ).toBe( typeof function(){} );
 
 	});
 
-	it( "Publisher.registerSubscriber should add a Subscriber", function() {
+	it( "Publisher.registerSubscribers should add Subscribers", function() {
 
-		var subscribers = publisher.registerSubscriber( subscriber );
+        publisher.registerSubscribers( [subscriber] );
+		var subscribers = publisher.getSubscribers();
 
-		expect( subscribers.length ).toBe( 1 );
+        // Plus one subscriber since created
+		expect( subscribers.length ).toBe( 2 );
 
 	});
 
@@ -61,7 +70,8 @@ describe( "Pattern.Publisher", function() {
 
 		var subscribers = publisher.removeSubscriber( subscriber );
 
-		expect( subscribers.length ).toBe( 0 );
+        // One less subscriber since created
+		expect( subscribers.length ).toBe( 1 );
 
 	});
 
@@ -75,7 +85,7 @@ describe( "Pattern.Publisher", function() {
 
 		spyOn( subscriber, "onEventComplete" ).and.callThrough();
 
-		publisher.registerSubscriber( subscriber );
+		publisher.registerSubscribers( [subscriber] );
 		publisher.notify( "onEventComplete", eventData );
 
 		expect( subscriber.onEventComplete ).toHaveBeenCalledWith( eventData );

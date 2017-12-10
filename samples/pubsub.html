@@ -32,19 +32,13 @@
 		};
 
 		//Create an instance of Publisher
-		var UI=new Pattern.Publisher({
-			onKeyUp: function() {
-				this.notify("onKeyUp", document.getElementById('box').value);
-			},
-
-			// init will be invoked when the Publisher instantiates
-			init: function() {
-				this.registerSubscriber( Echo );
-				this.registerSubscriber( Mirror );
-				this.registerSubscriber( Vertical );
-			}
-		});
-
+        var UI = Pattern.Publisher()
+                .registerSubscribers([Echo, Mirror, Vertical])
+                .notifyWith({
+                    onKeyUp: function() {
+				        this.notify("onKeyUp", document.getElementById('box').value);
+                    }
+                });
 		</script>
 	</head>
 	<body>

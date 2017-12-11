@@ -1,45 +1,34 @@
 describe( "Pattern.Observable", function() {
 
 	var observer = new Pattern.Observer(
-
 		(function() {
-
 			var eventData = {};
 
 			return {
-
 				onEventComplete: function( data ) {
-
 					eventData = data;
-
 				},
 
 				getEventData: function() {
-
 					return eventData;
-
 				}
-
 			};
-
 		})()
+	);
 
-	),
-	notification = {
-
+    var notification = {
 		eventName: "onEventComplete",
 		eventData: {
 			aKey: "aValue"
 		}
+	};
 
-	},
-	observable = new Pattern.Observable({
+    var observable = Pattern.Observable()
+        .notifyWith({
+            aMethod: function() {}
+        });
 
-		aMethod: function() {}
-
-	});
-
-	it( "Observable should be a Constructor Function", function() {
+    it( "Observable should be a Constructor Function", function() {
 
 		expect( typeof Pattern.Observable ).toBe( typeof function(){} );
 

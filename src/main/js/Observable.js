@@ -1,37 +1,52 @@
-Pattern.Observable = function(object) {
-	var observers = [];
-	var observable = GET_OBJECT_IF_DEFINED(object);
+Pattern.Observable = function() {
+    var observers = [];
 
-	observable.addObserver = function(observer) {
-		if (!IS_OBJECT(observer) || !IS_FUNCTION(observer.onUpdate)) {
-			return observer;
-		}
+    return {
+        addObserver: function(observer) {
+            if (!IS_OBJECT(observer) || !IS_FUNCTION(observer.onUpdate)) {
+                return observer;
+            }
 
-		observer._observable = observable;
+            observer._observable = this;
+            observers.push(observer);
 
-		observers.push( observer );
+            if (IS_FUNCTION(observer.onRegister)) {
+                observer.onRegister();
+            }
 
-		if (IS_FUNCTION(observer.onRegister)) {
-			observer.onRegister();
-		}
+            return observers;
+        },
 
-		return observers;
-	};
+        addObservers: function(observerList) {
+            for (var x = 0, size = observerList.length; x < size; x++) {
+                this.addObserver(observerList[x]);
+            }
 
-	observable.removeObserver = function(observer) {
-		observers = REMOVE_ARRAY_ITEM(observers, observer);
+            return this;
+        },
 
-		return observers;
-	};
+        removeObserver: function(observer) {
+            observers = REMOVE_ARRAY_ITEM(observers, observer);
 
-	observable.notifyObservers = function(eventName, eventData) {
-		for (var x = 0, size = observers.length; x < size; x++) {
-			observers[x].onUpdate(eventName, eventData);
-		}
+            return observers;
+        },
 
-	};
+        notifyWith: function(object) {
+            if (IS_OBJECT(object)) {
+                for (var i in object) {
+                    if (object.hasOwnProperty(i)) {
+                        this[i] = object[i];
+                    }
+                }
+            }
 
-	EXEC_INIT_METHOD(observable);
-
-	return observable;
+            return this;
+        },
+ 
+        notifyObservers: function(eventName, eventData) {
+            for (var x = 0, size = observers.length; x < size; x++) {
+                observers[x].onUpdate(eventName, eventData);
+            }
+        }
+    };
 };

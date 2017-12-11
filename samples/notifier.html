@@ -7,15 +7,6 @@
 		</style>
 		<script type="text/javascript" src="../build/pattern-js.js"></script>
 		<script type="text/javascript">
-
-		// Different ways of creation Receiver
-
-		// Create Receiver and specify on() method
-//		var Echo = Pattern.Receiver();
-//		Echo.on( "onKeyUp", function( msg ) {
-//			document.getElementById( 'echo' ).innerHTML = msg;
-//		});
-
         var Echo = Pattern.Receiver()
             .on("keyUp", function(msg) {
                 document.getElementById('echo').innerHTML = msg;
@@ -33,25 +24,6 @@
 						msg+=arr[x];
 				document.getElementById('mirror').innerHTML = msg;
             });
-            // Inline Receiver with init()
-//		var Mirror = Pattern.Receiver({
-//
-//			init: function() {
-//
-//				this.on( "onKeyUp", function( msg ) {
-//
-//					var arr = msg.split('');
-//					var msg = '';
-//					if(arr.length>0)
-//						for(var x=arr.length-1;x>=0;x--)
-//							msg+=arr[x];
-//					document.getElementById( 'mirror' ).innerHTML = msg;
-//
-//				});
-//
-//			}
-//
-//		});
 
         var Vertical = Pattern.Receiver()
             .on("keyUp", function(msg) {
@@ -59,21 +31,6 @@
 				var msg = arr.join('<br>');
 				document.getElementById( 'vertical' ).innerHTML = msg;
             });
-//		var Vertical = Pattern.Receiver({
-//
-//			init: function() {
-//
-//				this.on( "onKeyUp", function( msg ) {
-//
-//					var arr = msg.split('');
-//					var msg = arr.join('<br>');
-//					document.getElementById( 'vertical' ).innerHTML = msg;
-//
-//				});
-//
-//			}
-//
-//		});
 
 		var Log = Pattern.Receiver()
             .once("keyUp", function(msg) {

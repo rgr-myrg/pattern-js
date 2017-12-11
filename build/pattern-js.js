@@ -1,4 +1,4 @@
-/* pattern-js v1.1.1 Sun Dec 10 2017 16:01:35 GMT-0500 (EST) */
+/* pattern-js v1.1.1 Sun Dec 10 2017 21:16:16 GMT-0500 (EST) */
 (function(w) {w.Pattern = w.Pattern || {};})(window);
 (function(p) {p.version = '1.1.1';})(Pattern);
 
@@ -157,52 +157,54 @@ Pattern.Observer = function(object) {
 
 Pattern.Publisher = function() {
     var subscribers = [];
-    this.registerSubscribers = function(subscriberList) {
-        for (var x = 0, size = subscriberList.length; x < size; x++) {
-            if (IS_OBJECT(subscriberList[x])) {
-                subscribers.push(subscriberList[x]);
-            }
-        }
 
-        return this;
-	};
-
-    this.notifyWith = function(object) {
-        if (IS_OBJECT(object)) {
-            for (var i in object) {
-                if (object.hasOwnProperty(i)) {
-                    this[i] = object[i];
+    return {
+        registerSubscribers: function(subscriberList) {
+            for (var x = 0, size = subscriberList.length; x < size; x++) {
+                if (IS_OBJECT(subscriberList[x])) {
+                    subscribers.push(subscriberList[x]);
                 }
             }
+
+            return this;
+        },
+
+        notifyWith: function(object) {
+            if (IS_OBJECT(object)) {
+                for (var i in object) {
+                    if (object.hasOwnProperty(i)) {
+                        this[i] = object[i];
+                    }
+                }
+            }
+
+            return this;
+        },
+
+        removeSubscriber: function(subscriber) {
+            subscribers = REMOVE_ARRAY_ITEM(subscribers, subscriber);
+
+            return subscribers;
+        },
+
+        notify: function(eventName, eventData) {
+            for (var x = 0, size = subscribers.length; x < size; x++) {
+                var subscriber = subscribers[x];
+
+                if (IS_FUNCTION(subscriber[eventName])) {
+                    FUNCTION_APPLY(subscriber[eventName], subscriber, eventData);
+                }
+            }
+
+            return eventName;
+        },
+
+        getSubscribers: function() {
+            return subscribers;
         }
-
-        return this;
     };
-
-    this.removeSubscriber = function(subscriber) {
-		subscribers = REMOVE_ARRAY_ITEM(subscribers, subscriber);
-
-		return subscribers;
-	};
-
-	this.notify = function(eventName, eventData) {
-		for (var x = 0, size = subscribers.length; x < size; x++) {
-			var subscriber = subscribers[x];
-
-			if (IS_FUNCTION(subscriber[eventName])) {
-				FUNCTION_APPLY(subscriber[eventName], subscriber, eventData);
-			}
-		}
-
-		return eventName;
-	};
-
-    this.getSubscribers = function() {
-        return subscribers;
-    };
-
-    return this;
 };
+
 Pattern.Queue = function(options) {
 		var	objectId   = null,
 			intervalId = null,
@@ -291,53 +293,6 @@ Pattern.Queue = function(options) {
 			}
 		};
 	};
-
-//Pattern.Receiver = function(object) {
-//	var callbacks = {};
-//	var callOnce = {};
-//
-//    var addCallback = function(collection, eventName, eventCallback) {
-//		if (!collection[eventName] && IS_FUNCTION(eventCallback)) {
-//			collection[eventName] = eventCallback;
-//		}
-//
-//		return collection;
-//
-//	};
-//
-//	var receiver = GET_OBJECT_IF_DEFINED(object);
-//
-//	receiver.on = function(eventName, eventCallback) {
-//		callbacks = addCallback(callbacks, eventName, eventCallback);
-//
-//		return callbacks;
-//	};
-//
-//	receiver.once = function(eventName, eventCallback) {
-//		callOnce = addCallback(callOnce, eventName, eventCallback);
-//		return callOnce;
-//
-//	};
-//
-//	receiver.notify = function(eventName, eventData) {
-//
-//		if (IS_FUNCTION(callOnce[eventName])) {
-//			FUNCTION_APPLY(callOnce[eventName], receiver, eventData);
-//
-//			delete callOnce[ eventName ];
-//		}
-//
-//		if (IS_FUNCTION(callbacks[eventName])){
-//			FUNCTION_APPLY(callbacks[eventName], receiver, eventData);
-//		}
-//
-//		return eventName;
-//	};
-//
-//	EXEC_INIT_METHOD(receiver);
-//
-//	return receiver;
-//};
 
 Pattern.Receiver = function() {
 	var callbacks = {};

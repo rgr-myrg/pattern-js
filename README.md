@@ -112,6 +112,7 @@ Run the samples in your browser
 # To-do
 - Code for additional design patterns
 - Write more Tests
+- Code coments and JsDoc
 
 # License
 [MIT License](https://opensource.org/licenses/MIT)

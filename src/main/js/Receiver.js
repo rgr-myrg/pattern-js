@@ -1,7 +1,7 @@
 Pattern.Receiver = function() {
 	var callbacks = {};
 	var callOnce = {};
-    var addCallback = function(collection, eventName, eventCallback) {
+	var addCallback = function(collection, eventName, eventCallback) {
 		if (!collection[eventName] && IS_FUNCTION(eventCallback)) {
 			collection[eventName] = eventCallback;
 		}

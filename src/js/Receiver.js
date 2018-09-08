@@ -35,4 +35,4 @@ declare('Receiver').class(function() {
             return eventName;
         }
     };
-};
+});

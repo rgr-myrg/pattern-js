@@ -1,69 +1,26 @@
 {
   "name": "pattern-js",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Pocket-sized minimalist framework of common design patterns for JavaScript.",
-  "main": "pattern-js.js",
+  "main": "dist/pattern-js.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "uglify": "uglifyjs --compress --mangle --output dist/pattern-js.min.js -- dist/pattern-js.js",
+    "package": "node script.build.js && npm run uglify"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rgr-myrg/pattern-js.git"
   },
-  "author": "rgr-myrg",
+  "author": "27352 <solidity@gmx.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/rgr-myrg/pattern-js/issues"
   },
   "homepage": "https://github.com/rgr-myrg/pattern-js#readme",
-  "sourcePath": "src/main/js/*.js",
-  "buildPath": "./build",
-  "testPath": "src/main/test/*.js",
-  "karmaConf": "/karma.conf.js",
-  "packaging": ".js",
-  "namespace": "(function(w) {w.Pattern = w.Pattern || {};})(window);",
-  "infoString": "/* <%= build.name %> v<%= build.version %> {date} */",
-  "jsVersion": "(function(p) {p.version = '<%= build.version %>';})(Pattern);\n",
-  "jsClosureOpen": "(function(Pattern) {",
-  "jsClosureClose": "})(Pattern);",
-  "jshintConfig": {
-    "curly": true,
-    "eqeqeq": true,
-    "immed": true,
-    "latedef": true,
-    "newcap": true,
-    "noarg": true,
-    "sub": true,
-    "undef": true,
-    "boss": true,
-    "eqnull": true,
-    "browser": true,
-    "globals": {
-      "console": true,
-      "Pattern": true,
-      "REMOVE_ARRAY_ITEM": true,
-      "IS_FUNCTION": true,
-      "IS_OBJECT": true,
-      "GET_OBJECT_IF_DEFINED": true,
-      "EXEC_INIT_METHOD": true,
-      "FUNCTION_APPLY": true
-    }
-  },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-footer": "^1.0.5",
-    "gulp-header": "^1.8.9",
-    "gulp-jshint": "^2.0.4",
-    "gulp-karma": "0.0.5",
-    "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^3.0.0",
-    "i": "^0.3.5",
-    "jasmine": "^2.7.0",
-    "jshint": "^2.9.5",
-    "karma": "^1.7.1",
-    "karma-jasmine": "^1.1.0",
-    "karma-phantomjs-launcher": "^1.0.4"
-  },
-  "dependencies": {}
+    "concat": "^1.0.3",
+    "uglify-js": "^3.3.17",
+    "webpack": "^4.4.1",
+    "webpack-cli": "^2.0.13"
+  }
 }

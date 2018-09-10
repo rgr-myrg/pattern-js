@@ -14,13 +14,11 @@ declare('Observable').class(function() {
                 observer.onRegister();
             }
 
-            return observers;
+            return this;
         },
 
         addObservers: function(observerList) {
-			_forEach(observerList, (function(observer) {
-				this.addObserver(observer);
-			}).bind(this));
+            _forEach(observerList, this.addObserver.bind(this));
 
             return this;
         },
@@ -28,21 +26,21 @@ declare('Observable').class(function() {
         removeObserver: function(observer) {
             observers = _removeArrayItem(observers, observer);
 
-            return observers;
+            return this;
         },
 
         notifyWith: function(obj) {
-			_forIn(obj, (function(i) {
-				this[i] = obj[i];
-			}).bind(this));
+            _forIn(obj, (function(i) {
+                this[i] = obj[i];
+            }).bind(this));
 
             return this;
         },
 
         notifyObservers: function(eventName, eventData) {
-			_forEach(observers, function(observer) {
-				observer.onUpdate(eventName, eventData);
-			});
+            _forEach(observers, (function(observer) {
+                observer.onUpdate(eventName, eventData);
+            }).bind(this));
         }
     };
 });

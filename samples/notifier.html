@@ -5,7 +5,7 @@
 		<title>Sample :: Notifier</title>
 		<style>
 		</style>
-		<script type="text/javascript" src="../build/pattern-js.js"></script>
+		<script type="text/javascript" src="../dist/pattern-js.js"></script>
 		<script type="text/javascript">
         var Echo = Pattern.Receiver()
             .on("keyUp", function(msg) {
@@ -37,13 +37,18 @@
                 console.log("Logging once! msg: " + msg);
             });
 
-        var UI = Pattern.Notifier()
-            .addReceivers([Log, Echo, Mirror, Vertical])
-            .notifyWith({
-                onKeyUp: function() {
-                    this.notify("keyUp", document.getElementById('box').value);
-                }
-            });
+        var UI = new Pattern.Notifier()
+                .add([Log, Echo, Mirror, Vertical])
+                .notifyWith({
+                    onKeyUp: function() {
+                        this.notify("keyUp", document.getElementById('box').value);
+                    }
+                });
+
+        // UI.onKeyUp = function() {
+        //     this.notify("keyUp", document.getElementById('box').value);
+        // };
+
 		</script>
 	</head>
 	<body>

@@ -1,164 +1,118 @@
-/* pattern-js v1.2.0 - 8/9/2018 */
+/* pattern-js v1.2.0 Sun Sep 09 2018 23:29:22 */
 (function(){
-window.Pattern = window.Pattern || {};
+var Pattern = {},
 
-var declare = function(name) {
-	this.name = name;
+declare = function(name) {
+    this.name = name;
 
-	this.class = function(module) {
-		window.Pattern[this.name] = module;
-	};
+    this.class = function(module) {
+        Pattern[this.name] = module;
+    };
 
-	return this;
+    return this;
 },
 
 _isFunction = function(fn) {
-	return typeof fn === "function";
+    return typeof fn === "function";
 },
 
 _isObject = function(obj) {
-	return typeof obj === "object";
+    return typeof obj === "object";
 },
 
 _isArray = function(arr) {
-	return Array.isArray(arr);
+    return Array.isArray(arr);
 },
 
 _getObjectIfDefined = function(obj) {
-	return _isObject(obj) ? obj : {};
+    return _isObject(obj) ? obj : {};
 },
 
 _forEach = function(arr, fn) {
-	for (var x = 0, size = arr.length; x < size; x++) {
-		fn(arr[x]);
-	}
+    for (var x = 0, size = arr.length; x < size; x++) {
+        fn(arr[x]);
+    }
 },
 
 _forIn = function(obj, fn) {
-	if (!_isObject(obj)) {
-		return;
-	}
+    if (!_isObject(obj)) {
+        return;
+    }
 
-	for (var i in obj) {
-		if (obj.hasOwnProperty(i)) {
-			fn(obj[i]);
-		}
-	}
+    for (var i in obj) {
+        if (obj.hasOwnProperty(i)) {
+            fn(i);
+        }
+    }
 },
 
 _execInitMethod = function(obj) {
-	if (_isFunction(obj.init)) {
-		obj.init();
-	}
+    if (_isFunction(obj.init)) {
+        obj.init();
+    }
 },
 
 _functionApply = function(func, parent, args) {
-	(function() {
-		func.apply(parent, arguments);
-	})(args);
+    (function() {
+        func.apply(parent, arguments);
+    })(args);
 },
 
 _removeArrayItem = function(arr, item) {
-	for (var x = 0, size = arr.length; x < size; x++) {
-		if (arr[x] === item) {
-			arr.splice(x, 1);
+    for (var x = 0, size = arr.length; x < size; x++) {
+        if (arr[x] === item) {
+            arr.splice(x, 1);
 
-			if (_isFunction(item.onRemove)) {
-				item.onRemove();
-			}
+            if (_isFunction(item.onRemove)) {
+                item.onRemove();
+            }
 
-			break;
-		}
-	}
+            break;
+        }
+    }
 
-	return arr;
+    return arr;
 };
 
-declare('EventSignal').class(
-	function() {
-	    var listeners = [],
-			addListener = function(listener) {
-				if (_isFunction(listener)) {
-					listeners.push(listener);
-				}
-			};
-
-	    return {
-	        add: function(listeners) {
-				if (_isArray(listeners)) {
-	            	_forEach(listeners, function(listener) {
-						addListener(listener);
-					});
-	            } else {
-					addListener(listeners);
-				}
-
-	            return listeners;
-	        },
-
-	        remove: function(listener) {
-	            listeners = _removeArrayItem(listeners, listener);
-
-	            return listeners;
-	        },
-
-	        dispatch: function() {
-				_forEach(listeners, (function(listener) {
-					listener.apply(this, arguments);
-				}).bind(this));
-	        }
-	    };
-	}
-);
 
 declare('Notifier').class(function() {
-    var receivers = [],
-		addReceiver = function(receiver) {
+    var receivers = [];
+
+    return {
+        addReceiver: function(receiver) {
             if (_isFunction(receiver.notify)) {
                 receivers.push(receiver);
             }
-        };
+        },
 
-    return {
-		add: function(receivers) {
-			if (_isArray(receivers)) {
-				_forEach(receivers, function(receiver) {
-					addReceiver(receiver);
-				});
-			} else {
-				addReceiver(receivers);
-			}
+        add: function(receivers) {
+            if (_isArray(receivers)) {
+                _forEach(receivers, this.addReceiver.bind(this));
+            } else {
+                this.addReceiver(receivers);
+            }
 
-			return receivers;
-		},
+            return this;
+        },
 
         remove: function(receiver) {
             receivers = _removeArrayItem(receivers, receiver);
 
-            return receivers;
-        },
-
-        notify: function(eventName, eventData) {
-			_forEach(receivers, function(receiver) {
-				receiver.notify(eventName, eventData);
-			});
-
-            return eventName;
+            return this;
         },
 
         notifyWith: function(obj) {
-			_forIn(obj, (function(i) {
-				this[i] = obj[i];
-			}).bind(this));
-            // if (_isObject(object)) {
-            //     for (var i in object) {
-            //         if (object.hasOwnProperty(i)) {
-            //             this[i] = object[i];
-            //         }
-            //     }
-            // }
+            _forIn(obj, (function(i) {
+                this[i] = obj[i];
+            }).bind(this));
 
             return this;
+        },
+
+        notify: function(eventName, eventData) {
+            _forEach(receivers, (function(receiver) {
+                receiver.notify(eventName, eventData);
+            }).bind(this));
         }
     };
 });
@@ -179,13 +133,11 @@ declare('Observable').class(function() {
                 observer.onRegister();
             }
 
-            return observers;
+            return this;
         },
 
         addObservers: function(observerList) {
-			_forEach(observerList, (function(observer) {
-				this.addObserver(observer);
-			}).bind(this));
+            _forEach(observerList, this.addObserver.bind(this));
 
             return this;
         },
@@ -193,40 +145,40 @@ declare('Observable').class(function() {
         removeObserver: function(observer) {
             observers = _removeArrayItem(observers, observer);
 
-            return observers;
+            return this;
         },
 
         notifyWith: function(obj) {
-			_forIn(obj, (function(i) {
-				this[i] = obj[i];
-			}).bind(this));
+            _forIn(obj, (function(i) {
+                this[i] = obj[i];
+            }).bind(this));
 
             return this;
         },
 
         notifyObservers: function(eventName, eventData) {
-			_forEach(observers, function(observer) {
-				observer.onUpdate(eventName, eventData);
-			});
+            _forEach(observers, (function(observer) {
+                observer.onUpdate(eventName, eventData);
+            }).bind(this));
         }
     };
 });
 
 declare('Observer').class(function(object) {
-	var observer = _getObjectIfDefined(object);
+    var observer = _getObjectIfDefined(object);
 
-	observer.onUpdate = function(eventName, eventData) {
-		if (_isFunction(observer[eventName])) {
-			_functionApply(observer[eventName], observer, eventData);
-		}
+    observer.onUpdate = function(eventName, eventData) {
+        if (_isFunction(observer[eventName])) {
+            _functionApply(observer[eventName], observer, eventData);
+        }
 
-		return eventName;
+        return eventName;
 
-	};
+    };
 
-	_execInitMethod(observer);
+    _execInitMethod(observer);
 
-	return observer;
+    return observer;
 });
 
 declare('Publisher').class(function() {
@@ -234,19 +186,19 @@ declare('Publisher').class(function() {
 
     return {
         registerSubscribers: function(subscriberList) {
-			_forEach(subscriberList, function(subscriber) {
-				if (_isObject(subscriber)) {
+            _forEach(subscriberList, function(subscriber) {
+                if (_isObject(subscriber)) {
                     subscribers.push(subscriber);
                 }
-			});
+            });
 
             return this;
         },
 
         notifyWith: function(obj) {
-			_forIn(obj, (function(i) {
-				this[i] = obj[i];
-			}).bind(this));
+            _forIn(obj, (function(i) {
+                this[i] = obj[i];
+            }).bind(this));
 
             return this;
         },
@@ -254,17 +206,15 @@ declare('Publisher').class(function() {
         removeSubscriber: function(subscriber) {
             subscribers = _removeArrayItem(subscribers, subscriber);
 
-            return subscribers;
+            return this;
         },
 
         notify: function(eventName, eventData) {
-			_forEach(subscribers, function(subscriber) {
-				if (_isFunction(subscriber[eventName])) {
+            _forEach(subscribers, function(subscriber) {
+                if (_isFunction(subscriber[eventName])) {
                     _functionApply(subscriber[eventName], subscriber, eventData);
                 }
-			});
-
-            return eventName;
+            });
         },
 
         getSubscribers: function() {
@@ -274,14 +224,14 @@ declare('Publisher').class(function() {
 });
 
 declare('Receiver').class(function() {
-	var callbacks = callOnce = {};
-	var addCallback = function(collection, eventName, eventCallback) {
-		if (!collection[eventName] && _isFunction(eventCallback)) {
-			collection[eventName] = eventCallback;
-		}
+    var callbacks = callOnce = {},
+        addCallback = function(collection, eventName, eventCallback) {
+            if (!collection[eventName] && _isFunction(eventCallback)) {
+                collection[eventName] = eventCallback;
+            }
 
-		return collection;
-	};
+            return collection;
+        };
 
     return {
         on: function(eventName, eventCallback) {
@@ -311,5 +261,45 @@ declare('Receiver').class(function() {
         }
     };
 });
+
+declare('Signal').class(function() {
+    var slots = [];
+
+    return {
+        addSlot: function(slot) {
+            if (_isFunction(slot)) {
+                slots.push(slot);
+            }
+        },
+
+        add: function(slots) {
+            if (_isArray(slots)) {
+                _forEach(slots, this.addSlot.bind(this));
+            } else {
+                this.addSlot(slots);
+            }
+
+            return this;
+        },
+
+        remove: function(slot) {
+            slots = _removeArrayItem(slots, slot);
+
+            return this;
+        },
+
+        dispatch: function() {
+            var _args = arguments;
+
+            _forEach(slots, (function(slot) {
+                slot.apply(this, _args);
+            }).bind(this));
+        }
+    };
+});
+
+(typeof window === 'object') && (window.Pattern = Pattern);
+
+return Pattern;
 
 })();

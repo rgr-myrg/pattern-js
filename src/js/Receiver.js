@@ -1,12 +1,12 @@
 declare('Receiver').class(function() {
-	var callbacks = callOnce = {};
-	var addCallback = function(collection, eventName, eventCallback) {
-		if (!collection[eventName] && _isFunction(eventCallback)) {
-			collection[eventName] = eventCallback;
-		}
+    var callbacks = callOnce = {},
+        addCallback = function(collection, eventName, eventCallback) {
+            if (!collection[eventName] && _isFunction(eventCallback)) {
+                collection[eventName] = eventCallback;
+            }
 
-		return collection;
-	};
+            return collection;
+        };
 
     return {
         on: function(eventName, eventCallback) {

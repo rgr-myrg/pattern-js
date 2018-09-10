@@ -4,6 +4,7 @@
   "description": "Pocket-sized minimalist framework of common design patterns for JavaScript.",
   "main": "dist/pattern-js.js",
   "scripts": {
+    "test": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "uglify": "uglifyjs --compress --mangle --output dist/pattern-js.min.js -- dist/pattern-js.js",
     "package": "node script.build.js && npm run uglify"
   },
@@ -12,15 +13,22 @@
     "url": "git+https://github.com/rgr-myrg/pattern-js.git"
   },
   "author": "27352 <solidity@gmx.com>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/rgr-myrg/pattern-js/issues"
   },
   "homepage": "https://github.com/rgr-myrg/pattern-js#readme",
   "devDependencies": {
     "concat": "^1.0.3",
-    "uglify-js": "^3.3.17",
-    "webpack": "^4.4.1",
-    "webpack-cli": "^2.0.13"
-  }
+    "jasmine": "^3.2.0",
+    "jasmine-spec-reporter": "^4.2.1",
+    "karma": "^3.0.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.2",
+    "karma-jasmine": "^1.1.2",
+    "karma-spec-reporter": "0.0.32",
+    "puppeteer": "^1.8.0",
+    "uglify-js": "^3.3.17"
+  },
+  "dependencies": {}
 }

@@ -1,16 +1,16 @@
 declare('Observer').class(function(object) {
-	var observer = _getObjectIfDefined(object);
+    var observer = _getObjectIfDefined(object);
 
-	observer.onUpdate = function(eventName, eventData) {
-		if (_isFunction(observer[eventName])) {
-			_functionApply(observer[eventName], observer, eventData);
-		}
+    observer.onUpdate = function(eventName, eventData) {
+        if (_isFunction(observer[eventName])) {
+            _functionApply(observer[eventName], observer, eventData);
+        }
 
-		return eventName;
+        return eventName;
 
-	};
+    };
 
-	_execInitMethod(observer);
+    _execInitMethod(observer);
 
-	return observer;
+    return observer;
 });

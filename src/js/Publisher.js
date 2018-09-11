@@ -1,8 +1,8 @@
-declare('Publisher').class(function() {
+declare('Publisher').as(function() {
     var subscribers = [];
 
     return {
-        registerSubscribers: function(subscriberList) {
+        register: function(subscriberList) {
             _forEach(subscriberList, function(subscriber) {
                 if (_isObject(subscriber)) {
                     subscribers.push(subscriber);
@@ -20,7 +20,7 @@ declare('Publisher').class(function() {
             return this;
         },
 
-        removeSubscriber: function(subscriber) {
+        remove: function(subscriber) {
             subscribers = _removeArrayItem(subscribers, subscriber);
 
             return this;

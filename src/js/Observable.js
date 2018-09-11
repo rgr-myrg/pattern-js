@@ -1,4 +1,4 @@
-declare('Observable').class(function() {
+declare('Observable').as(function() {
     var observers = [];
 
     return {
@@ -23,7 +23,7 @@ declare('Observable').class(function() {
             return this;
         },
 
-        removeObserver: function(observer) {
+        remove: function(observer) {
             observers = _removeArrayItem(observers, observer);
 
             return this;
@@ -37,7 +37,7 @@ declare('Observable').class(function() {
             return this;
         },
 
-        notifyObservers: function(eventName, eventData) {
+        notify: function(eventName, eventData) {
             _forEach(observers, (function(observer) {
                 observer.onUpdate(eventName, eventData);
             }).bind(this));

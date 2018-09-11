@@ -1,5 +1,7 @@
-declare('Receiver').class(function() {
-    var callbacks = callOnce = {},
+declare('Receiver').as(function() {
+    var callbacks = {},
+        callOnce = {},
+
         addCallback = function(collection, eventName, eventCallback) {
             if (!collection[eventName] && _isFunction(eventCallback)) {
                 collection[eventName] = eventCallback;

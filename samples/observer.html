@@ -42,7 +42,7 @@
             .addObservers([Echo, Mirror, Vertical])
             .notifyWith({
                 onKeyUp: function() {
-				    this.notifyObservers("onKeyUp", document.getElementById('box').value);
+				    this.notify("onKeyUp", document.getElementById('box').value);
                 },
                 getMsg: function() {
                     return document.getElementById('box').value;

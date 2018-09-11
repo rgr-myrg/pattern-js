@@ -1,12 +1,10 @@
-/* pattern-js v1.2.0 Sun Sep 09 2018 23:29:22 */
+/* pattern-js v1.2.0 Mon Sep 10 2018 20:43:15 */
 (function(){
 var Pattern = {},
 
 declare = function(name) {
-    this.name = name;
-
-    this.class = function(module) {
-        Pattern[this.name] = module;
+    this.as = function(module) {
+        Pattern[name] = module;
     };
 
     return this;
@@ -75,7 +73,7 @@ _removeArrayItem = function(arr, item) {
 };
 
 
-declare('Notifier').class(function() {
+declare('Notifier').as(function() {
     var receivers = [];
 
     return {
@@ -117,7 +115,7 @@ declare('Notifier').class(function() {
     };
 });
 
-declare('Observable').class(function() {
+declare('Observable').as(function() {
     var observers = [];
 
     return {
@@ -142,7 +140,7 @@ declare('Observable').class(function() {
             return this;
         },
 
-        removeObserver: function(observer) {
+        remove: function(observer) {
             observers = _removeArrayItem(observers, observer);
 
             return this;
@@ -156,7 +154,7 @@ declare('Observable').class(function() {
             return this;
         },
 
-        notifyObservers: function(eventName, eventData) {
+        notify: function(eventName, eventData) {
             _forEach(observers, (function(observer) {
                 observer.onUpdate(eventName, eventData);
             }).bind(this));
@@ -164,7 +162,7 @@ declare('Observable').class(function() {
     };
 });
 
-declare('Observer').class(function(object) {
+declare('Observer').as(function(object) {
     var observer = _getObjectIfDefined(object);
 
     observer.onUpdate = function(eventName, eventData) {
@@ -181,11 +179,11 @@ declare('Observer').class(function(object) {
     return observer;
 });
 
-declare('Publisher').class(function() {
+declare('Publisher').as(function() {
     var subscribers = [];
 
     return {
-        registerSubscribers: function(subscriberList) {
+        register: function(subscriberList) {
             _forEach(subscriberList, function(subscriber) {
                 if (_isObject(subscriber)) {
                     subscribers.push(subscriber);
@@ -203,7 +201,7 @@ declare('Publisher').class(function() {
             return this;
         },
 
-        removeSubscriber: function(subscriber) {
+        remove: function(subscriber) {
             subscribers = _removeArrayItem(subscribers, subscriber);
 
             return this;
@@ -223,8 +221,10 @@ declare('Publisher').class(function() {
     };
 });
 
-declare('Receiver').class(function() {
-    var callbacks = callOnce = {},
+declare('Receiver').as(function() {
+    var callbacks = {},
+        callOnce = {},
+
         addCallback = function(collection, eventName, eventCallback) {
             if (!collection[eventName] && _isFunction(eventCallback)) {
                 collection[eventName] = eventCallback;
@@ -262,7 +262,7 @@ declare('Receiver').class(function() {
     };
 });
 
-declare('Signal').class(function() {
+declare('Signal').as(function() {
     var slots = [];
 
     return {

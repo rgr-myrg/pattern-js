@@ -6,7 +6,8 @@
   "scripts": {
     "test": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "uglify": "uglifyjs --compress --mangle --output dist/pattern-js.min.js -- dist/pattern-js.js",
-    "package": "node script.build.js && npm run uglify"
+    "jshint": "jshint src/js --exclude src/js/_export.js",
+    "package": "npm run jshint && node script.build.js && npm run uglify"
   },
   "repository": {
     "type": "git",
@@ -18,10 +19,37 @@
     "url": "https://github.com/rgr-myrg/pattern-js/issues"
   },
   "homepage": "https://github.com/rgr-myrg/pattern-js#readme",
+  "jshintConfig": {
+    "curly": true,
+    "eqeqeq": true,
+    "immed": true,
+    "latedef": true,
+    "newcap": true,
+    "noarg": true,
+    "sub": true,
+    "undef": true,
+    "boss": true,
+    "eqnull": true,
+    "browser": true,
+    "globals": {
+        "Pattern": true,
+        "declare": true,
+        "_isFunction": true,
+        "_isObject": true,
+        "_isArray": true,
+        "_getObjectIfDefined": true,
+        "_forEach": true,
+        "_forIn": true,
+        "_execInitMethod": true,
+        "_functionApply": true,
+        "_removeArrayItem": true
+    }
+  },
   "devDependencies": {
     "concat": "^1.0.3",
     "jasmine": "^3.2.0",
     "jasmine-spec-reporter": "^4.2.1",
+    "jshint": "^2.9.6",
     "karma": "^3.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.2",

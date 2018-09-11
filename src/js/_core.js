@@ -1,10 +1,8 @@
 var Pattern = {},
 
 declare = function(name) {
-    this.name = name;
-
-    this.class = function(module) {
-        Pattern[this.name] = module;
+    this.as = function(module) {
+        Pattern[name] = module;
     };
 
     return this;

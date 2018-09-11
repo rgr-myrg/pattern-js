@@ -1,4 +1,4 @@
-declare('Observer').class(function(object) {
+declare('Observer').as(function(object) {
     var observer = _getObjectIfDefined(object);
 
     observer.onUpdate = function(eventName, eventData) {

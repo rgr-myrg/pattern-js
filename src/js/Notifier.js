@@ -1,5 +1,5 @@
 
-declare('Notifier').class(function() {
+declare('Notifier').as(function() {
     var receivers = [];
 
     return {

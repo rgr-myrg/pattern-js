@@ -34,13 +34,16 @@
             .add([
                 Echo.onKeyUp,
                 Mirror.onKeyUp,
-                Vertical.onKeyUp
+                Vertical.onKeyUp,
+                msg => {
+                    console.log('onKeyUp', msg);
+                }
             ]);
 
 		</script>
 	</head>
 	<body>
-		<h1>Sample :: Event Signal</h1>
+		<h1>Sample :: Signal</h1>
 	<form>
 	<table>
 		<tr>

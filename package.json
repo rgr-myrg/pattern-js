@@ -1,31 +1,24 @@
 {
   "name": "pattern-js",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Pocket-sized minimalist framework of common design patterns for JavaScript.",
-  "main": "pattern-js.js",
+  "main": "dist/pattern-js.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
+    "uglify": "uglifyjs --compress --mangle --output dist/pattern-js.min.js -- dist/pattern-js.js",
+    "jshint": "jshint src/js --exclude src/js/_export.js",
+    "package": "npm run jshint && node script.build.js && npm run uglify"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rgr-myrg/pattern-js.git"
   },
-  "author": "rgr-myrg",
-  "license": "ISC",
+  "author": "27352 <solidity@gmx.com>",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/rgr-myrg/pattern-js/issues"
   },
   "homepage": "https://github.com/rgr-myrg/pattern-js#readme",
-  "sourcePath": "src/main/js/*.js",
-  "buildPath": "./build",
-  "testPath": "./test/*.js",
-  "karmaConf": "/karma.conf.js",
-  "packaging": ".js",
-  "namespace": "(function(w) {w.Pattern = w.Pattern || {};})(window);",
-  "infoString": "/* <%= build.name %> v<%= build.version %> {date} */",
-  "jsVersion": "(function(p) {p.version = '<%= build.version %>';})(Pattern);\n",
-  "jsClosureOpen": "(function(Pattern) {",
-  "jsClosureClose": "})(Pattern);",
   "jshintConfig": {
     "curly": true,
     "eqeqeq": true,
@@ -39,31 +32,31 @@
     "eqnull": true,
     "browser": true,
     "globals": {
-      "console": true,
-      "Pattern": true,
-      "REMOVE_ARRAY_ITEM": true,
-      "IS_FUNCTION": true,
-      "IS_OBJECT": true,
-      "GET_OBJECT_IF_DEFINED": true,
-      "EXEC_INIT_METHOD": true,
-      "FUNCTION_APPLY": true
+        "Pattern": true,
+        "declare": true,
+        "_isFunction": true,
+        "_isObject": true,
+        "_isArray": true,
+        "_getObjectIfDefined": true,
+        "_forEach": true,
+        "_forIn": true,
+        "_execInitMethod": true,
+        "_functionApply": true,
+        "_removeArrayItem": true
     }
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-footer": "^1.0.5",
-    "gulp-header": "^1.8.9",
-    "gulp-jshint": "^2.0.4",
-    "gulp-karma": "0.0.5",
-    "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^3.0.0",
-    "i": "^0.3.5",
-    "jasmine": "^2.7.0",
-    "jshint": "^2.9.5",
-    "karma": "^1.7.1",
-    "karma-jasmine": "^1.1.0",
-    "karma-phantomjs-launcher": "^1.0.4"
+    "concat": "^1.0.3",
+    "jasmine": "^3.2.0",
+    "jasmine-spec-reporter": "^4.2.1",
+    "jshint": "^2.9.6",
+    "karma": "^3.0.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.2",
+    "karma-jasmine": "^1.1.2",
+    "karma-spec-reporter": "0.0.32",
+    "puppeteer": "^1.8.0",
+    "uglify-js": "^3.3.17"
   },
   "dependencies": {}
 }

@@ -2,10 +2,10 @@
 <html xmlns='http://www.w3.org/1999/xhtml' lang='en' xml:lang='en:us'>
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-		<title>Sample :: Event Signal</title>
+		<title>Sample :: Signal</title>
 		<style>
 		</style>
-		<script type="text/javascript" src="../build/pattern-js.js"></script>
+		<script type="text/javascript" src="../dist/pattern-js.js"></script>
 		<script type="text/javascript">
 		var Echo = {
 			onKeyUp: function(msg){
@@ -30,17 +30,20 @@
 			}
 		};
 
-        var onKeyUp = new Pattern.EventSignal()
-            .addListeners([
-                Echo.onKeyUp, 
-                Mirror.onKeyUp, 
-                Vertical.onKeyUp
+        var onKeyUp = new Pattern.Signal()
+            .add([
+                Echo.onKeyUp,
+                Mirror.onKeyUp,
+                Vertical.onKeyUp,
+                msg => {
+                    console.log('onKeyUp', msg);
+                }
             ]);
 
 		</script>
 	</head>
 	<body>
-		<h1>Sample :: Event Signal</h1>
+		<h1>Sample :: Signal</h1>
 	<form>
 	<table>
 		<tr>

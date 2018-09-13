@@ -5,7 +5,7 @@
 		<title>Sample :: Observer</title>
 		<style>
 		</style>
-		<script type="text/javascript" src="../build/pattern-js.js"></script>
+		<script type="text/javascript" src="../dist/pattern-js.js"></script>
 		<script type="text/javascript">
 		var Echo = Pattern.Observer({
 			onKeyUp: function( data ) {
@@ -38,24 +38,16 @@
 			}
 		});
 
-		var UI = Pattern.Observable({
-			init: function() {
-				this.addObserver( Echo );
-				this.addObserver( Mirror );
-				this.addObserver( Vertical );
-			},
-
-			onKeyUp: function() {
-				this.notifyObservers(
-					"onKeyUp", 
-					document.getElementById('box').value
-				);
-			},
-
-			getMsg: function() {
-				return document.getElementById('box').value;
-			}
-		});
+        var UI = new Pattern.Observable()
+            .addObservers([Echo, Mirror, Vertical])
+            .notifyWith({
+                onKeyUp: function() {
+				    this.notify("onKeyUp", document.getElementById('box').value);
+                },
+                getMsg: function() {
+                    return document.getElementById('box').value;
+                }
+            });
 		</script>
 	</head>
 	<body>
